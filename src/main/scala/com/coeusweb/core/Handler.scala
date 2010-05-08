@@ -34,25 +34,31 @@ class Handler[T <: Controller](val controllerClass: Class[T], val controllerMeth
    * <ol>
    * <li>Create a new <code>Controller</code> instance using the specified <code>factory</code>.</li>
    * <li>Inject the specified <code>request</code> and <code>response</code> into the <code>Controller</code></li>
-   * <li>If the <code>Controller</code> implements the <code>BeforeFilter</code> trait then calls the <code>before()</code> method</li>
+   * <li>If the <code>Controller</code> implements the <code>BeforeFilter</code> trait then calls the
+   *     <code>before()</code> method</li>
    * <li>If the above method call returned a <code>View</code> then return that view else continue</code>
    * <li>Invoke the <code>Controller</code> method</li>
-   * <li>If the <code>Controller</code> implements the <code>AfterFilter</code> trait then calls the <code>after()</code> method</li>
-   * <li>Return the result of the invocation of the <code>Controller</code> method</li>
+   * <li>If the <code>Controller</code> implements the <code>AfterFilter</code> trait then calls the
+   *     <code>after()</code> method</li>
+   * <li>If the {@code after()} method returned some {@code View} then return that view else return the
+   *     result of the invocation of the <code>Controller</code> method</li>
    * </ol>
    * 
    * <p>If the <code>Controller</code> implements the <code>AfterFilter</code> interface and an
    * uncaught exception occurs then the <code>AfterFilter.after()</code> method will
    * get called with the uncaught exception. If the <code>after()</code> method does not
-   * throw an exception the uncaught exception will get re-thrown by the framework.</p>
+   * throw an exception or return some view the uncaught exception will get re-thrown by the
+   * framework.</p>
    * 
    * @param factory the factory that will be used for instantiating a new controller
    * @param request the current request
    * @param response the current response
    * 
    * @return if the <code>Controller</code> implements the <code>BeforeFilter</code> trait and
-   * the method <code>BeforeFilter.before()</code> returns a <code>View</code> then that
-   * view gets returned, else returns the result of invoking the <code>Controller</code> method.
+   * the method {@link BeforeFilter#before()} returns a <code>View</code> then that
+   * view gets returned, else if the <code>Controller</code> implements the {@code AfterFilter} trait and
+   * the method {@link AfterFilter#after()} returns a {@code View} then that view gets returned, else  
+   * returns the result of invoking the {@code Controller}'s handler method.
    */
   def handle(factory: ControllerFactory, request: WebRequest, response: WebResponse): Any = {
     
@@ -71,15 +77,16 @@ class Handler[T <: Controller](val controllerClass: Class[T], val controllerMeth
       try {
         result = controllerMethod.invoke(controller)
       } catch {
-        case e: InvocationTargetException =>
-          throwable = e.getCause
+        case e: InvocationTargetException => throwable = e.getCause
       }
     }
     
-    controller match {
+    val afterResult = controller match {
       case filter: AfterFilter => filter.after(Option(throwable))
-      case _ => () 
+      case _ => None
     }
+    
+    if (afterResult.isDefined) return afterResult.get
     
     if (throwable != null) throw throwable
     result

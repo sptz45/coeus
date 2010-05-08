@@ -9,7 +9,7 @@ package com.coeusweb.controller
 import org.junit.Test
 import org.junit.Assert._
 import com.coeusweb.Controller
-import com.coeusweb.view.{ View, ViewReference }
+import com.coeusweb.view.{ View, ViewReference, NullView }
 import com.coeusweb.core.Handler
 import com.coeusweb.core.factory.SimpleControllerFactory
 
@@ -57,44 +57,62 @@ class BeforeAfterFilterTest {
     val handler = new Handler(controllerClass, handlerMethod)
     handler.handle(factory, null, null)
   }
+  
+  @Test
+  def handle_returns_the_view_of_after_filter() {
+    val controllerClass = classOf[ControllerWithExceptionHandler]
+    val handlerMethod = controllerClass.getMethod("raiseError")
+    val handler = new Handler(controllerClass, handlerMethod)
+    assertEquals(NullView, handler.handle(factory, null, null))
+  }
 }
 
 
 object BeforeAfterFilterTest {
-  
+
   class ErroneousController extends Controller with AfterFilter {
 
     def throwException() = throw new IllegalStateException
-    
-    def after(error: Option[Throwable]) {
+
+    def after(error: Option[Throwable]): Option[View] = {
       assertTrue(error.isDefined)
       assertTrue(error.get.isInstanceOf[IllegalStateException])
       throw new IllegalArgumentException 
     }
   }
-  
+
   class InterceptedController extends Controller with BeforeFilter with AfterFilter {
-    
+
     var result: View = _
-    
+
     def index(): View = result
-    
+
     def before(): Option[View] = {
       result = ViewReference("set-from-interceptor")
       None
     }
     
-    def after(e: Option[Throwable]) { }
+    def after(e: Option[Throwable]): Option[View] = None
   }
-  
+
   class NoHandlerExecutionController extends InterceptedController {
     override def before() = Some(ViewReference("intercepted"))
     override def index(): View = throw new AssertionError("interceptor should have prevented the execution of this method")
   }
-  
+
   class EnsureAfterCalledController extends NoHandlerExecutionController {
-    override def after(e: Option[Throwable]) {
+    override def after(e: Option[Throwable]): Option[View] = {
       throw new IllegalArgumentException
+    }
+  }
+
+  class ControllerWithExceptionHandler extends Controller with AfterFilter {
+
+    def raiseError() = throw new RuntimeException
+
+    def after(error: Option[Throwable]) = {
+      assertTrue("excpected runtime exception!", error.get.isInstanceOf[RuntimeException])
+      Some(NullView)
     }
   }
 }

@@ -7,6 +7,7 @@
 package com.coeusweb.controller
 
 import com.coeusweb.Controller
+import com.coeusweb.view.View
 
 /**
  * Executes common logic <em>after</em> each handler method of a
@@ -22,10 +23,16 @@ trait AfterFilter {
   /**
    * Gets executed <em>after</em> the {@code Controller}'s handler method that
    * corresponds to the current request.
-   * 
+   *
+   * <p>This method can be used to create controller-specific error handlers.</p>
+   *
    * @param error may contain a {@code Throwable} if an uncaught exception
    *        occurred during the execution of the {@code Controller}'s handler
-   *        method. 
+   *        method.
+   *
+   * @return may return some {@code View} to override the {@code View} returned by
+   *         the controller's handler method or {@code None} to continue with
+   *         normal request processing.  
    */
-  def after(error: Option[Throwable])
+  def after(error: Option[Throwable]): Option[View]
 }
