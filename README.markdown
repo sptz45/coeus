@@ -15,4 +15,4 @@ At the moment it is difficult to build the project because we are using a older
 custom version of Scalate. This problem will be addressed after the release of
 Scala 2.8.0.RC2. Until then feel free to clone the project and browse the source
 code or clone and browse the source of the
-{sample application}[http://github.com/coeusframework/coeus-sample-blog].
+[sample application](http://github.com/coeusframework/coeus-sample-blog).
