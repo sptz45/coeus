@@ -19,9 +19,9 @@ trait FormProcessing {
   /**
    * Whether to store the model attributes in session.
    * 
-   * <p>The default value is {@code true}.</p>
+   * <p>The default value is {@code false}.</p>
    */
-  def storeModelInSession = true
+  def storeModelInSession = false
   
   /** The model attributes. */
   lazy val model = new ModelAttributes(binder, request, storeModelInSession)

@@ -119,6 +119,7 @@ object AbstractControllerTest {
 
   class PostController extends AbstractController {
     
+    override def storeModelInSession = true
     override def formView = ERROR_VIEW
     
     def showSessionForm() {
