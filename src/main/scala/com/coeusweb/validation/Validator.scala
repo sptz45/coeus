@@ -1,0 +1,44 @@
+/* - Coeus web framework -------------------------
+ *
+ * Licensed under the Apache License, Version 2.0.
+ *
+ * Author: Spiros Tzavellas
+ */
+package com.coeusweb.validation
+
+import com.coeusweb.bind.{ BindingResult, Error }
+
+/**
+ * Validates objects.
+ * 
+ * @see BindingResult
+ */
+trait Validator[-T <: AnyRef] {
+
+  /**
+   * Validate the specified target object.
+   * 
+   * @param target the object to validate.
+   * @return a sequence of <code>Error</code> objects or an empty sequence if
+   *         the specified object is valid.
+   */
+  def validate(target: T): Iterable[Error]
+  
+  /**
+   * Validate the target object of the specified <code>BindingResult</code>. 
+   * 
+   * <p>This method adds any validation errors in the specified
+   * <code>BindingResult</code>.</p>
+   */
+  def validate(result: BindingResult[T])
+  
+  /**
+   * Validate the specified field value.
+   * 
+   * @param field the field's name
+   * @param value the field's value
+   * @return an <code>Option</code> containing an error if the value is invalid,
+   *        else <code>None</code>.
+   */
+  def validateField[S](field: String, value: Any)(implicit m: Manifest[S]): Option[Error]
+}

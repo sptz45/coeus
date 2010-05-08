@@ -1,0 +1,37 @@
+/* - Coeus web framework -------------------------
+ *
+ * Licensed under the Apache License, Version 2.0.
+ *
+ * Author: Spiros Tzavellas
+ */
+package com.coeusweb
+package core
+
+/**
+ * Holds information about the current request.
+ * 
+ * @param request the current request
+ * @param response the current response
+ * @param handler the handler that handles the request
+ */
+final class RequestContext(val request: WebRequest, val response: WebResponse, val handler: Handler[_]) {
+
+  /**
+   * The exception that occurred during the handling of the request.  
+   */
+  var error: Throwable = _
+
+  /**
+   * The result of handling the request.
+   * 
+   * <p>It can be a <code>View</code> instance or a String that
+   * can be mapped to a view.</p>
+   */
+  var result: Any = _
+  
+  /**
+   * Returns true if an uncaught exception has occurred during the
+   * handling of the request.
+   */
+  def hasError = error ne null
+}
