@@ -28,9 +28,9 @@ class MethodInvokingControllerFactory(val delegate: AnyRef) extends ControllerFa
       case e: Exception => throw new FrameworkException(
         "To register the controller class: %s, the class: %s must have a method named: %s with no arguments and return type: %s"
           .format(controllerClass.getName,
-                  delegate.getClass.getName,
-                  classToMethodName(controllerClass),
-                  controllerClass.getName), e)
+            delegate.getClass.getName,
+            classToMethodName(controllerClass),
+            controllerClass.getName), e)
     }
   }
   
@@ -39,7 +39,9 @@ class MethodInvokingControllerFactory(val delegate: AnyRef) extends ControllerFa
       cache(klass).invoke(delegate).asInstanceOf[C]
     } catch {
       case e: NoSuchElementException =>
-        throw new FrameworkException("Could not instantiate a controller of class: %s because the class hasn't been registered".format(klass.getName))
+        throw new FrameworkException(
+          "Could not instantiate a controller of class: %s because the class hasn't been registered"
+            .format(klass.getName))
     }
   }
   

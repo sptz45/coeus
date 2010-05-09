@@ -24,7 +24,8 @@ class CakeControllerFactory(val componentRegistry: AnyRef) extends ControllerFac
       cache = cache + (controllerClass -> constructor)
     } catch {
       case cause: Exception => throw new FrameworkException(
-        "Failed to register controller with class: %s. The the class must have a public no-arg construcor.".format(controllerClass.getName),
+        "Failed to register controller with class: %s. The the class must have a public no-arg construcor."
+          .format(controllerClass.getName),
         cause)
     }
   }
@@ -34,7 +35,9 @@ class CakeControllerFactory(val componentRegistry: AnyRef) extends ControllerFac
       cache(klass).newInstance(componentRegistry).asInstanceOf[C]
     } catch {
       case e: NoSuchElementException =>
-        throw new FrameworkException("Could not instantiate a controller with class: %s because the class hasn't been registered".format(klass.getName))
+        throw new FrameworkException(
+          "Could not instantiate a controller with class: %s because the class hasn't been registered"
+            .format(klass.getName))
     }
   }
 }
