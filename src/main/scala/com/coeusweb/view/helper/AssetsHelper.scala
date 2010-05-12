@@ -20,11 +20,11 @@ trait AssetsHelper {
   val servletContext: ServletContext
   
   /**
-   * A version string that gets appended to all asset paths to allow instant invalidation
-   * of caches that are set to expire in the future.
+   * The version string that gets appended to all asset paths to allow instant
+   * invalidation of caches that are set to expire in the future.
    * 
-   * <p>By default this value is not set and the the modification timestamp of the asset
-   * files is used as a version.</p>
+   * <p>When set to {@code None} (the default) the the modification timestamp of
+   * the asset files is used as a version.</p>
    */
   val version: Option[String] = None
   
