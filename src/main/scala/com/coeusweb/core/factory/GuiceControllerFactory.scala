@@ -7,15 +7,20 @@
 package com.coeusweb.core.factory
 
 import scala.collection.mutable.ArrayBuffer
-import com.google.inject.{ AbstractModule, Guice }
+import com.google.inject.{ AbstractModule, Guice, Injector }
 import com.coeusweb.Controller
 import com.coeusweb.config.DispatcherConfig
 
-class GuiceControllerFactory(modules: AbstractModule*) extends ControllerFactory {
+class GuiceControllerFactory(parent: Injector, modules: AbstractModule*) extends ControllerFactory {
+  
+  def this(modules: AbstractModule*) = this(null.asInstanceOf[Injector], modules: _*)
   
   private val controllers = new ControllersModule
   
-  private lazy val injector = Guice.createInjector((controllers :: modules.toList): _*)
+  private lazy val injector = parent match {
+    case null => Guice.createInjector((controllers :: modules.toList): _*)
+    case _    => parent.createChildInjector((controllers :: modules.toList): _*)
+  }
 
   def init(config: DispatcherConfig) { }
   

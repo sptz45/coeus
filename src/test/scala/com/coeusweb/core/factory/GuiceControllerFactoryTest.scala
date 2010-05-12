@@ -8,16 +8,26 @@ package com.coeusweb.core.factory
 
 import org.junit.Test
 import org.junit.Assert._
+import com.google.inject.Guice
 import com.coeusweb.Controller
 
 class GuiceControllerFactoryTest {
   
   import GuiceControllerFactoryTest._
 
-  val factory = new GuiceControllerFactory(new AppModule)
-  
   @Test
   def register_a_controller_and_assert_that_it_is_injected_after_creation() {
+    val factory = new GuiceControllerFactory(new AppModule)
+    factory.registerClass(classOf[GuiceController])
+    val c = factory.createController(classOf[GuiceController]) 
+    assertTrue(c.isInstanceOf[GuiceController])
+    assertNotNull(c.injected)
+  }
+  
+  @Test
+  def inject_controller_using_parent_injector() {
+    val parent = Guice.createInjector(new AppModule)
+    val factory = new GuiceControllerFactory(parent)
     factory.registerClass(classOf[GuiceController])
     val c = factory.createController(classOf[GuiceController]) 
     assertTrue(c.isInstanceOf[GuiceController])
