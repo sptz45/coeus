@@ -9,6 +9,7 @@ package com.coeusweb.controller
 import com.coeusweb.Controller
 import com.coeusweb.bind.{ Binder, BindingResult }
 import com.coeusweb.core.convention.{ Conventions, RequestToViewNameTranslator }
+import com.coeusweb.scope.RequiredAttributeException
 import com.coeusweb.validation.Validator
 import com.coeusweb.view.{ View, ViewReference }
 
@@ -105,9 +106,15 @@ trait FormProcessing {
    * @return the <code>View</code> object to use for rendering the response
    */
   def ifValid[T <: AnyRef](modelName: String)(onSuccess: T => View)(implicit validator: Validator[T]): View = {
-    val target: T = session[T](modelName)
-    val result = validate(modelName, target)(validator)
-    if (result.hasErrors) new ViewReference(formView) else { session -= modelName; onSuccess(target) }
+    try {
+      val target: T = session[T](modelName)
+      val result = validate(modelName, target)(validator)
+      if (result.hasErrors) new ViewReference(formView) else { session -= modelName; onSuccess(target) }
+    } catch {
+      case e: RequiredAttributeException if !storeModelInSession =>
+        throw new RequiredAttributeException(e.attribute, e.scopeClass,
+          "You need to set 'storeModelInSession' to 'true' when you call the ifValid methods that retrieve the model object from the session.")
+    }
   }
   
   /**

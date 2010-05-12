@@ -16,6 +16,6 @@ import com.coeusweb.http.HttpStatus
  * @param attribute the name of the attribute that does not exist.
  * @param scopeClass the class of the scope that did not contain the attribute.
  */
-class RequiredAttributeException(attribute: String, scopeClass: Class[_])
-  extends FrameworkException("Could not find attribute: '%s' in scope: %s".format(attribute, scopeClass.getSimpleName)) {
+class RequiredAttributeException(val attribute: String, val scopeClass: Class[_], hint: String = "")
+  extends FrameworkException("Could not find attribute: '%s' in scope: %s. %s".format(attribute, scopeClass.getSimpleName, hint)) {
 }
