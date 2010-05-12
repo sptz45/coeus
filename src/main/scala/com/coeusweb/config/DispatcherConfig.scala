@@ -12,7 +12,7 @@ import com.coeusweb.bind.{ ConverterRegistry, DefaultConverterRegistry }
 import com.coeusweb.core._
 import com.coeusweb.core.convention._
 import com.coeusweb.core.factory.{ ControllerFactory, SimpleControllerFactory }
-import com.coeusweb.http.multipart.{ MultipartRequestParser, CommonsMultipartRequestParser }
+import com.coeusweb.http.multipart.{ MultipartRequestParser, NullMultipartRequestParser }
 import com.coeusweb.i18n.locale.{ LocaleResolver, AcceptHeaderLocaleResolver }
 import com.coeusweb.i18n.msg.{ MessageBundle, ServletMessageBundle }
 import com.coeusweb.validation.vspec.VSpecErrorFormatter
@@ -139,9 +139,11 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
   /**
    * Parses multipart requests (used in file uploads).
    * 
-   * <p>The configured implementation uses Apache Commons FileUpload.</p> 
+   * <p>The configured parser does not parse requests and throws {@code UnsupportedOperationException}.
+   * This is done in order to avoid having a dependency to external library by default. If your application
+   * handles multipart requests you must use another parser (such as {@code CommonsMultipartRequestParser}).</p>
    */
-  lazy val multipartParser: MultipartRequestParser = new CommonsMultipartRequestParser
+  lazy val multipartParser: MultipartRequestParser = new NullMultipartRequestParser
 
   /**
    * Maps view names to view instances.

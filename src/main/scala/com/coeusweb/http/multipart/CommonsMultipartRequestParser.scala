@@ -28,6 +28,8 @@ import com.coeusweb.core.util.MultiMap
  * 
  * <p>The default size threshold for in memory files is 10KB.</p>
  * 
+ * <p>This class requires commons-fileupload and commons-io.</p>
+ * 
  * @param sizeThreshold the size threshold after which the files are stored on disk
  * @param repository the directory under which the temporary files are created
  */
@@ -56,7 +58,7 @@ class CommonsMultipartRequestParser(sizeThreshold: Int = 10240, repository: File
         files.add(item.getFieldName, new CommonsFormFile(item))
       }
     }
-    new MultipartHttpServletRequest(request, paramsMap(params), filesMap(files))
+    new MultipartHttpServletRequest(request, paramsMap(params), paramsMap(files))
   }
   
   def cleanupFiles(request: MultipartHttpServletRequest) {
@@ -66,22 +68,10 @@ class CommonsMultipartRequestParser(sizeThreshold: Int = 10240, repository: File
     }
   }
   
-  // We have to duplicate the below methods because values.toArray fails
-  // when called on a type that has open type parameters because the compiler
-  // cannot resolve a manifest for the array.
-  
-  private def filesMap(mmap: MultiMap[String, FormFile]) = {
-    val jmap = new java.util.HashMap[String, Array[FormFile]](mmap.size)
+  private def paramsMap[T](mmap: MultiMap[String, T])(implicit m: ClassManifest[T]) = {
+    val jmap = new java.util.HashMap[String, Array[T]](mmap.size)
     for ((key, values) <- mmap) {
-      jmap.put(key, values.toArray)
-    }
-    jmap
-  }
-  
-  private def paramsMap(mmap: MultiMap[String, String]) = {
-    val jmap = new java.util.HashMap[String, Array[String]](mmap.size)
-    for ((key, values) <- mmap) {
-      jmap.put(key, values.toArray)
+      jmap.put(key, values.toArray(m))
     }
     jmap
   }

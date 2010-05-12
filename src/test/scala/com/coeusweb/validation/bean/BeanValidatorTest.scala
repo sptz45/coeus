@@ -41,8 +41,8 @@ class BeanValidatorTest {
 
 
 object BeanValidatorTest {
-	
-	val validator = new BeanValidator(Validation.buildDefaultValidatorFactory.getValidator)
+  
+  val validator = new BeanValidator(Validation.buildDefaultValidatorFactory.getValidator)
 
   class Post {
     @NotNull

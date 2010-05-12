@@ -13,6 +13,7 @@ import scala.collection.mutable.{ Map => MutableMap }
  * The result of binding to a target object.
  * 
  * @param T the class of the target object
+ * @param converters the Converter used for binding and formatting
  * @param target the target object
  */
 class BindingResult[+T <: AnyRef](converters: ConverterRegistry, val target: T) {
