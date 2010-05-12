@@ -46,10 +46,21 @@ class DispatcherServletConfigTest {
     servletConfig.addInitParameter("module", classOf[EmptyModule].getName)
     servlet.init(servletConfig)
   }
+  
+  @Test(expected=classOf[RuntimeException])
+  def unwrap_any_exceptions_when_instantiating_the_module_via_reflection() {
+    servletConfig.addInitParameter("module", classOf[ErroneousModule].getName)
+    servlet.init(servletConfig)
+  }
 }
 
 
 object DispatcherServletConfigTest {
+  
+  class ErroneousModule(sc: ServletConfig) extends EmptyModuleConfigBuilder(sc) with ControllerRegistrar {
+    throw new RuntimeException
+    def register(r: ControllerRegistry) { }
+  }
   
   class EmptyModuleConfigBuilder(sc: ServletConfig) extends ConfigBuilder(sc)
   

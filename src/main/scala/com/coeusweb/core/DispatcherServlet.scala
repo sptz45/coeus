@@ -163,7 +163,12 @@ private object ModuleLoader {
           .format(config.getServletName, moduleClassName, classOf[ControllerRegistrar].getName))
     }
     
-    val module = moduleClass.getConstructor(classOf[ServletConfig]).newInstance(config)
-    (module.asInstanceOf[ConfigBuilder] -> module.asInstanceOf[ControllerRegistrar])
+    try {
+      val module = moduleClass.getConstructor(classOf[ServletConfig]).newInstance(config)
+      (module.asInstanceOf[ConfigBuilder] -> module.asInstanceOf[ControllerRegistrar])
+    } catch {
+      case e: java.lang.reflect.InvocationTargetException => throw e.getCause
+      case e: Exception => throw e
+    }
   }
 }
