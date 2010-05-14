@@ -87,14 +87,15 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
   
   /**
    * Tells the {@code DispatcherServlet} to send <em>404</em> (Not Found) instead
-   * of <em>405</em> (Method Not Allowed).
+   * of <em>405</em> (Method Not Allowed) when a resource exist but does not support
+   * the requested method.
    * 
-   * <p>This is useful if for security reasons we would like to hide the
+   * <p>This is useful if for security reasons when we would like to hide the
    * existence of a resource.</p>
    * 
    * <p>The default value is {@code false}.</p>
    */
-  lazy val hideExistingResources = false
+  lazy val hideResources = false
   
   /**
    * Resolves the user's locale for a given request.

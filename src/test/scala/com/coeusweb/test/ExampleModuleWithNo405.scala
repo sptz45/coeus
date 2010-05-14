@@ -12,6 +12,6 @@ import com.coeusweb.config.DispatcherConfig
 class ExampleModuleWithNo405(sc: ServletConfig) extends ExampleModule(sc) {
   override def dispatcherConfig = new DispatcherConfig(sc) {
     override lazy val viewResolver = ExampleModule.viewResolver
-    override lazy val hideExistingResources = true
+    override lazy val hideResources = true
   }
 }

@@ -33,7 +33,6 @@ private class HandlerMappingExtractor(
       yield makeMapping(controllerClass, method)
     
     assertThat(!mappings.isEmpty, "No handler annotations were found in controller class: " + controllerClass)
-    
     mappings
   }
   

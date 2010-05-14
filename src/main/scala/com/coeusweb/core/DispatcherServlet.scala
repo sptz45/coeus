@@ -31,7 +31,7 @@ class DispatcherServlet extends HttpServlet {
   private[this] var localeResolver: LocaleResolver = _
   private[this] var converters: ConverterRegistry = _
   private[this] var requestEncoding: Option[String] = None
-  private[this] var hideExistingResources: Boolean = _
+  private[this] var hideResources: Boolean = _
   private[this] var multipartParser: MultipartRequestParser = _ 
   
   
@@ -52,7 +52,7 @@ class DispatcherServlet extends HttpServlet {
     localeResolver = dispatcherConfig.localeResolver
     converters = dispatcherConfig.converters
     requestEncoding = dispatcherConfig.requestEncoding
-    hideExistingResources = dispatcherConfig.hideExistingResources
+    hideResources = dispatcherConfig.hideResources
     
     multipartParser = dispatcherConfig.multipartParser
     multipartParser.init(servletConfig.getServletContext)
@@ -94,7 +94,7 @@ class DispatcherServlet extends HttpServlet {
         response.sendError(HttpServletResponse.SC_NOT_FOUND)
 
       case MethodNotAllowed =>
-        if (hideExistingResources) {
+        if (hideResources) {
           response.sendError(HttpServletResponse.SC_NOT_FOUND)
         } else {
           response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED)
