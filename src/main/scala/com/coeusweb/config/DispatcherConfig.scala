@@ -12,6 +12,7 @@ import com.coeusweb.bind.{ ConverterRegistry, DefaultConverterRegistry }
 import com.coeusweb.core._
 import com.coeusweb.core.convention._
 import com.coeusweb.core.factory.{ ControllerFactory, SimpleControllerFactory }
+import com.coeusweb.error.{ ExceptionHandler, ErrorPageExceptionHandler }
 import com.coeusweb.http.multipart.{ MultipartRequestParser, NullMultipartRequestParser }
 import com.coeusweb.i18n.locale.{ LocaleResolver, AcceptHeaderLocaleResolver }
 import com.coeusweb.i18n.msg.{ MessageBundle, ServletMessageBundle }

@@ -13,6 +13,7 @@ import org.mockito.Mockito._
 import org.mockito.Matchers._
 import com.coeusweb.{ Controller, WebRequest, WebResponse }
 import com.coeusweb.core.factory.SimpleControllerFactory
+import com.coeusweb.error.{ ExceptionHandler, ErrorPageView }
 import com.coeusweb.interceptor.{Interceptors, RequestInterceptor}
 import com.coeusweb.test.TestHelpers
 import com.coeusweb.test.servlet.MockHttpServletResponse

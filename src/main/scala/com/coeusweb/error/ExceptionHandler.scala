@@ -4,9 +4,10 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.core
+package com.coeusweb.error
 
 import com.coeusweb.view.View
+import com.coeusweb.core.RequestContext
 
 /**
  * A handler that gets called when an uncaught exception occurs during

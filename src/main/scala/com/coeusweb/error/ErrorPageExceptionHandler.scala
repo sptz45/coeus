@@ -4,9 +4,10 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.core
+package com.coeusweb.error
 
-import com.coeusweb.view.ErrorPageView
+import com.coeusweb.core.{ RequestContext, HttpException }
+import com.coeusweb.view.View
 
 /**
  * The default implementation of <code>ExceptionHandler</code>.
@@ -22,7 +23,7 @@ object ErrorPageExceptionHandler extends ExceptionHandler {
    * HTTP status code of the response using the exception's
    * status.</p>
    */
-  def handle(context: RequestContext) = {
+  def handle(context: RequestContext): View = {
     context.error match {
       case e: HttpException => context.response.status = e.httpStatus
       case _                => ()

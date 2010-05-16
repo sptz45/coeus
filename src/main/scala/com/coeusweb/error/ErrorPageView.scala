@@ -4,9 +4,10 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.view
+package com.coeusweb.error
 
 import com.coeusweb.{ WebRequest, WebResponse }
+import com.coeusweb.view.View
 
 /**
  * A <code>View</code> instance to be returned from <code>ExceptionHandler</code>
