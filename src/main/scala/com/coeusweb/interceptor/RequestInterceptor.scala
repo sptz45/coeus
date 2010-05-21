@@ -11,7 +11,9 @@ import com.coeusweb.core.RequestContext
 
 /**
  * Intercepts the execution of requests.
- * 
+ *
+ * <p>Instances of this class must be thread-safe.</p>
+ *
  * @see Interceptors
  * @see {@link com.coeusweb.core.ControllerRegistry ControllerRegistry}
  */

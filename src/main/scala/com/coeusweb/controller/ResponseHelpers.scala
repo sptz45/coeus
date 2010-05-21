@@ -125,7 +125,7 @@ trait ResponseHelpers {
     StreamingView.streamFile(file, contentType)
   
   /**
-   * Returns a {@link Sendfile} view that when rendered will set the <em>X-Sendfile</em>
+   * Returns a {@link SendfileView} that when rendered will set the <em>X-Sendfile</em>
    * HTTP header telling the web server to serve the specified file.
    * 
    * <p><strong>Important:</strong>The view returned by this method will not stream the
