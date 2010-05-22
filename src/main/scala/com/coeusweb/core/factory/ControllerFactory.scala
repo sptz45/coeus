@@ -17,11 +17,6 @@ import com.coeusweb.config.DispatcherConfig
 trait ControllerFactory {
 
   /**
-   * Called during application initialization.
-   */
-  def init(config: DispatcherConfig)
-  
-  /**
    * This methods gets called by the framework when a {@code Controller}
    * class get registered during application initialization.
    * 

@@ -16,8 +16,6 @@ class MethodInvokingControllerFactory(val delegate: AnyRef) extends ControllerFa
 
   private[this] var cache = Map[Class[_], Method]()
 
-  def init(config: DispatcherConfig) { }
-
   def registerClass[C <: Controller](controllerClass: Class[C]) {
     try {
       val factoryMethod = delegate.getClass.getMethod(classToMethodName(controllerClass)) 

@@ -15,8 +15,6 @@ class CakeControllerFactory(val componentRegistry: AnyRef) extends ControllerFac
 
   private[this] var cache = Map[Class[_], Constructor[_]]()
 
-  def init(config: DispatcherConfig) { }
-
   def registerClass[C <: Controller](controllerClass: Class[C]) {
     try {
       val constructor = controllerClass.getConstructors.apply(0) 

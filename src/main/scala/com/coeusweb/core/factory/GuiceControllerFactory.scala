@@ -21,8 +21,6 @@ class GuiceControllerFactory(parent: Injector, modules: AbstractModule*) extends
     case null => Guice.createInjector((controllers :: modules.toList): _*)
     case _    => parent.createChildInjector((controllers :: modules.toList): _*)
   }
-
-  def init(config: DispatcherConfig) { }
   
   final def registerClass[C <: Controller](klass: Class[C]) {
     controllers += klass

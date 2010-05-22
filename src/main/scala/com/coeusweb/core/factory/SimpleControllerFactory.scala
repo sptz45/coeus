@@ -14,8 +14,6 @@ import com.coeusweb.config.DispatcherConfig
  * simply calling {@link Class#newInstance}.
  */
 class SimpleControllerFactory extends ControllerFactory {
-
-  def init(config: DispatcherConfig) { }
   
   def registerClass[C <: Controller](klass: Class[C]) { }
 

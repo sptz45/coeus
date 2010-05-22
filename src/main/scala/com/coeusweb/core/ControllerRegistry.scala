@@ -32,7 +32,21 @@ class ControllerRegistry(config: DispatcherConfig) {
   def register[C <: Controller](implicit c: ClassManifest[C]) {
     // get the class from the manifest
     val controllerClass = c.erasure.asInstanceOf[Class[Controller]]
+    register(controllerClass)
+  }
+  
+  /**
+   * Register the specified class as a <code>Controller</code> for the
+   * <code>DispatcherServlet</code>.
+   * 
+   * <p>If the specified class is abstract this method does nothing.</p>
+   * 
+   * @throws InvalidControllerClassException if the controller class has invalid structure
+   *         or if it doesn't have handler annotations.
+   */
+  def register[C <: Controller](klass: Class[C]) {
     
+    val controllerClass = klass.asInstanceOf[Class[Controller]]
     if (ReflectionHelper.isAbstract(controllerClass)) return
     
     // extract any handler mappings from the annotated methods
