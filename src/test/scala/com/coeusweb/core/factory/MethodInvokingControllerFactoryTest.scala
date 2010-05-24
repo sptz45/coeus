@@ -19,13 +19,13 @@ class MethodInvokingControllerFactoryTest {
 
   @Test
   def register_and_create_a_controller() {
-    factory.registerClass(classOf[BlogController])
+    factory.controllerRegistered(classOf[BlogController])
     assertNotNull(factory.createController(classOf[BlogController]))
   }
   
   @Test(expected=classOf[FrameworkException])
   def exception_when_no_method_found_matching_the_controllers_class_name() {
-    factory.registerClass(classOf[PostController])
+    factory.controllerRegistered(classOf[PostController])
   }
   
   @Test(expected=classOf[FrameworkException])

@@ -77,7 +77,7 @@ object ControllerRegistryTest {
   
   class TestFactory extends SimpleControllerFactory {
     var controller: Class[_] = _
-    override def registerClass[C <: Controller](c: Class[C]) {
+    override def controllerRegistered[C <: Controller](c: Class[C]) {
       controller = c
     }
   }

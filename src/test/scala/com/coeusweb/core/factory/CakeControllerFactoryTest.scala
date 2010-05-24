@@ -18,13 +18,13 @@ class CakeControllerFactoryTest {
 
   @Test
   def register_and_create_a_controller() {
-    cake.registerClass(classOf[BlogComponent#BlogController])
+    cake.controllerRegistered(classOf[BlogComponent#BlogController])
     assertNotNull(cake.createController(classOf[BlogComponent#BlogController]))
   }
   
   @Test(expected=classOf[FrameworkException])
   def exception_when_no_class_does_not_have_a_no_arg_constructor() {
-    cake.registerClass(classOf[PostComponent#PostController])
+    cake.controllerRegistered(classOf[PostComponent#PostController])
   }
   
   @Test(expected=classOf[FrameworkException])

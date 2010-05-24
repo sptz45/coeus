@@ -23,7 +23,7 @@ trait ControllerFactory {
    * @param controllerClass the class of the {@code Controller} that got
    *        registered.
    */
-  def registerClass[C <: Controller](controllerClass: Class[C])
+  def controllerRegistered[C <: Controller](controllerClass: Class[C])
   
   /**
    * Create a new instance of the {@code Controller} with the specified type.

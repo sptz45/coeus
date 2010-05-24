@@ -14,7 +14,7 @@ import com.coeusweb.core._
 import com.coeusweb.core.factory.CakeControllerFactory
 
 
-class CakeRegistrarTest {
+class CakeRegistrarTest extends AbstractRegistrarTest {
   
   val components = CakeRegistrarTest.ComponentRegistry
   
@@ -28,13 +28,6 @@ class CakeRegistrarTest {
     CakeRegistrar.registerControllers(registry, components.getClass)
     assertViewName("/blog/list", "blog")
     assertViewName("/post/list", "posts")
-  }
-
-  def assertViewName(path: String, view: String) {
-    config.requestResolver.resolve(path, Symbol("GET")) match {
-      case SuccessfulResolution(hander, vars) => assertEquals(view, hander.handle(config.controllerFactory, null, null)) 
-      case _ => fail("No hander found")
-    }
   }
 }
 

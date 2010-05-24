@@ -14,21 +14,10 @@ import com.coeusweb.Controller
 class GuiceControllerFactoryTest {
   
   import GuiceControllerFactoryTest._
-
-  @Test
-  def register_a_controller_and_assert_that_it_is_injected_after_creation() {
-    val factory = new GuiceControllerFactory(new AppModule)
-    factory.registerClass(classOf[GuiceController])
-    val c = factory.createController(classOf[GuiceController]) 
-    assertTrue(c.isInstanceOf[GuiceController])
-    assertNotNull(c.injected)
-  }
   
   @Test
-  def inject_controller_using_parent_injector() {
-    val parent = Guice.createInjector(new AppModule)
-    val factory = new GuiceControllerFactory(parent)
-    factory.registerClass(classOf[GuiceController])
+  def create_a_controller_from_a_guice_injector() {
+    val factory = new GuiceControllerFactory(Guice.createInjector(new WebModule))
     val c = factory.createController(classOf[GuiceController]) 
     assertTrue(c.isInstanceOf[GuiceController])
     assertNotNull(c.injected)
@@ -39,9 +28,10 @@ object GuiceControllerFactoryTest {
   import com.google.inject.AbstractModule
   import com.google.inject.Inject
   
-  class AppModule extends AbstractModule {
+  class WebModule extends AbstractModule {
     def configure() {
       bind(classOf[Dependency]).to(classOf[Implementation])
+      bind(classOf[GuiceController])
     }
   }
   

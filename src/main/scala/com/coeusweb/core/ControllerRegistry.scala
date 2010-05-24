@@ -60,7 +60,7 @@ class ControllerRegistry(config: DispatcherConfig) {
         new Handler(controllerClass, mapping.controllerMethod))
     }
     // tell the controller factory about the new controller
-    config.controllerFactory.registerClass(controllerClass)
+    config.controllerFactory.controllerRegistered(controllerClass)
   }
   
   /**
