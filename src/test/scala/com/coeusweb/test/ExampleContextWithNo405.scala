@@ -11,7 +11,7 @@ import com.coeusweb.config.DispatcherConfig
 
 class ExampleContextWithNo405(sc: ServletConfig) extends ExampleDispatcherContext(sc) {
   override def dispatcherConfig = new DispatcherConfig(sc) {
-    override lazy val viewResolver = TestsGlogalState.viewResolver
+    override lazy val viewResolver = GlogalState.viewResolver
     override lazy val hideResources = true
   }
 }

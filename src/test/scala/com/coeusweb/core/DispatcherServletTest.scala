@@ -21,7 +21,7 @@ class DispatcherServletTest {
   
   @Before
   def initializeServlet() {
-    TestsGlogalState.interceptor.reset()
+    GlogalState.interceptor.reset()
     servletConfig.addInitParameter("context", classOf[ExampleDispatcherContext].getName.toString)
     servlet.init(servletConfig)
   }
@@ -94,14 +94,14 @@ class DispatcherServletTest {
   @Test
   def request_interceptor_get_called() {
     servlet.service(req("GET", "/blog/entry"), response)
-    assertTrue("interceptor was not called", TestsGlogalState.interceptor.wasCalled)
+    assertTrue("interceptor was not called", GlogalState.interceptor.wasCalled)
   }
   
   @Test
   def request_interceptor_does_not_get_called_if_no_handler_found() {
     servlet.service(req("GET", "/doesNotExist"), response)
     assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus)
-    assertFalse("interceptor was called", TestsGlogalState.interceptor.wasCalled)
+    assertFalse("interceptor was called", GlogalState.interceptor.wasCalled)
   }
   
   @Test
@@ -112,9 +112,9 @@ class DispatcherServletTest {
         .getRequest("/upload")
     
     servlet.service(request, response)
-    val file = TestsGlogalState.uploadedFile
+    val file = GlogalState.uploadedFile
     assertFalse(file.isAvailable) // must have been deleted
-    TestsGlogalState.uploadedFile = null
+    GlogalState.uploadedFile = null
   }
 
 

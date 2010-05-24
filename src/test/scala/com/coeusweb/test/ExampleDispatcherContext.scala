@@ -18,18 +18,13 @@ class ExampleDispatcherContext(sc: ServletConfig) extends ConfigBuilder(sc)
   
   register[BlogController]
   register[UploadController]
-  register(TestsGlogalState.interceptor)
+  register(GlogalState.interceptor)
   
   override def dispatcherConfig = new DispatcherConfig(sc) {
-    override lazy val viewResolver = TestsGlogalState.viewResolver
+    override lazy val viewResolver = GlogalState.viewResolver
     override lazy val multipartParser: MultipartRequestParser = new CommonsMultipartRequestParser(1) // 1 byte threshold
   }
 }
 
-object TestsGlogalState {
-  val interceptor = new MockInterceptor
-  val viewResolver = new MockViewResolver(Map("hello" -> new TextView("Hello World!", "text/html")))
-  var uploadedFile: FormFile = _
-}
 
 
