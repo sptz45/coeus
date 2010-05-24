@@ -9,9 +9,9 @@ package com.coeusweb.test
 import javax.servlet.ServletConfig
 import com.coeusweb.config.DispatcherConfig
 
-class ExampleModuleWithNo405(sc: ServletConfig) extends ExampleModule(sc) {
+class ExampleContextWithNo405(sc: ServletConfig) extends ExampleDispatcherContext(sc) {
   override def dispatcherConfig = new DispatcherConfig(sc) {
-    override lazy val viewResolver = ExampleModule.viewResolver
+    override lazy val viewResolver = TestsGlogalState.viewResolver
     override lazy val hideResources = true
   }
 }

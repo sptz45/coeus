@@ -25,46 +25,43 @@ class DispatcherServletConfigTest {
   
   @Test(expected=classOf[javax.servlet.ServletException])
   def module_class_not_found() {
-    servletConfig.addInitParameter("module", "not a class name")
+    servletConfig.addInitParameter("context", "not a class name")
     servlet.init(servletConfig)
   }
   
   @Test(expected=classOf[javax.servlet.ServletException])
   def module_class_is_not_a_module_config_builder() {
-    servletConfig.addInitParameter("module", "java.util.ArrayList")
+    servletConfig.addInitParameter("context", "java.util.ArrayList")
     servlet.init(servletConfig)
   }
   
   @Test(expected=classOf[javax.servlet.ServletException])
   def module_class_is_not_a_controller_registrar() {
-    servletConfig.addInitParameter("module", classOf[EmptyModuleConfigBuilder].getName)
+    servletConfig.addInitParameter("context", classOf[EmptyContextConfigBuilder].getName)
     servlet.init(servletConfig)
   }
   
   @Test 
   def successfully_load_the_module_configuration() {
-    servletConfig.addInitParameter("module", classOf[EmptyModule].getName)
+    servletConfig.addInitParameter("context", classOf[EmptyContext].getName)
     servlet.init(servletConfig)
   }
   
   @Test(expected=classOf[RuntimeException])
   def unwrap_any_exceptions_when_instantiating_the_module_via_reflection() {
-    servletConfig.addInitParameter("module", classOf[ErroneousModule].getName)
+    servletConfig.addInitParameter("context", classOf[ErroneousContext].getName)
     servlet.init(servletConfig)
   }
 }
 
 
 object DispatcherServletConfigTest {
+
+  class EmptyContextConfigBuilder(sc: ServletConfig) extends ConfigBuilder(sc)
   
-  class ErroneousModule(sc: ServletConfig) extends EmptyModuleConfigBuilder(sc) with ControllerRegistrar {
+  class EmptyContext(sc: ServletConfig) extends EmptyContextConfigBuilder(sc) with ControllerRegistry
+  
+  class ErroneousContext(sc: ServletConfig) extends EmptyContextConfigBuilder(sc) with ControllerRegistry {
     throw new RuntimeException
-    def register(r: ControllerRegistry) { }
-  }
-  
-  class EmptyModuleConfigBuilder(sc: ServletConfig) extends ConfigBuilder(sc)
-  
-  class EmptyModule(sc: ServletConfig) extends EmptyModuleConfigBuilder(sc) with ControllerRegistrar {
-    def register(r: ControllerRegistry) { }
   }
 }

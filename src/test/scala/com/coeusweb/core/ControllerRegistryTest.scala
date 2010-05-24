@@ -12,40 +12,34 @@ import com.coeusweb.Controller
 import com.coeusweb.annotation.Get
 import com.coeusweb.config.DispatcherConfig
 import com.coeusweb.core.factory._
-import com.coeusweb.interceptor.ThreadLocalRequestInterceptor
-import com.coeusweb.scope.support.FlashScopeInterceptor
 
 class ControllerRegistryTest {
   import ControllerRegistryTest._
 
   val factory = new TestFactory
   val config = new CustomConfig(factory)
-  val registry = new ControllerRegistry(config)
-  
-  @Test
-  def by_default_interceptors_contains_the_flash_scope_and_thead_local_interceptors() {
-    val interceptors = registry.interceptors.result
-    assertEquals(2, interceptors.length)
-    assertTrue(interceptors.exists(_.isInstanceOf[FlashScopeInterceptor]))
-    assertTrue(interceptors.exists(_.isInstanceOf[ThreadLocalRequestInterceptor]))
-  }
+  private val registrar = new ControllerRegistrar(config)
   
   @Test
   def register_a_controller() {
-    registry.register[ProjectController]
+    register[ProjectController]
     assertHandlerFound("/project/list")
   }
   
   @Test
   def a_controller_class_does_not_get_registered_if_it_is_abstract() {
-    registry.register[AbstractController]
+    register[AbstractController]
     assertNoHanderFound("/abstract/index")
   }
   
   @Test
   def when_a_controller_gets_registered_a_callback_is_made_into_the_controller_facory() {
-    registry.register[ProjectController]
+    register[ProjectController]
     assertEquals(classOf[ProjectController], factory.controller)
+  }
+  
+  def register[C <: Controller](implicit cm: ClassManifest[C]) {
+    registrar.register(List(cm.erasure.asInstanceOf[Class[Controller]]))
   }
   
   def assertHandlerFound(path: String, m: Symbol = 'GET) {

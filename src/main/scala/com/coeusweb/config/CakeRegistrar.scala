@@ -7,7 +7,6 @@
 package com.coeusweb.config
 
 import com.coeusweb.Controller
-import com.coeusweb.core.ControllerRegistry
 
 /**
  * Register all the {@code Controller} classes found in a Cake component

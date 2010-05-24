@@ -3,7 +3,6 @@ package com.coeusweb.config
 import scala.collection.JavaConversions._
 import com.google.inject.Injector
 import com.coeusweb.Controller
-import com.coeusweb.core.ControllerRegistry
 
 /**
  * Register all the {@code Controller} classes from the bindings in a Guice

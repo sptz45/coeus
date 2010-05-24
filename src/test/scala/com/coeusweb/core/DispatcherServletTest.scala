@@ -21,8 +21,8 @@ class DispatcherServletTest {
   
   @Before
   def initializeServlet() {
-    ExampleModule.interceptor.reset()
-    servletConfig.addInitParameter("module", classOf[ExampleModule].getName.toString)
+    TestsGlogalState.interceptor.reset()
+    servletConfig.addInitParameter("context", classOf[ExampleDispatcherContext].getName.toString)
     servlet.init(servletConfig)
   }
   
@@ -65,7 +65,7 @@ class DispatcherServletTest {
   def handler_not_found_if_hide_resources() {
     val no405 = new DispatcherServlet
     val config = new MockServletConfig("sweb-test-with-no-405")
-    config.addInitParameter("module", classOf[ExampleModuleWithNo405].getName.toString)
+    config.addInitParameter("context", classOf[ExampleContextWithNo405].getName.toString)
     no405.init(config)
     
     no405.service(req("DELETE", "/blog/index"), response)
@@ -94,14 +94,14 @@ class DispatcherServletTest {
   @Test
   def request_interceptor_get_called() {
     servlet.service(req("GET", "/blog/entry"), response)
-    assertTrue("interceptor was not called", ExampleModule.interceptor.wasCalled)
+    assertTrue("interceptor was not called", TestsGlogalState.interceptor.wasCalled)
   }
   
   @Test
   def request_interceptor_does_not_get_called_if_no_handler_found() {
     servlet.service(req("GET", "/doesNotExist"), response)
     assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus)
-    assertFalse("interceptor was called", ExampleModule.interceptor.wasCalled)
+    assertFalse("interceptor was called", TestsGlogalState.interceptor.wasCalled)
   }
   
   @Test
@@ -112,9 +112,9 @@ class DispatcherServletTest {
         .getRequest("/upload")
     
     servlet.service(request, response)
-    val file = ExampleModule.uploadedFile
+    val file = TestsGlogalState.uploadedFile
     assertFalse(file.isAvailable) // must have been deleted
-    ExampleModule.uploadedFile = null
+    TestsGlogalState.uploadedFile = null
   }
 
 

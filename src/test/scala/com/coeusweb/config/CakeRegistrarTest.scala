@@ -9,40 +9,37 @@ package com.coeusweb.config
 import org.junit.Test
 import org.junit.Assert._
 import com.coeusweb.Controller
-import com.coeusweb.annotation.Get
 import com.coeusweb.core._
 import com.coeusweb.core.factory.CakeControllerFactory
 
 
-class CakeRegistrarTest extends AbstractRegistrarTest {
+class CakeRegistrarTest {
+  import CakeRegistrarTest._
   
   val components = CakeRegistrarTest.ComponentRegistry
   
   val config = new DispatcherConfig(null) {
     override lazy val controllerFactory = new CakeControllerFactory(components)
   }
-  val registry = new ControllerRegistry(config)
+  
+  val registry = new ControllerRegistry { }
   
   @Test
   def registers_all_inner_controller_classes_of_the_interfaces_of_the_specified_class() {
     CakeRegistrar.registerControllers(registry, components.getClass)
-    assertViewName("/blog/list", "blog")
-    assertViewName("/post/list", "posts")
+    assertTrue(registry.controllers.contains(classOf[BlogComponent#BlogController]))
+    assertTrue(registry.controllers.contains(classOf[PostComponent#PostController]))
   }
 }
 
 object CakeRegistrarTest{
 
   trait BlogComponent {
-    class BlogController extends Controller {
-      @Get def list() = "blog"
-    }
+    class BlogController extends Controller
   }
   
   trait PostComponent {
-    class PostController extends Controller {
-      @Get def list() = "posts"
-    }
+    class PostController extends Controller
   }
   
   object ComponentRegistry extends BlogComponent with PostComponent

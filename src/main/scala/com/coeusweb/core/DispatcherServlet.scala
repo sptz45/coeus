@@ -42,10 +42,11 @@ class DispatcherServlet extends HttpServlet {
   override final def init(servletConfig: ServletConfig) {
     super.init(servletConfig)
     
-    val (configBuilder, registrar) = DispatcherConfigLoader.loadModule(servletConfig)
+    val dispatcherContext = new DispatcherContextLoader(servletConfig)
+    dispatcherContext.load()
 
     // setup configuration
-    val dispatcherConfig = configBuilder.dispatcherConfig
+    val dispatcherConfig = dispatcherContext.dispatcherConfig
     
     resolver = dispatcherConfig.requestResolver
     
@@ -58,11 +59,10 @@ class DispatcherServlet extends HttpServlet {
     multipartParser.init(servletConfig.getServletContext)
 
     // register the controllers and interceptors
-    val registry = new ControllerRegistry(dispatcherConfig)
-    registrar.register(registry)
+    new ControllerRegistrar(dispatcherConfig).register(dispatcherContext.controllers)
 
     // create the request executor
-    executor = new RequestExecutor(new Interceptors(registry.interceptors),
+    executor = new RequestExecutor(dispatcherContext.interceptors,
                                    dispatcherConfig.exceptionHandler,
                                    dispatcherConfig.viewResolver,
                                    dispatcherConfig.controllerFactory)
