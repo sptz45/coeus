@@ -13,7 +13,7 @@ import com.coeusweb.annotation.Get
 import com.coeusweb.config.DispatcherConfig
 import com.coeusweb.core.factory._
 
-class ControllerRegistryTest {
+class ControllerRegistrarTest {
   import ControllerRegistryTest._
 
   val factory = new TestFactory
