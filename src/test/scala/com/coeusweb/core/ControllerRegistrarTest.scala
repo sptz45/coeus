@@ -14,7 +14,7 @@ import com.coeusweb.config.DispatcherConfig
 import com.coeusweb.core.factory._
 
 class ControllerRegistrarTest {
-  import ControllerRegistryTest._
+  import ControllerRegistrarTest._
 
   val factory = new TestFactory
   val config = new CustomConfig(factory)
@@ -55,7 +55,7 @@ class ControllerRegistrarTest {
   }
 }
 
-object ControllerRegistryTest {
+object ControllerRegistrarTest {
   
   abstract class AbstractController extends Controller {
     @Get def index() = "index"
