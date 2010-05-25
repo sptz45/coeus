@@ -73,7 +73,7 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * 
    * <p>By default the exception gets propagated to the Servlet container.</p>
    */
-  lazy val exceptionHandler: ExceptionHandler = ErrorPageExceptionHandler
+  lazy val exceptionHandler: ExceptionHandler = new ErrorPageExceptionHandler(servletConfig.getServletName)
   
   /**
    * Tells the <code>DispatcherServlet</code> to set the encoding of the Servlet

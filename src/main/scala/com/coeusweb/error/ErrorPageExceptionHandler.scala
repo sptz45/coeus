@@ -12,7 +12,7 @@ import com.coeusweb.view.View
 /**
  * The default implementation of <code>ExceptionHandler</code>.
  */
-object ErrorPageExceptionHandler extends ExceptionHandler {
+class ErrorPageExceptionHandler(servletName: String) extends ExceptionHandler {
   
   /**
    * Returns <code>ErrorPageView</code> signaling the framework
@@ -24,10 +24,8 @@ object ErrorPageExceptionHandler extends ExceptionHandler {
    * status.</p>
    */
   def handle(context: RequestContext): View = {
-    context.error match {
-      case e: HttpException => context.response.status = e.httpStatus
-      case _                => ()
-    }
+    ErrorUtils.setupErrorPageAttributes(context.request, context.error, servletName)
+    ErrorUtils.setResposeStatus(context.response, context.error)
     ErrorPageView
   }
 }
