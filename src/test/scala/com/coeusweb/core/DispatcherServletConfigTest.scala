@@ -19,36 +19,36 @@ class DispatcherServletConfigTest {
   val servletConfig = new MockServletConfig("sweb-test")
   
   @Test(expected=classOf[javax.servlet.ServletException])
-  def no_module_configured() {
+  def no_context_configured() {
     servlet.init(servletConfig)
   }
   
   @Test(expected=classOf[javax.servlet.ServletException])
-  def module_class_not_found() {
+  def context_class_not_found() {
     servletConfig.addInitParameter("context", "not a class name")
     servlet.init(servletConfig)
   }
   
   @Test(expected=classOf[javax.servlet.ServletException])
-  def module_class_is_not_a_module_config_builder() {
+  def context_class_is_not_a_module_config_builder() {
     servletConfig.addInitParameter("context", "java.util.ArrayList")
     servlet.init(servletConfig)
   }
   
   @Test(expected=classOf[javax.servlet.ServletException])
-  def module_class_is_not_a_controller_registrar() {
+  def context_class_is_not_a_controller_registry() {
     servletConfig.addInitParameter("context", classOf[EmptyContextConfigBuilder].getName)
     servlet.init(servletConfig)
   }
   
   @Test 
-  def successfully_load_the_module_configuration() {
+  def successfully_load_the_context_configuration() {
     servletConfig.addInitParameter("context", classOf[EmptyContext].getName)
     servlet.init(servletConfig)
   }
   
   @Test(expected=classOf[RuntimeException])
-  def unwrap_any_exceptions_when_instantiating_the_module_via_reflection() {
+  def unwrap_any_exceptions_when_instantiating_the_context_via_reflection() {
     servletConfig.addInitParameter("context", classOf[ErroneousContext].getName)
     servlet.init(servletConfig)
   }
