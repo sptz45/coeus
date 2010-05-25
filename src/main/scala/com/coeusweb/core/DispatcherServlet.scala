@@ -42,8 +42,7 @@ class DispatcherServlet extends HttpServlet {
   override final def init(servletConfig: ServletConfig) {
     super.init(servletConfig)
     
-    val dispatcherContext = new DispatcherContextLoader(servletConfig)
-    dispatcherContext.load()
+    val dispatcherContext = new DispatcherContext(servletConfig)
 
     // setup configuration
     val dispatcherConfig = dispatcherContext.dispatcherConfig
