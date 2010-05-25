@@ -39,7 +39,7 @@ class ControllerRegistrarTest {
   }
   
   def register[C <: Controller](implicit cm: ClassManifest[C]) {
-    registrar.register(List(cm.erasure.asInstanceOf[Class[Controller]]))
+    registrar.registerAll(List(cm.erasure.asInstanceOf[Class[Controller]]))
   }
   
   def assertHandlerFound(path: String, m: Symbol = 'GET) {

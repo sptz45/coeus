@@ -10,17 +10,23 @@ import com.coeusweb.Controller
 import com.coeusweb.config._
 import util.ReflectionHelper
 
+
 private class ControllerRegistrar(config: DispatcherConfig) {
   
   private val extractor = new HandlerMappingExtractor(config.classNameTranslator, config.methodNameTranslator)
 
-  def register(controllerClasses: Seq[Class[Controller]]) {
+  /**
+   * Register the specified controller classes.
+   * 
+   * @param controllerClasses the controller classes to register
+   */
+  def registerAll(controllerClasses: Seq[Class[Controller]]) {
     controllerClasses foreach { registerController(_) }
   }
 
   /**
-   * Register the specified class as a <code>Controller</code> for the
-   * <code>DispatcherServlet</code>.
+   * Extracts any handler mappings from the specified controller class
+   * and registers those mapping in the request resolver.
    * 
    * <p>If the specified class is abstract this method does nothing.</p>
    * 

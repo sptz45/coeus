@@ -11,7 +11,7 @@ import com.coeusweb.interceptor.RequestInterceptor
 import com.coeusweb.scope.FlashScope
 
 /**
- * An interceptor the removes stale attributes from <code>FlashScope</code>
+ * An interceptor that removes stale attributes from <code>FlashScope</code>
  * after every request.
  * 
  * <p>This interceptor in required for the correct behavior of the framework
@@ -19,7 +19,7 @@ import com.coeusweb.scope.FlashScope
  */
 class FlashScopeInterceptor extends RequestInterceptor {
   
-  def preHandle(context: RequestContext) = true
+  def preHandle(context: RequestContext) = continue
   
   def postHandle(context: RequestContext) { }
   

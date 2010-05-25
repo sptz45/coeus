@@ -25,7 +25,7 @@ import com.coeusweb.view.scalate.{ ScalateViewResolver, ScalateConfig }
  * Holds the configuration for <code>DispatcherServlet</code>.
  *
  * <p>The instances of this class are immutable, users are expected to
- * subclass and override any val that they want to change.</p>
+ * subclass and override any vals that they want to change.</p>
  * 
  * @param servletConfig the <code>ServletConfig</code> of the Servlet
  *                      that this instance holds the configuration for.
@@ -142,7 +142,7 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * Parses multipart requests (used in file uploads).
    * 
    * <p>The configured parser does not parse requests and throws {@code UnsupportedOperationException}.
-   * This is done in order to avoid having a dependency to external library by default. If your application
+   * This is done in order to avoid having a dependency to an external library by default. If your application
    * handles multipart requests you must use another parser (such as {@code CommonsMultipartRequestParser}).</p>
    */
   lazy val multipartParser: MultipartRequestParser = new NullMultipartRequestParser

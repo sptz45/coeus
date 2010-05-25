@@ -57,8 +57,8 @@ class DispatcherServlet extends HttpServlet {
     multipartParser = dispatcherConfig.multipartParser
     multipartParser.init(servletConfig.getServletContext)
 
-    // register the controllers and interceptors
-    new ControllerRegistrar(dispatcherConfig).register(dispatcherContext.controllers)
+    // register the configured controller classes
+    new ControllerRegistrar(dispatcherConfig).registerAll(dispatcherContext.controllers)
 
     // create the request executor
     executor = new RequestExecutor(dispatcherContext.interceptors,

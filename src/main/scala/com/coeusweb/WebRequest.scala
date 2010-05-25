@@ -187,16 +187,11 @@ object WebRequest {
   def currentRequest = request.get
   
   /** Set the current web request. */
-  def setCurrentRequest(r: WebRequest) {
+  def currentRequest_=(r: WebRequest) {
     if (r eq null)
       request.remove()
     else
       request.set(r)
-  }
-  
-  /** Removes the current web request. */
-  def removeCurrentRequest() {
-    setCurrentRequest(null)
   }
   
   def isMultipart(req: HttpServletRequest): Boolean = {

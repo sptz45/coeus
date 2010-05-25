@@ -23,7 +23,7 @@ class ConfigBuilder(servletConfig: ServletConfig) {
   /**
    * The configuration of {@code DispatcherServlet}.
    * 
-   *@return the default {@code DispatcherConfig}.
+   * @return the default {@code DispatcherConfig}.
    */
   def dispatcherConfig: DispatcherConfig = new DispatcherConfig(servletConfig)
 }
