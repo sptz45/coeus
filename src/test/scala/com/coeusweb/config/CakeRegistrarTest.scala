@@ -17,11 +17,6 @@ class CakeRegistrarTest {
   import CakeRegistrarTest._
   
   val components = CakeRegistrarTest.ComponentRegistry
-  
-  val config = new DispatcherConfig(null) {
-    override lazy val controllerFactory = new CakeControllerFactory(components)
-  }
-  
   val registry = new ControllerRegistry { }
   
   @Test

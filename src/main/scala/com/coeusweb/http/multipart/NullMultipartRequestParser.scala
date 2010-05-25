@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest
 
 /**
  * A {@code MultipartRequestParser} that throws {@code UnsupportedOperationException}
- * when asked to parse a request. 
+ * when asked to parse a request.
+ * 
+ * @see CommonsMultipartRequestParser
  */
 class NullMultipartRequestParser extends MultipartRequestParser {
 

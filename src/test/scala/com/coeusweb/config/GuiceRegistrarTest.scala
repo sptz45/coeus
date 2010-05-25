@@ -18,10 +18,6 @@ class GuiceRegistrarTest {
   import GuiceRegistrarTest._
   
   val injector = Guice.createInjector(new WebModule)
-  
-  val config = new DispatcherConfig(null) {
-    override lazy val controllerFactory = new GuiceControllerFactory(injector)
-  }
   val registry = new ControllerRegistry { }
 
   @Test

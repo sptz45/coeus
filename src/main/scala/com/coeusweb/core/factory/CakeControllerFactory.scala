@@ -8,7 +8,6 @@ package com.coeusweb.core.factory
 
 import java.lang.reflect.Constructor
 import com.coeusweb.Controller
-import com.coeusweb.config.DispatcherConfig
 import com.coeusweb.core.FrameworkException
 
 class CakeControllerFactory(val componentRegistry: AnyRef) extends ControllerFactory {

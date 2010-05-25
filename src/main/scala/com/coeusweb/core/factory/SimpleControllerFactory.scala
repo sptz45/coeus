@@ -7,7 +7,6 @@
 package com.coeusweb.core.factory
 
 import com.coeusweb.Controller
-import com.coeusweb.config.DispatcherConfig
 
 /**
  * A controller factory that creates new controller instances by
