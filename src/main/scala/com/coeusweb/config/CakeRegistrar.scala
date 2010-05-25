@@ -19,6 +19,9 @@ object CakeRegistrar {
    * class that extend the {@code Controller} abstract class.
    * 
    * <p>Should be used in conjunction with the {@code CakeControllerFactory}.</p>
+   * 
+   * @param registry where to register the controller classes
+   * @param containerClass the class of a Cake component registry
    */
   def registerControllers(registry: ControllerRegistry, containerClass: Class[_]) {
     containerClass.getInterfaces

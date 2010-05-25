@@ -17,11 +17,12 @@ import com.coeusweb.Controller
 object GuiceRegistrar {
   
   /**
-   * Register all the {@code Controller} classes from the specified Guice {@code Injector}. 
+   * Register all the {@code Controller} classes from the specified Guice
+   * {@code Injector}. 
    * 
    * <p>Should be used in conjunction with the {@code GuiceControllerFactory}.</p>
    */
-  def registerControllers(registry: ControllerRegistry, injector: Injector) {
+  def registerControllersFromInjector(registry: ControllerRegistry, injector: Injector) {
     injector.getBindings
             .keySet
             .map(k => k.getTypeLiteral.getRawType)

@@ -22,7 +22,7 @@ class GuiceRegistrarTest {
 
   @Test
   def registers_controllers_from_guice_injector() {
-    GuiceRegistrar.registerControllers(registry, injector)
+    GuiceRegistrar.registerControllersFromInjector(registry, injector)
     assertTrue(registry.controllers.contains(classOf[GuiceController]))
   }
 }
