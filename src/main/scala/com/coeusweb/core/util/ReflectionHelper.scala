@@ -43,22 +43,6 @@ object ReflectionHelper {
         throw new FrameworkException("Error while reading generic type argument from type: " + unknown)
     }
   }
- 
-  /**
-   * Get the value of an element from a <code>Product<code> by specifying the
-   * element's name.
-   * 
-   * @param product the product to retrieve the element's value from
-   * @param name    the name of the element
-   * @throws NoSuchElementException if an element with the specified name does
-   *         not exist in the specified <code>Product</code>.
-   */
-  def productElementByName(product: Product, name: String): Any = {
-    for (i <- 0 until product.productArity)
-      if (product.productElementName(i) == name)
-        return product.productElement(i)
-     throw new NoSuchElementException("Could not find an element named: '%s' in scala.Product: '%s'".format(name, product))
-  }
   
   /**
    * Updates an array using {@link java.lang.reflect.Array} methods.

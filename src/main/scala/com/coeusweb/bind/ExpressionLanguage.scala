@@ -68,7 +68,6 @@ object ExpressionLanguage {
     def readFromMap(map: AnyRef, key: String): Any = map match {
       case m: scala.collection.Map[_, _] => m.asInstanceOf[scala.collection.Map[String, _]](key)
       case m: java.util.Map[_, _]        => m.get(key)
-      case p: Product                    => ReflectionHelper.productElementByName(p, key)
       case _                             =>
         throw new ExpressionException("Attempt to read from unrecognised map collection. Collection class is: " + map.getClass)
     }
