@@ -36,6 +36,7 @@
 
 	<properties>
 		<scala.version>2.8.0.RC3</scala.version>
+		<scalate.version>1.2-scala-next-SNAPSHOT</scalate.version>
 	</properties>
 
 	<repositories>
@@ -43,11 +44,45 @@
 			<id>scala-tools.org</id>
 			<name>Scala-Tools Maven2 Repository</name>
 			<url>http://scala-tools.org/repo-releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
 		</repository>
 		<repository>
 			<id>scala-tools.org-snapshots</id>
 			<name>Scala-Tools Snapshots</name>
 			<url>http://scala-tools.org/repo-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>FuseSource</id>
+			<name>FuseSource Community Release Repository</name>
+			<url>http://repo.fusesource.com/nexus/content/repositories/public</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>FuseSource-Snapshot</id>
+			<name>FuseSource Community Snapshot Repository</name>
+			<url>http://repo.fusesource.com/nexus/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
 		</repository>
 		<repository>
 			<id>jboss</id>
@@ -84,7 +119,7 @@
 		<dependency>
 			<groupId>org.fusesource.scalate</groupId>
 			<artifactId>scalate-core</artifactId>
-			<version>1.1-SNAPSHOT</version>
+			<version>${scalate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-fileupload</groupId>
