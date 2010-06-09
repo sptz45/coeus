@@ -9,7 +9,7 @@ package com.coeusweb.bind
 import java.util.Locale
 
 /**
- * Aggragate trait for {@code Parser} and {@code Formatter}.
+ * Aggregate trait for {@code Parser} and {@code Formatter}.
  * 
  * <p>{@code Converter} implementations must be <em>thread-safe</em>.</p>
  */

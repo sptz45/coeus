@@ -15,8 +15,7 @@ package object mvc {
   type Delete = com.coeusweb.annotation.Delete
   type HttpMethod = com.coeusweb.annotation.HttpMethod
   
-  //TODO uncomment when Scala bug #3384 gets fixed (it will be fixed in RC2)
-  //type Binder = com.coeusweb.bind.Binder
+  type Binder = com.coeusweb.bind.Binder
   
   type Controller = com.coeusweb.Controller
   

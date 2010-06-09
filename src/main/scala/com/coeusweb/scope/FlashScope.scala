@@ -6,9 +6,7 @@
  */
 package com.coeusweb.scope
 
-import java.util.Enumeration
 import java.util.concurrent.ConcurrentHashMap
-import javax.servlet.http.HttpSession
 import scala.collection.mutable.HashSet
 import scala.collection.JavaConversions.asIterator
 import scala.collection.JavaConversions.{ JConcurrentMapWrapper => MapWrapper }
