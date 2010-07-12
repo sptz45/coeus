@@ -22,7 +22,7 @@ trait RequestResolver {
    * @param method the HTTP method of the request
    * @param handler the handler to register
    */
-  def register(path: String, method: Symbol, handler: Handler[Controller])
+  def register(path: String, method: Symbol, handler: Handler[_ <: Controller])
   
   /**
    * Finds the <code>Handler</code> to handle the request for the specified

@@ -22,11 +22,11 @@ object GuiceRegistrar {
    * 
    * <p>Should be used in conjunction with the {@code GuiceControllerFactory}.</p>
    */
-  def registerControllersFromInjector(registry: ControllerRegistry, injector: Injector) {
+  def registerControllers(registry: ControllerRegistry, injector: Injector) {
     injector.getBindings
             .keySet
             .map(k => k.getTypeLiteral.getRawType)
             .filter(c => classOf[Controller].isAssignableFrom(c))
-            .foreach(c => registry.register(c.asInstanceOf[Class[Controller]]))
+            .foreach(c => registry.controllers += c.asInstanceOf[Class[Controller]])
   }
 }

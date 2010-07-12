@@ -16,9 +16,9 @@ class ExampleDispatcherContext(sc: ServletConfig) extends ConfigBuilder(sc)
                                           with ControllerRegistry
                                           with InterceptorRegistry {
   
-  register[BlogController]
-  register[UploadController]
-  register(GlogalState.interceptor)
+  controllers += classOf[BlogController]
+  controllers += classOf[UploadController]
+  interceptors += GlogalState.interceptor
   
   override def dispatcherConfig = new DispatcherConfig(sc) {
     override lazy val viewResolver = GlogalState.viewResolver

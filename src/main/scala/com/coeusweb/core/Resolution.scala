@@ -36,5 +36,5 @@ object MethodNotAllowed extends Resolution
  * @param pathVariables a map with any variables that were extracted from the request URI
  */
 final case class SuccessfulResolution(
-  handler: Handler[Controller],
+  handler: Handler[_ <: Controller],
   pathVariables: Map[String, String]) extends Resolution

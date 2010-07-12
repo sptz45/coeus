@@ -14,7 +14,7 @@ import org.mockito.Matchers._
 import com.coeusweb.{ Controller, WebRequest, WebResponse }
 import com.coeusweb.core.factory.SimpleControllerFactory
 import com.coeusweb.error.{ ExceptionHandler, ErrorPageView }
-import com.coeusweb.interceptor.{Interceptors, RequestInterceptor}
+import com.coeusweb.interceptor.RequestInterceptor
 import com.coeusweb.test.TestHelpers
 import com.coeusweb.test.servlet.MockHttpServletResponse
 import com.coeusweb.view._
@@ -192,10 +192,10 @@ class RequestExecutorTest extends TestHelpers {
     executor.execute(makeRequestContext(handler))
   }
   
-  private def aggregateInterceptors(is: RequestInterceptor*): Interceptors = {
-    val builder = Interceptors.newBuilder
+  private def aggregateInterceptors(is: RequestInterceptor*): Iterable[RequestInterceptor] = {
+    val builder = new scala.collection.mutable.ListBuffer[RequestInterceptor]
     is.foreach(builder += _)
-    new Interceptors(builder)
+    builder.result
   }
   
   private def makeRequestContext(handler: Handler[_]) = {

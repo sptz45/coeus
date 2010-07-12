@@ -10,7 +10,7 @@ import scala.util.control.ControlThrowable
 import scala.collection.mutable.ArrayBuffer
 import com.coeusweb.error._
 import com.coeusweb.view.{ View, NullView }
-import com.coeusweb.interceptor.{ Interceptors, RequestInterceptor }
+import com.coeusweb.interceptor.RequestInterceptor
 
 /**
  * Encapsulates the execution of the specified <code>RequestInterceptor</code>s
@@ -20,7 +20,7 @@ import com.coeusweb.interceptor.{ Interceptors, RequestInterceptor }
  * @param exceptionHandler the handler to call if an error occurs
  */
 private class InterceptorPipeline(
-  interceptors: Interceptors,
+  interceptors: Iterable[RequestInterceptor],
   exceptionHandler: ExceptionHandler) {
 
   private[this] val executed = new ArrayBuffer[RequestInterceptor] 

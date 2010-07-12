@@ -27,6 +27,6 @@ object CakeRegistrar {
     containerClass.getInterfaces
                   .flatMap(_.getDeclaredClasses)
                   .collect({ case c if classOf[Controller].isAssignableFrom(c) => c.asInstanceOf[Class[Controller]]})
-                  .foreach(c => registry.register(c))
+                  .foreach(c => registry.controllers += c)
   }
 }

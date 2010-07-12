@@ -20,7 +20,7 @@ private class ControllerRegistrar(config: DispatcherConfig) {
    * 
    * @param controllerClasses the controller classes to register
    */
-  def registerAll(controllerClasses: Seq[Class[Controller]]) {
+  def registerAll(controllerClasses: Seq[Class[_ <: Controller]]) {
     controllerClasses foreach { registerController(_) }
   }
 
@@ -33,7 +33,7 @@ private class ControllerRegistrar(config: DispatcherConfig) {
    * @throws InvalidControllerClassException if the controller class has invalid structure
    *         or if it doesn't have handler annotations.
    */
-  private def registerController(controllerClass: Class[Controller]) {
+  private def registerController(controllerClass: Class[_ <: Controller]) {
     if (ReflectionHelper.isAbstract(controllerClass)) return
     
     // extract any handler mappings from the annotated methods

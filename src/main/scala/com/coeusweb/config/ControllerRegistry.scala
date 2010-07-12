@@ -6,7 +6,6 @@
  */
 package com.coeusweb.config
 
-import scala.collection.mutable.ListBuffer
 import com.coeusweb.Controller
 
 /**
@@ -14,23 +13,6 @@ import com.coeusweb.Controller
  * {@code DispatcherServlet}.
  */
 trait ControllerRegistry {
-  
-  private val _controllers = new ListBuffer[Class[Controller]]
-  
-  /** Register the specified controller class. */
-  def register[C <: Controller](implicit cm: ClassManifest[C]) {
-    register(cm.erasure.asInstanceOf[Class[Controller]])
-  }
-  
-  /**
-   * Register the specified controller class.
-   * 
-   * @param controller the controller class to register
-   */
-  def register[C <: Controller](controller: Class[C]) {
-    _controllers += controller.asInstanceOf[Class[Controller]]
-  }
-
-  /** A collection with the registered controller classes. */
-  def controllers: Seq[Class[Controller]] = _controllers
+  /** Holds all the registered Controller classes. */
+  val controllers = new Registry[Class[_ <: Controller]]
 }

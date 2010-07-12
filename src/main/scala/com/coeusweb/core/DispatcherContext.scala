@@ -51,15 +51,14 @@ private class DispatcherContext(config: ServletConfig) {
     dispatcherContext = context.asInstanceOf[ConfigBuilder with ControllerRegistry]
   } catch {
     case e: InvocationTargetException => throw e.getCause
-    case e: Exception => throw e
   }
   
   def dispatcherConfig = dispatcherContext.dispatcherConfig
   
-  def controllers = dispatcherContext.controllers
+  def controllers = dispatcherContext.controllers.get
   
   def interceptors = dispatcherContext match {
-    case ir: InterceptorRegistry => ir.interceptors
-    case _                       => (new InterceptorRegistry { }).interceptors
+    case ir: InterceptorRegistry => ir.interceptors.get
+    case _                       => Nil
   }
 }
