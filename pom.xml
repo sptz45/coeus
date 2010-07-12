@@ -86,7 +86,7 @@
 		</repository>
 		<repository>
 			<id>jboss</id>
-			<url>http://repository.jboss.com/maven2</url>
+			<url>http://repository.jboss.org/nexus/content/repositories/releases/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -142,7 +142,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>4.0.2.GA</version>
+			<version>4.1.0.Final</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
