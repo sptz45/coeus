@@ -80,7 +80,11 @@ class FlashScope(val session: WebSession) extends ScopedContainer {
 object FlashScope {
   private val FLASH_SCOPE_NAME = "flashScope"
   
-  /** Remove any stale objects from the <code>FlashScope</code>. */
+  /**
+   * Remove any stale objects from the <code>FlashScope</code>.
+   * 
+   * @param request the current request
+   */
   def sweep(request: WebRequest) {
     for (session <- request.existingSession) {
       if (session.getAttribute(FLASH_SCOPE_NAME) != null)

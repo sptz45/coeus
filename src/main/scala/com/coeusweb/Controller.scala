@@ -112,8 +112,6 @@ package com.coeusweb
  */
 abstract class Controller {
   
-  // -- Request related methods --------------------------------------------------
-  
   /** The current web request. */
   var request: WebRequest = _
   
