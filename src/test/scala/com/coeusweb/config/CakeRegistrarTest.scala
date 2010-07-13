@@ -22,7 +22,7 @@ class CakeRegistrarTest {
   @Test
   def registers_all_inner_controller_classes_of_the_interfaces_of_the_specified_class() {
     CakeRegistrar.registerControllers(registry, components.getClass)
-    val controllers = registry.controllers.get
+    val controllers = registry.controllers.result
     assertTrue(controllers.contains(classOf[BlogComponent#BlogController]))
     assertTrue(controllers.contains(classOf[PostComponent#PostController]))
   }

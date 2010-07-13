@@ -55,10 +55,10 @@ private class DispatcherContext(config: ServletConfig) {
   
   def dispatcherConfig = dispatcherContext.dispatcherConfig
   
-  def controllers = dispatcherContext.controllers.get
+  def controllers = dispatcherContext.controllers.result
   
   def interceptors = dispatcherContext match {
-    case ir: InterceptorRegistry => ir.interceptors.get
+    case ir: InterceptorRegistry => ir.interceptors.result
     case _                       => Nil
   }
 }

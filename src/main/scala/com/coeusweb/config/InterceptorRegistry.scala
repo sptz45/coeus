@@ -6,6 +6,7 @@
  */
 package com.coeusweb.config
 
+import scala.collection.mutable.{ Builder, ListBuffer }
 import com.coeusweb.interceptor._
 import com.coeusweb.scope.support.FlashScopeInterceptor
 
@@ -24,7 +25,7 @@ trait InterceptorRegistry {
    * are registered by default because basic framework features depend on their
    * function.</p>
    */
-  val interceptors = new Registry[RequestInterceptor]
+  val interceptors: Builder[RequestInterceptor, Seq[RequestInterceptor]] = new ListBuffer
   interceptors += new ThreadLocalRequestInterceptor
   interceptors += new FlashScopeInterceptor
 }

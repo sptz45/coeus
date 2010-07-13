@@ -6,6 +6,7 @@
  */
 package com.coeusweb.config
 
+import scala.collection.mutable.{ Builder, ListBuffer }
 import com.coeusweb.Controller
 
 /**
@@ -14,5 +15,5 @@ import com.coeusweb.Controller
  */
 trait ControllerRegistry {
   /** Holds all the registered Controller classes. */
-  val controllers = new Registry[Class[_ <: Controller]]
+  val controllers: Builder[Class[_ <: Controller], Seq[Class[_ <: Controller]]] = new ListBuffer
 }
