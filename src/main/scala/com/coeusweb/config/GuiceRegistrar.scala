@@ -13,14 +13,14 @@ import com.coeusweb.Controller
 /**
  * Register all the {@code Controller} classes from the bindings in a Guice
  * injector.
+ * 
+ * <p>Should be used in conjunction with the {@code GuiceControllerFactory}.</p>
  */
 object GuiceRegistrar {
   
   /**
    * Register all the {@code Controller} classes from the specified Guice
    * {@code Injector}. 
-   * 
-   * <p>Should be used in conjunction with the {@code GuiceControllerFactory}.</p>
    */
   def registerControllers(registry: ControllerRegistry, injector: Injector) {
     injector.getBindings

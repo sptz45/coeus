@@ -15,6 +15,7 @@ import com.coeusweb.scope.support.FlashScopeInterceptor
  * {@code DispatcherServlet}.
  */
 trait InterceptorRegistry {
+  
   /**
    * Holds all the registered interceptors.
    * 
@@ -26,6 +27,7 @@ trait InterceptorRegistry {
    * function.</p>
    */
   val interceptors: Builder[RequestInterceptor, Seq[RequestInterceptor]] = new ListBuffer
+  
   interceptors += new ThreadLocalRequestInterceptor
   interceptors += new FlashScopeInterceptor
 }
