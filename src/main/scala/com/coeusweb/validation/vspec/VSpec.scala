@@ -88,6 +88,29 @@ import constraint.Constraint
  * }
  * </pre>
  * 
+ * <h4>Special handling of <code>Option[T]</code> fields</h4>
+ * 
+ * <p>When a field is of type <code>Option[T]</code> then it is considered as
+ * optional and the value of <code>None</code> is always considered valid.
+ * Furthermore, if a field value is of type <code>Some[T]</code> then it gets
+ * extracted so that the predefined <code>Constraint</code> classes can be used
+ * for validating the field's value.</p>
+ * 
+ * <p>For example in the below code we use the <code>NumberConstraints.isGreatedThan</code>
+ * constraint that is defined for <code>Int</code> to validate the values of the
+ * <code>age</code> field (that is of type <code>Option[Int]</code>) since if the
+ * value of that field is <code>None</code> then it will automatically considered
+ * valid and if it is of type <code>Some[Int]</code> then the <code>Int</code> will
+ * get extracted before it gets passed in the specified constraints.</p>
+ * 
+ * <pre>
+ * class Person(var name: String, var age: Option[Int])
+ * val validator = new VSpec[Person] {
+ *   ensure("name", hasText)
+ *   ensure("age",  isGreaterThan(0))
+ * }
+ * </pre> 
+ * 
  * <h4>Thread-safety</h4>
  * <p>VSpec instances can be safely accessed by multiple threads only after
  * they have been configured with all the needed constraints. This works well
@@ -138,7 +161,7 @@ class VSpec[-T <: AnyRef](implicit m: Manifest[T]) extends Validator[T] {
   private def doValidate(path: String, target: T, result: BindingResult[T]) {
     
     for ((field, constraints) <- constraintsMap) {
-      val potentialError = doValidateField(path, field, EL.eval(target, field), constraints)
+      val potentialError = doValidateField(path, field, EL.eval(target, field, false), constraints)
       for (error <- potentialError) result.addError(field, error)
     }
     
@@ -153,10 +176,17 @@ class VSpec[-T <: AnyRef](implicit m: Manifest[T]) extends Validator[T] {
 
     def getField = if (path eq null) field else path + "." + field
     
+    if (value == None) return None
+    
+    val fieldValue = value match {
+      case Some(x) => x
+      case _       => value
+    }
+    
     for (cons <- constraints) {
       val constraint = cons.asInstanceOf[Constraint[Any]] 
-      if (! constraint.isValid(value))
-        return Some(constraint.getError(targetClass, getField, value))
+      if (! constraint.isValid(fieldValue))
+        return Some(constraint.getError(targetClass, getField, fieldValue))
     }
     None
   }

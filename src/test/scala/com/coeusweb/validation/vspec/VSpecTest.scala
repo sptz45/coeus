@@ -45,6 +45,23 @@ class VSpecTest {
   }
   
   @Test
+  def none_is_always_valid() {
+    val validator = new VSpec[OptionalInt] {
+      ensure("value", isGreaterThan(0))
+    }
+    assertEquals(0, validator.validate(new OptionalInt(None)).size)
+  }
+  
+  @Test
+  def some_gets_extracted_before_passing_to_the_constraints() {
+    val validator = new VSpec[OptionalInt] {
+      ensure("value", isGreaterThan(0))
+    }
+    assertEquals(0, validator.validate(new OptionalInt(Some(2))).size)
+    assertEquals(1, validator.validate(new OptionalInt(Some(-2))).size)
+  }
+  
+  @Test
   def validate_using_custom_validations() {
     val validator = new VSpec[User] {
       ensure("username", isNotNull)
@@ -108,4 +125,5 @@ class VSpecTest {
 object VSpecTest {
   class User(var username: String, var email: String, var age: Int)
   class Post(var title: String, var content: String, var author: User)
+  class OptionalInt(var value: Option[Int])
 }
