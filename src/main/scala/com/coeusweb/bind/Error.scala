@@ -7,7 +7,7 @@
 package com.coeusweb.bind
 
 /**
- * A binding/validation error.
+ * A binding or validation error.
  * 
  * @param code the message code of the error
  * @param args any arguments to be used for constructing the error's message
@@ -36,8 +36,8 @@ object Error {
    * 
    * @param field the name of the field for which the binding failed
    * @param fieldClass the class that the input value could not get converted to
-   * @param text the String value that could not get converted to {@code fieldClass} 
+   * @param source the String value that could not get converted to {@code fieldClass} 
    */
-  def typeMismatch(field: String, fieldClass: Class[_], text: String) =
-    new Error(fieldClass.getSimpleName + ".type-mismatch", field, fieldClass, text)
+  def typeMismatch(field: String, fieldClass: Class[_], source: String) =
+    new Error(fieldClass.getName + ".type-mismatch", field, fieldClass, source)
 }

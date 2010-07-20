@@ -7,13 +7,13 @@
 package com.coeusweb.view.helper
 
 import scala.xml.{ Elem, Text }
-import com.coeusweb.bind.{BindingResult, ErrorFormatter }
+import com.coeusweb.bind.{ BindingResult, ErrorFormatter }
 import com.coeusweb.controller.ModelAttributes
 import com.coeusweb.i18n.msg.MessageBundle
 import com.coeusweb.http.security.CsrfProtection
 
 /**
- * Methods for generating HTML tags related for forms.
+ * Methods for generating HTML tags related to forms.
  */
 trait FormHelper {
   

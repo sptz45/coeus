@@ -17,5 +17,5 @@ trait ErrorFormatter {
    * Returns a formatted, locale specific, error message for the specified
    * {@code Error} instance.
    */
-  def format(error: Error, locale: Locale): String    
+  def format(error: Error, locale: Locale): String
 }

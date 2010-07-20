@@ -10,6 +10,11 @@ import javax.validation.{ Validator => Jsr303Validator }
 import com.coeusweb.bind.{ BindingResult, Error }
 import com.coeusweb.validation.Validator
 
+/**
+ * Adapts a JSR303 validator to the Coeus Validator interface.
+ * 
+ * @param validator the JSR303 validator that will be used for validating the objects
+ */
 class BeanValidator[-T <: AnyRef](val validator: Jsr303Validator) extends Validator[T] {
 
   def validate(target: T): Iterable[Error] = new Iterable[Error] {
