@@ -126,7 +126,7 @@ class VSpec[-T <: AnyRef](implicit m: Manifest[T]) extends Validator[T] {
   
   private val targetClass: Class[_] = m.erasure
   private var constraintsMap = Map[String, List[Constraint[_]]]()
-  private var associationValidators = Map[String, VSpec[_]]()
+  private var associationValidators = Map[String, List[VSpec[_]]]()
   
   def validate(target: T): Iterable[Error] = {
     val result = new BindingResult(null, target)
@@ -165,7 +165,7 @@ class VSpec[-T <: AnyRef](implicit m: Manifest[T]) extends Validator[T] {
       for (error <- potentialError) result.addError(field, error)
     }
     
-    for ((field, validator) <- associationValidators) {
+    for ((field, validators) <- associationValidators; validator <- validators) {
       val assocValidator = validator.asInstanceOf[VSpec[AnyRef]]
       assocValidator.doValidate(path, EL.evalTo[AnyRef](target, field), result)
     }
@@ -198,7 +198,12 @@ class VSpec[-T <: AnyRef](implicit m: Manifest[T]) extends Validator[T] {
    * @param constraints the constraints 
    */
   final def ensure[B](field: String, constraints: Constraint[B]*) {
-    constraintsMap = constraintsMap + (field -> constraints.toList)
+    constraintsMap =
+      if (constraintsMap.contains(field)) {
+        constraintsMap + (field -> (constraintsMap(field) ::: constraints.toList))
+      } else { 
+        constraintsMap + (field -> constraints.toList)
+      }
   }
   
   /**
@@ -209,7 +214,12 @@ class VSpec[-T <: AnyRef](implicit m: Manifest[T]) extends Validator[T] {
    * @param validator the validator of the field
    */
   final def ensure[C <: AnyRef](field: String, validator: VSpec[C]) {
-    associationValidators = associationValidators + (field -> validator)
+    associationValidators =
+      if (associationValidators.contains(field)) {
+        associationValidators + (field -> (associationValidators(field) ::: List(validator)))
+      } else { 
+        associationValidators + (field -> List(validator))
+      }
   }
   
   /**

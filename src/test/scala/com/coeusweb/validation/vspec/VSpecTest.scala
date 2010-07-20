@@ -45,6 +45,19 @@ class VSpecTest {
   }
   
   @Test
+  def multiple_invocations_of_ensure_for_the_same_field_add_all_the_constraits() {
+    var firstCalled = false
+    var secondCalled = false
+    val validator = new VSpec[User] {
+      ensure("username", satisfies { s: String => firstCalled = true; true })
+      ensure("username", satisfies { s: String => secondCalled = true; true })
+    }
+    validator.validate(new User(null, null, 12))
+    assertTrue("first constraint not called", firstCalled)
+    assertTrue("second constraint not called", secondCalled)
+  }
+  
+  @Test
   def none_is_always_valid() {
     val validator = new VSpec[OptionalInt] {
       ensure("value", isGreaterThan(0))
@@ -119,6 +132,26 @@ class VSpecTest {
     }
     val post = new Post("title", "content", null)
     validator.validate(post)
+  }
+  
+  @Test
+  def multiple_invocations_of_ensure_for_the_same_field_add_all_the_validators() {
+    var firstCalled = false
+    var secondCalled = false
+    val first = new VSpec[User] {
+      ensure("username", satisfies { s: String => firstCalled = true; true })
+    }
+    val second = new VSpec[User] {
+      ensure("username", satisfies { s: String => secondCalled = true; true })
+    }
+    val validator = new VSpec[Post] {
+      ensure("author", validatesWith(first))
+      ensure("author", validatesWith(second))
+      
+    }
+    validator.validate(new Post(null, null, new User(null, "", 12)))
+    assertTrue("first validator not called", firstCalled)
+    assertTrue("second validator not called", secondCalled)
   }
 
   def assertValid(errors: Iterable[Error]) {
