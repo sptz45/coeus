@@ -19,8 +19,8 @@ class VSpecTest {
   @Test
   def all_objects_are_valid_if_validator_has_no_constraints() {
     val v = new VSpec[User]
-    assertTrue(v.validate(nullUser).isEmpty)
-    assertTrue(v.validate(new User("spring", "email", 29)).isEmpty)
+    assertValid(v.validate(nullUser))
+    assertValid(v.validate(new User("spring", "email", 29)))
   }
   
  @Test
@@ -30,7 +30,7 @@ class VSpecTest {
       ensure("email",    isEmail)
     }
     val user = new User(null, null, 0)
-    assertEquals(1, validator.validate(user).size)
+    assertErrors(1, validator.validate(user))
   }
   
   @Test
@@ -41,7 +41,7 @@ class VSpecTest {
       ensure("age",      isGreaterThan(18))
     }
     val user = new User(null, "", 12)
-    assertEquals(3, validator.validate(user).size)
+    assertErrors(3, validator.validate(user))
   }
   
   @Test
@@ -49,7 +49,7 @@ class VSpecTest {
     val validator = new VSpec[OptionalInt] {
       ensure("value", isGreaterThan(0))
     }
-    assertEquals(0, validator.validate(new OptionalInt(None)).size)
+    assertValid(validator.validate(new OptionalInt(None)))
   }
   
   @Test
@@ -57,8 +57,8 @@ class VSpecTest {
     val validator = new VSpec[OptionalInt] {
       ensure("value", isGreaterThan(0))
     }
-    assertEquals(0, validator.validate(new OptionalInt(Some(2))).size)
-    assertEquals(1, validator.validate(new OptionalInt(Some(-2))).size)
+    assertValid(validator.validate(new OptionalInt(Some(2))))
+    assertErrors(1, validator.validate(new OptionalInt(Some(-2))))
   }
   
   @Test
@@ -73,7 +73,7 @@ class VSpecTest {
       }
     }
     val user = new User("spiros", null, 0)
-    assertEquals(1, validator.validate(user).size)
+    assertErrors(1, validator.validate(user))
   }
   
   @Test
@@ -83,7 +83,7 @@ class VSpecTest {
       ensure("email",    isNullOrSatisfies    { s: String => s == s.reverse })
     }
     val user = new User("spiros", null, 0)
-    assertEquals(1, validator.validate(user).size)
+    assertErrors(1, validator.validate(user))
   }
   
   @Test
@@ -98,7 +98,7 @@ class VSpecTest {
     }
     
     val post = new Post("title", "content", new User(null, "", 12))
-    assertEquals(3, validator.validate(post).size)
+    assertErrors(3, validator.validate(post))
   }
   
   @Test
@@ -109,7 +109,7 @@ class VSpecTest {
       ensure("author.age",      isGreaterThan(18))
     }
     val post = new Post("title", "content", new User(null, "", 12))
-    assertEquals(3, validator.validate(post).size)
+    assertErrors(3, validator.validate(post))
   }
   
   @Test(expected=classOf[com.coeusweb.bind.ExpressionException])
@@ -119,6 +119,14 @@ class VSpecTest {
     }
     val post = new Post("title", "content", null)
     validator.validate(post)
+  }
+
+  def assertValid(errors: Iterable[Error]) {
+    assertTrue("Must be valid", errors.isEmpty)
+  }
+
+  def assertErrors(expected: Int, errors: Iterable[Error]) {
+    assertEquals(expected, errors.size)
   }
 }
 
