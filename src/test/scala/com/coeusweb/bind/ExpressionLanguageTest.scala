@@ -51,13 +51,23 @@ class ExpressionLanguageTest {
   }
   
   @Test
-  def read_from_option() {
+  def read_unwrapping_option() {
     val t = new HasOptionalValue
     t.optional = Some(42)
     assertEquals(42, eval(t, "optional"))
 
     t.optional = None
     assertNull("None gets converted into null", eval(t, "optional"))
+  }
+  
+    @Test
+  def read_option_without_unwrapping() {
+    val t = new HasOptionalValue
+    t.optional = Some(42)
+    assertEquals(Some(42), eval(t, "optional", unwrapOption=false))
+
+    t.optional = None
+    assertEquals(None, eval(t, "optional", unwrapOption=false))
   }
   
   @Test

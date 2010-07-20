@@ -26,11 +26,11 @@ object ExpressionLanguage {
     readerCache.clear()
   }
   
-  def eval(target: AnyRef, expr: String): Any = {
+  def eval(target: AnyRef, expr: String, unwrapOption: Boolean = true): Any = {
     require(target ne null, "Cannot evaluate expression using a null target")
     require((expr ne null) && ! expr.isEmpty, "The expression cannot be empty or null")
     try {
-      walk(target, split(expr.trim))
+      walk(target, split(expr.trim), unwrapOption)
     } catch {
       case be: BindingException => throw be
       case ex: Exception => throw new ExpressionException("Error while evaluating expression: " + expr, ex)
@@ -41,20 +41,20 @@ object ExpressionLanguage {
   
   private def split(expr: String): List[String] = expr.split("\\.").toList
   
-  private def walk(target: AnyRef, expr: List[String]): Any = expr match {
+  private def walk(target: AnyRef, expr: List[String], unwrapOption: Boolean): Any = expr match {
       
     case Nil           => assert(false, "cannot be empty")
     
-    case name :: Nil   => read(target, name) 
+    case name :: Nil   => read(target, name, unwrapOption) 
     
-    case name :: names => read(target, name) match {
+    case name :: names => read(target, name, unwrapOption) match {
       case null        => throw new ExpressionException("'%s' in %s was null while evaluating '%s'".format(name, target, expr.mkString(".")))
-      case ref: AnyRef => walk(ref, names)
+      case ref: AnyRef => walk(ref, names, unwrapOption)
       case _           => throw new ExpressionException("Error while evaluating ["+expr.mkString(".")+"]")
     }
   }
   
-  private def read(target: AnyRef, expr: String): Any = {
+  private def read(target: AnyRef, expr: String, unwrapOption: Boolean): Any = {
     
     def readFromSeq(seq: AnyRef, index: Int): Any = seq match {
       case a: scala.Array[_]          => a(index)
@@ -73,21 +73,25 @@ object ExpressionLanguage {
     }
     
     if (expr.last != ']')
-      return readFromVal(target, expr)
+      return readFromVal(target, expr, unwrapOption)
     
     expr match {
-      case SeqRx(method, index) => readFromSeq(readRef(target, method), index.toInt)
-      case MapRx(method, key)   => readFromMap(readRef(target, method), key)
+      case SeqRx(method, index) => readFromSeq(readRef(target, method, unwrapOption), index.toInt)
+      case MapRx(method, key)   => readFromMap(readRef(target, method, unwrapOption), key)
     }
   }  
   
-  private def readRef(t: AnyRef, m: String) = readFromVal(t, m).asInstanceOf[AnyRef]
+  private def readRef(t: AnyRef, m: String, unwrapOption: Boolean) = readFromVal(t, m, unwrapOption).asInstanceOf[AnyRef]
   
-  private def readFromVal(target: AnyRef, method: String): Any = {
-    getReaderMethod(target.getClass, method).invoke(target) match {
+  private def readFromVal(target: AnyRef, method: String, unwrapOption: Boolean): Any = {
+    val value = getReaderMethod(target.getClass, method).invoke(target)
+    
+    if (unwrapOption) value match {
       case None    => null
       case Some(a) => a
       case any     => any 
+    } else {
+      value
     }
   }
   
@@ -179,7 +183,7 @@ object ExpressionLanguage {
     val parsed = split(expr)
     val actualTarget =
       if (parsed.length == 1) target
-      else walk(target, parsed.dropRight(1)).asInstanceOf[AnyRef]
+      else walk(target, parsed.dropRight(1), true).asInstanceOf[AnyRef]
     val name = parsed.last
     
     if (name.last != ']') {
@@ -190,12 +194,12 @@ object ExpressionLanguage {
     name match {
       
       case SeqRx(seqName, index) =>
-        writeToSeq(readRef(actualTarget, seqName),
+        writeToSeq(readRef(actualTarget, seqName, false),
                    index.toInt,
                    typeArgForSeq(actualTarget, seqName))
       
       case MapRx(mapName, key) =>
-        writeToMap(readRef(actualTarget, mapName),
+        writeToMap(readRef(actualTarget, mapName, false),
                    key,
                    typeArgForMap(actualTarget, mapName))
     }
