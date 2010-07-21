@@ -20,8 +20,9 @@ class ErrorPageExceptionHandler(servletName: String) extends ExceptionHandler {
    * 
    * <p>If the exception that occurred is an instance of
    * <code>HttpException</code> this instance also sets the
-   * HTTP status code of the response using the exception's
-   * status.</p>
+   * HTTP status code of the response using the
+   * {@link HttpException#httpStatus} field, else it will set
+   * the HTTP status to <em>500</em>.</p>
    */
   def handle(context: RequestContext): View = {
     ErrorUtils.setupErrorPageAttributes(context.request, context.error, servletName)

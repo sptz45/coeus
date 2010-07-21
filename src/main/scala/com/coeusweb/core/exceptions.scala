@@ -7,6 +7,7 @@
 package com.coeusweb.core
 
 import com.coeusweb.http.HttpStatus
+
 /** 
  * The root of exception hierarchy of this framework.
  */
@@ -18,7 +19,6 @@ class FrameworkException(message: String = null, cause: Throwable = null)
  * invalid structure.
  * 
  * @see {@link com.coeusweb.Controller Controller}
- * @see ControllerRegistry
  */
 class InvalidControllerClassException(message: String) extends FrameworkException(message)
 
@@ -29,5 +29,9 @@ class InvalidControllerClassException(message: String) extends FrameworkExceptio
 abstract class HttpException(message: String = null, cause: Throwable = null)
   extends FrameworkException(message, cause) {
   
+  /**
+   * Suggests the HTTP status of the response that should be used when this
+   * exception gets thrown.
+   */
   def httpStatus: Int
 }

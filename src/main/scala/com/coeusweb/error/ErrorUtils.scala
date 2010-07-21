@@ -34,9 +34,10 @@ object ErrorUtils {
   /**
    * Sets the response's HTTP status based on the given Throwable.
    * 
-   * <p>If the exception that occurred is an instance of {@code HttpException}
-   * this instance also sets the HTTP status code of the response using the
-   * exception's status.</p>
+   * <p>If the specified exception is an instance of {@code HttpException}
+   * this method sets the HTTP status code of the response using the
+   * {@link HttpException#httpStatus} field, else it will set the HTTP
+   * status to <em>500</em>.</p>
    * 
    * @param response the current web response
    * @param error the exception that occurred during the request execution
