@@ -33,7 +33,7 @@ trait FormProcessing {
    * 
    * <p>The <code>Binder</code> returned by this method gets used in the
    * the {@link #validate} and {@link #ifValid} methods to bind the request
-   * parameters to the model object.</code>
+   * parameters to the model object.</p>
    * 
    * @see Binder
    */
@@ -136,7 +136,7 @@ trait FormProcessing {
   /**
    * Return a <code>View</code> to be used when the validation fails in the {@link #ifValid} methods.
    * 
-   * <p>This method return a view name by invoking the {@link RequestToViewNameTranslator}. Subclasses
+   * <p>This method returns a view name by invoking the {@link RequestToViewNameTranslator}. Subclasses
    * can override this method to return a different view name.</p>
    */
   def formView: String = RequestToViewNameTranslator.viewNameForRequest(request)

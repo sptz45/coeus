@@ -152,8 +152,8 @@ class VSpec[-T <: AnyRef](implicit m: Manifest[T]) extends Validator[T] {
    * must know the value of more than one field in the target object.</p>
    * 
    * @param result a <code>BindingResult</code> that contains the target
-   *              object and any validation errors that have already
-   *              occurred
+   *               object and any validation errors that have already
+   *               occurred
    */
   def extraValidation(result: BindingResult[T]) { }
   

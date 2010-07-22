@@ -35,6 +35,11 @@ trait Validator[-T <: AnyRef] {
   /**
    * Validate the specified field value.
    * 
+   * <p>This method takes a type parameter ({@code S}) that corresponds to the type of
+   * the target object and is usually the same as the type parameter {@code T}. This
+   * parameter is needed because {@code T} is contravariant and this method needs to
+   * know the exact class of the target object.</p>
+   * 
    * @param field the field's name
    * @param value the field's value
    * @return an <code>Option</code> containing an error if the value is invalid,

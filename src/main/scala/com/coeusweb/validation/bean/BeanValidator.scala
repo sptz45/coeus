@@ -11,9 +11,30 @@ import com.coeusweb.bind.{ BindingResult, Error }
 import com.coeusweb.validation.Validator
 
 /**
- * Adapts a JSR303 validator to the Coeus Validator interface.
+ * Adapts a JSR303 validator to the Coeus Validator trait.
+ * 
+ * <p>Because {@code com.coeusweb.validation.Validator} is contravariant and because
+ * {@code javax.validation.Validator} is not generic, we can validate all objects
+ * (that have JSR303 annotations) using a single {@code BeanValidator} of type
+ * {@code BeanValidator[AnyRef]}.</p>
+ * 
+ * <p>For example if we use {@link com.coeusweb.controller.FormProcessing} (that
+ * requires the presence of an implicit {@code Validator}) we can define a single
+ * abstract controller that has an <em>implicit</em> validator of type
+ * {@code BeanValidator[AnyRef]} for all of our controllers that handle forms.</p>
+ * 
+ * <pre>
+ * object DefaultValidator
+ *   extends BeanValidator[AnyRef](
+ *     Validation.buildDefaultValidatorFactory.getValidator)
+ * 
+ * abstract class FormController extends FormProcessing {
+ *   implicit val validator: Validator[AnyRef] = DefaultValidator
+ * }
+ * </pre>
  * 
  * @param validator the JSR303 validator that will be used for validating the objects
+ * @see BeanErrorFormatter
  */
 class BeanValidator[-T <: AnyRef](val validator: Jsr303Validator) extends Validator[T] {
 
