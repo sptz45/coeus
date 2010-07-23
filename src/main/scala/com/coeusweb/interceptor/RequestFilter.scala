@@ -11,7 +11,7 @@ import view.View
 import core.RequestContext
 
 /**
- * A stackable trait to filter the request that a <code>RequestInterceptor</code>
+ * A stackable trait to filter the requests that a {@code RequestInterceptor}
  * intercepts. 
  */
 trait RequestFilter extends RequestInterceptor {

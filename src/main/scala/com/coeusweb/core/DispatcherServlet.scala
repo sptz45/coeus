@@ -14,7 +14,6 @@ import com.coeusweb.i18n.locale.LocaleResolver
 import com.coeusweb.{WebRequest, WebResponse}
 import com.coeusweb.config._
 import com.coeusweb.http.multipart.MultipartRequestParser
-import com.coeusweb.interceptor.Interceptors
 import com.coeusweb.scope.ApplicationScope
 
 /**
