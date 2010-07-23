@@ -39,7 +39,7 @@ import com.coeusweb.validation.Validator
 class BeanValidator[-T <: AnyRef](val validator: Jsr303Validator) extends Validator[T] {
 
   def validate(target: T): Iterable[Error] = new Iterable[Error] {
-    def iterator = new BeanValidatorValidator.ErrorIterator(validator.validate(target).iterator)
+    def iterator = new BeanValidator.ErrorIterator(validator.validate(target).iterator)
   }
   
   def validate(result: BindingResult[T]) {
@@ -58,7 +58,7 @@ class BeanValidator[-T <: AnyRef](val validator: Jsr303Validator) extends Valida
 }
 
 
-private object BeanValidatorValidator {  
+private object BeanValidator {
   import java.util.{ Iterator => JIterator }
   import javax.validation.ConstraintViolation
   

@@ -10,8 +10,7 @@ package com.coeusweb.view
  * A {@code ViewResolver} that consults a sequence of {@code ViewResolver}s for
  * finding the {@code View} to render.
  * 
- * @param resolvers the sequence of this implementation delegates to for finding
- *        a {@code View} to render.
+ * @param resolvers the sequence of {@code ViewResolver}
  * 
  * @see ViewResolver
  */

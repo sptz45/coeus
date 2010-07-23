@@ -9,7 +9,7 @@ package com.coeusweb.view
 import com.coeusweb.WebResponse
 
 /**
- * Helper methods for creating {@code View<} implementations.
+ * Helper methods for creating {@code View} implementations.
  */
 object ViewUtil {
   
