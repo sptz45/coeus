@@ -35,12 +35,12 @@ object GuiceRegistrar {
       controllerClass = key.getTypeLiteral.getRawType
       if classOf[Controller].isAssignableFrom(controllerClass)
     } {
-      assertControllerScope(binding, controllerClass)
+      assertControllerScope(binding)
       registry.controllers += controllerClass.asInstanceOf[Class[Controller]]
     }
   }
   
-  private def assertControllerScope(b: Binding[_], c: Class[_]) {
+  private def assertControllerScope(b: Binding[_]) {
     if (b.acceptScopingVisitor(hasScope))
       throw new FrameworkException("The Binding: " + b +
         " has wrong scope. Controller bindings must not have a scope defined (or have NO_SCOPE)" +
