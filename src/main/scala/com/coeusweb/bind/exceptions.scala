@@ -29,8 +29,8 @@ class ExpressionException(message: String, cause: Throwable = null)
   extends BindingException(message, cause)
 
 /**
- * Thrown from {@code ExpressionLanguage} when an error occurs during parsing
- * because a {@code Parser} could not parse an input value.
+ * Thrown from {@code ExpressionLanguage} when a {@code Parser} cannot
+ * parse an input value.
  */
 class ParserException(val outputClass: Class[_], cause: Throwable)
   extends BindingException("Could not convert to " + outputClass, cause)

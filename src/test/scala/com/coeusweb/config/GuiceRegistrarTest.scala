@@ -17,13 +17,19 @@ class GuiceRegistrarTest {
   
   import GuiceRegistrarTest._
   
-  val injector = Guice.createInjector(new WebModule)
-  val registry = new ControllerRegistry { }
+  object registry extends ControllerRegistry
 
   @Test
   def registers_controllers_from_guice_injector() {
+    val injector = Guice.createInjector(new WebModule)
     GuiceRegistrar.registerControllers(registry, injector)
-    assertTrue(registry.controllers.result.contains(classOf[GuiceController]))
+    assertTrue(registry.controllers.result.contains(classOf[ExampleController]))
+  }
+  
+  @Test//(expected=classOf[FrameworkException])
+  def detects_non_no_scope_controllers() {
+    val injector = Guice.createInjector(new ErroneousWebModule)
+    GuiceRegistrar.registerControllers(registry, injector)
   }
 }
 
@@ -32,9 +38,15 @@ object GuiceRegistrarTest {
   
   class WebModule extends AbstractModule {
     def configure() {
-      bind(classOf[GuiceController])
+      bind(classOf[ExampleController])
     }
   }
   
-  class GuiceController extends Controller
+  class ErroneousWebModule extends AbstractModule {
+    def configure() {
+      bind(classOf[ExampleController]).asEagerSingleton()
+    }
+  }
+  
+  class ExampleController extends Controller
 }
