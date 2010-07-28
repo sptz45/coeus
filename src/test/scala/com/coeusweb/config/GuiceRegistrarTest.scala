@@ -26,7 +26,7 @@ class GuiceRegistrarTest {
     assertTrue(registry.controllers.result.contains(classOf[ExampleController]))
   }
   
-  @Test//(expected=classOf[FrameworkException])
+  @Test(expected=classOf[FrameworkException])
   def detects_non_no_scope_controllers() {
     val injector = Guice.createInjector(new ErroneousWebModule)
     GuiceRegistrar.registerControllers(registry, injector)

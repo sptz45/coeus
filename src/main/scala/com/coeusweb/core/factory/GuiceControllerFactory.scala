@@ -12,7 +12,7 @@ import com.coeusweb.Controller
 /**
  * Creates {@code Controller} instances from a Guice {@code Injector}.
  * 
- * <p>The controller bindings (in the Guice injector)  <strong>must be</strong>
+ * <p>The controller bindings (in the Guice injector) <strong>must be</strong>
  * configured with <em>no scope</em> to enable this factory to create a new
  * controller instance in each request.</p>
  *

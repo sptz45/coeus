@@ -42,8 +42,8 @@ object GuiceRegistrar {
   
   private def assertControllerScope(b: Binding[_]) {
     if (b.acceptScopingVisitor(hasScope))
-      throw new FrameworkException("The Binding: " + b +
-        " has wrong scope. Controller bindings must not have a scope defined (or have NO_SCOPE)" +
+      throw new FrameworkException("The Guice binding: " + b +
+        " has wrong scope. Controller bindings must not have a scope (or have NO_SCOPE)" +
         " so that a new instance can be created on every request.")
   }
   
