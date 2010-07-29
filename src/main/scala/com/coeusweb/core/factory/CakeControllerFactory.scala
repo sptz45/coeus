@@ -70,39 +70,76 @@ import com.coeusweb.core.FrameworkException
  * @see {@link com.coeusweb.config.CakeRegistrar CakeRegistrar}
  * @see Controller
  */
-class CakeControllerFactory(componentRegistry: AnyRef) extends ControllerFactory {
-
-  private[this] var cache = Map[Class[_], Constructor[_]]()
+class CakeControllerFactory(componentRegistries: AnyRef*) extends ControllerFactory {
+  require(componentRegistries.length > 0)
+  
+  private[this] val cache =
+    if (componentRegistries.length == 1) new SingleRegistryCache(componentRegistries(0))
+    else new MultipleRegistriesCache(componentRegistries:_*)
 
   def controllerRegistered[C <: Controller](controllerClass: Class[C]) {
     try {
       val constructor = controllerClass.getConstructors.apply(0)
-      require(isNoArgConstructorOfInnerClass(constructor))
-      cache = cache + (controllerClass -> constructor)
+      cache.add(controllerClass, constructor)
     } catch {
       case cause: Exception => throw new FrameworkException(
-        "Failed to register controller with class: %s. The the class must have a public no-arg construcor."
+        "Failed to register controller with class: %s. The the class must be an inner class with a public no-arg constructor."
           .format(controllerClass.getName), cause)
     }
   }
   
-  /*
-   * Constructors of inner classes take the outer class as the first parameter. For that reason we
-   * must check that the constructor takes one parameter (instead of zero).
-   */
-  private def isNoArgConstructorOfInnerClass(cons: Constructor[_]) = {
-    val paramTypes = cons.getParameterTypes
-    paramTypes.length == 1 && paramTypes(0).isAssignableFrom(componentRegistry.getClass)
-  }
-  
   def createController[C <: Controller](klass: Class[C]): C = {
     try {
-      cache(klass).newInstance(componentRegistry).asInstanceOf[C]
+      cache.newInstance(klass)
     } catch {
       case e: NoSuchElementException =>
         throw new FrameworkException(
           "Could not instantiate a controller with class: %s because the class hasn't been registered"
             .format(klass.getName))
+    }
+  }
+  
+  private trait Cache {
+    def add(klass: Class[_], cons: Constructor[_])
+    def newInstance[C](klass: Class[C]): C
+  }
+  
+  private class SingleRegistryCache(registry: AnyRef) extends Cache {
+    
+    var cache = Map[Class[_], Constructor[_]]()
+    
+    def add(klass: Class[_], cons: Constructor[_]) {
+      require(isNoArgConstructorOfInnerClass(cons))
+      cache = cache + (klass -> cons)
+    }
+    
+    def newInstance[C](klass: Class[C]): C = {
+      cache(klass).newInstance(registry).asInstanceOf[C]
+    }
+    
+    /* Constructors of inner classes take the outer class as the first parameter.
+     * For that reason we must check that the constructor takes one parameter
+     * (instead of zero). */
+    def isNoArgConstructorOfInnerClass(cons: Constructor[_]) = {
+      val paramTypes = cons.getParameterTypes
+      paramTypes.length == 1 && paramTypes(0).isAssignableFrom(registry.getClass)
+    }
+  }
+  
+  private class MultipleRegistriesCache(registries: AnyRef*) extends Cache {
+    
+    var cache = Map[Class[_], (AnyRef, Constructor[_])]()
+    
+    def add(klass: Class[_], cons: Constructor[_]) {
+      val paramTypes = cons.getParameterTypes
+      require(paramTypes.length == 1, "Class "+klass.getName+" is not an inner class or does not contain a no-arg constructor")
+      val registry = registries.find(r => paramTypes(0).isAssignableFrom(r.getClass))
+      require(registry != None, "Class "+klass.getName+" is not a inner class in any of ["+registries.map(_.getClass.getName).mkString(",")+"]")
+      cache = cache + (klass -> (registry.get -> cons))
+    }
+    
+    def newInstance[C](klass: Class[C]) = cache(klass) match {
+      case (registry, constructor) => constructor.newInstance(registry).asInstanceOf[C]
     }
   }
 }

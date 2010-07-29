@@ -14,6 +14,9 @@ import com.coeusweb.Controller
  * {@code DispatcherServlet}.
  */
 trait ControllerRegistry {
+  
+  type ControllerClass = Class[_ <: Controller] 
+  
   /** Holds all the registered Controller classes. */
-  val controllers: Builder[Class[_ <: Controller], Seq[Class[_ <: Controller]]] = new ListBuffer
+  val controllers: Builder[ControllerClass, Seq[ControllerClass]] = new ListBuffer
 }
