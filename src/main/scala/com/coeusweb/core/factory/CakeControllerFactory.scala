@@ -71,7 +71,9 @@ import com.coeusweb.core.FrameworkException
  * @see Controller
  */
 class CakeControllerFactory(componentRegistries: AnyRef*) extends ControllerFactory {
-  require(componentRegistries.length > 0)
+  require(componentRegistries.length > 0,
+          "Cannot create CakeControllerFactory. " +
+          "You must supply at least one \"component registry\" object.") 
   
   private[this] val cache =
     if (componentRegistries.length == 1) new SingleRegistryCache(componentRegistries(0))
@@ -109,7 +111,8 @@ class CakeControllerFactory(componentRegistries: AnyRef*) extends ControllerFact
     var cache = Map[Class[_], Constructor[_]]()
     
     def add(klass: Class[_], cons: Constructor[_]) {
-      require(isNoArgConstructorOfInnerClass(cons))
+      require(isNoArgConstructorOfInnerClass(cons),
+        "Class "+klass.getName+" is not an inner class or does not contain a no-arg constructor")
       cache = cache + (klass -> cons)
     }
     
