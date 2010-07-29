@@ -30,7 +30,7 @@ class MethodInvokingControllerFactoryTest {
   
   @Test(expected=classOf[FrameworkException])
   def exception_when_the_controller_class_has_not_been_registered() {
-    factory.createController(classOf[PostController])
+    factory.createController(classOf[BlogController])
   }
 }
 

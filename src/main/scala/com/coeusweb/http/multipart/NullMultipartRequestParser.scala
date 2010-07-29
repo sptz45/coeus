@@ -24,6 +24,7 @@ class NullMultipartRequestParser extends MultipartRequestParser {
   /** Throws {@code UnsupportedOperationException}. */
   def parse(request: HttpServletRequest): MultipartHttpServletRequest = {
     throw new UnsupportedOperationException(
-      "Multipart requests are not supported in the default configuration. Please configure a MultipartRequestParser in DispatcherConfig.")
+      "Multipart requests are not supported in the default configuration. " +
+      "Please configure a MultipartRequestParser in DispatcherConfig.")
   }
 }

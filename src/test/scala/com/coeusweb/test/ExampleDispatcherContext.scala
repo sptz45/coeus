@@ -8,13 +8,13 @@ package com.coeusweb.test
 
 import javax.servlet.ServletConfig
 import com.coeusweb.config._
-import com.coeusweb.http.multipart.{ CommonsMultipartRequestParser, MultipartRequestParser, FormFile }
-import com.coeusweb.view.{ ViewResolver, TextView }
+import com.coeusweb.http.multipart.{ MultipartRequestParser, CommonsMultipartRequestParser }
 
 
-class ExampleDispatcherContext(sc: ServletConfig) extends ConfigBuilder(sc)
-                                          with ControllerRegistry
-                                          with InterceptorRegistry {
+class ExampleDispatcherContext(sc: ServletConfig)
+  extends ConfigBuilder(sc)
+     with ControllerRegistry
+     with InterceptorRegistry {
   
   controllers += classOf[BlogController]
   controllers += classOf[UploadController]
@@ -22,7 +22,8 @@ class ExampleDispatcherContext(sc: ServletConfig) extends ConfigBuilder(sc)
   
   override def dispatcherConfig = new DispatcherConfig(sc) {
     override lazy val viewResolver = GlogalState.viewResolver
-    override lazy val multipartParser: MultipartRequestParser = new CommonsMultipartRequestParser(1) // 1 byte threshold
+    override lazy val multipartParser: MultipartRequestParser =
+      new CommonsMultipartRequestParser(sizeThreshold = 1 /* byte */)
   }
 }
 

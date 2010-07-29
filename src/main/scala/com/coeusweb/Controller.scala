@@ -104,11 +104,12 @@ package com.coeusweb
  * is used to lookup a {@code View} from the configured {@code ViewResolver} and that {@code View} is used to
  * render the request. If a hander method returns {@code NodeSeq} then the returned {@code NodeSeq} is wrapped
  * into an {@code XHtmlView} that is used to render the response. Last if the method returns {@code Unit} then
- * {@link RequestToViewNameTranslator} is used to derive a view name from the request.</p>
+ * {@link com.coeusweb.core.convention.RequestToViewNameTranslator RequestToViewNameTranslator} is used to derive
+ * a view name from the request.</p>
  * 
- * @see AbstractController
- * @see {@link com.coeusweb.core.Handler#handle Handler}
- * @see {@link com.coeusweb.core.ControllerFactory ControllerFactory}
+ * @see {@link com.coeusweb.controller.AbstractController AbstractController}
+ * @see {@link com.coeusweb.core.Handler#handle Handler.handle(..)}
+ * @see {@link com.coeusweb.core.factory.ControllerFactory ControllerFactory}
  */
 abstract class Controller {
   

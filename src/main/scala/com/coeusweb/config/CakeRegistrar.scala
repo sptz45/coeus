@@ -12,7 +12,10 @@ import com.coeusweb.Controller
  * Register all the {@code Controller} classes found in a Cake component
  * registry.
  * 
- * <p>Should be used in conjunction with the {@code CakeControllerFactory}.</p>
+ * <p>Should be used in conjunction with
+ * {@link com.coeusweb.core.factory.CakeControllerFactory CakeControllerFactory}.</p>
+ * 
+ * @see ControllerRegistry
  */
 object CakeRegistrar {
   
