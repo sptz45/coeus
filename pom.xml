@@ -36,7 +36,6 @@
 
 	<properties>
 		<scala.version>2.8.0</scala.version>
-		<scalate.version>1.2-SNAPSHOT</scalate.version>
 	</properties>
 
 	<repositories>
@@ -49,39 +48,6 @@
 			</snapshots>
 			<releases>
 				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>scala-tools.org-snapshots</id>
-			<name>Scala-Tools Snapshots</name>
-			<url>http://scala-tools.org/repo-snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>FuseSource</id>
-			<name>FuseSource Community Release Repository</name>
-			<url>http://repo.fusesource.com/nexus/content/repositories/public</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>FuseSource-Snapshot</id>
-			<name>FuseSource Community Snapshot Repository</name>
-			<url>http://repo.fusesource.com/nexus/content/repositories/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
 			</releases>
 		</repository>
 		<repository>
@@ -119,7 +85,7 @@
 		<dependency>
 			<groupId>org.fusesource.scalate</groupId>
 			<artifactId>scalate-core</artifactId>
-			<version>${scalate.version}</version>
+			<version>1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-fileupload</groupId>
