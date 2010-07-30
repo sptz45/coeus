@@ -8,14 +8,14 @@ package com.coeusweb.core
 
 import scala.xml.NodeSeq
 import com.coeusweb.error.{ ExceptionHandler, ErrorPageView }
-import com.coeusweb.interceptor.RequestInterceptor
+import com.coeusweb.interceptor.Interceptor
 import com.coeusweb.view._
 import convention.RequestToViewNameTranslator.viewNameForRequest
 import factory.ControllerFactory
 
 
 private class RequestExecutor(
-  interceptors: Iterable[RequestInterceptor],
+  interceptors: Iterable[Interceptor],
   exceptionHandler: ExceptionHandler,
   viewResolver: ViewResolver,
   controllerFactory: ControllerFactory) {

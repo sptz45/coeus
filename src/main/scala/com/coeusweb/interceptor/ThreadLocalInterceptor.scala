@@ -13,7 +13,7 @@ import com.coeusweb.core.RequestContext
 /**
  * A request interceptor to set {@link WebRequest#currentRequest}.
  */
-class ThreadLocalRequestInterceptor extends RequestInterceptor {
+class ThreadLocalInterceptor extends Interceptor {
 
   def preHandle(context: RequestContext) = {
     WebRequest.currentRequest = context.request

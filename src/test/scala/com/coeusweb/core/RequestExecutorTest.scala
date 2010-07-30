@@ -14,7 +14,7 @@ import org.mockito.Matchers._
 import com.coeusweb.{ Controller, WebRequest, WebResponse }
 import com.coeusweb.core.factory.SimpleControllerFactory
 import com.coeusweb.error.{ ExceptionHandler, ErrorPageView }
-import com.coeusweb.interceptor.RequestInterceptor
+import com.coeusweb.interceptor.Interceptor
 import com.coeusweb.test.TestHelpers
 import com.coeusweb.test.servlet.MockHttpServletResponse
 import com.coeusweb.view._
@@ -24,7 +24,7 @@ class RequestExecutorTest extends TestHelpers {
   val views = mock[ViewResolver]
   val exceptionHandler = mock[ExceptionHandler]
   val handler = mock[Handler[Controller]]
-  val interceptor = mock[RequestInterceptor]
+  val interceptor = mock[Interceptor]
   val error = new RuntimeException
   
   @Test
@@ -107,7 +107,7 @@ class RequestExecutorTest extends TestHelpers {
     when(interceptor.preHandle(any())).thenThrow(error)
     when(exceptionHandler.handle(any())).thenReturn(NullView)
     
-    val interceptor_2 = mock[RequestInterceptor]
+    val interceptor_2 = mock[Interceptor]
     execute(interceptor, interceptor_2)
 
     verifyZeroInteractions(handler, interceptor_2)    
@@ -119,7 +119,7 @@ class RequestExecutorTest extends TestHelpers {
   
   @Test
   def exception_after_handler_calls_all_interceptors_for_cleanup() {
-    val interceptor_2 = mock[RequestInterceptor]
+    val interceptor_2 = mock[Interceptor]
     when(interceptor.preHandle(any())).thenReturn(true)
     when(interceptor_2.preHandle(any())).thenReturn(true)
     when(interceptor_2.postHandle(any())).thenThrow(error)
@@ -134,7 +134,7 @@ class RequestExecutorTest extends TestHelpers {
   
   @Test
   def request_contains_the_first_exception_if_multiple_occur() {
-    val interceptor_2 = mock[RequestInterceptor]
+    val interceptor_2 = mock[Interceptor]
     when(interceptor.preHandle(any())).thenReturn(true)
     when(interceptor_2.preHandle(any())).thenThrow(error)
     when(interceptor.postHandle(any())).thenThrow(new IllegalArgumentException)
@@ -165,14 +165,14 @@ class RequestExecutorTest extends TestHelpers {
     }
   }
   
-  private def verifyInterceptor(ri: RequestInterceptor) {
+  private def verifyInterceptor(ri: Interceptor) {
     val order = inOrder(ri)
     order.verify(ri).preHandle(any())
     order.verify(ri).postHandle(any())
     order.verify(ri).afterRender(any())
   }
   
-  private def verifyInterceptors(ris: RequestInterceptor*) {
+  private def verifyInterceptors(ris: Interceptor*) {
     val order = inOrder(ris: _*)
     for (ri <- ris) order.verify(ri).preHandle(any())
     for (ri <- ris) order.verify(ri).postHandle(any())
@@ -187,13 +187,13 @@ class RequestExecutorTest extends TestHelpers {
     order.verify(interceptor).afterRender(any())
   }
   
-  private def execute(ris: RequestInterceptor*) {
+  private def execute(ris: Interceptor*) {
     val executor = new RequestExecutor(aggregateInterceptors(ris: _*), exceptionHandler, views, new SimpleControllerFactory)
     executor.execute(makeRequestContext(handler))
   }
   
-  private def aggregateInterceptors(is: RequestInterceptor*): Iterable[RequestInterceptor] = {
-    val builder = new scala.collection.mutable.ListBuffer[RequestInterceptor]
+  private def aggregateInterceptors(is: Interceptor*): Iterable[Interceptor] = {
+    val builder = new scala.collection.mutable.ListBuffer[Interceptor]
     is.foreach(builder += _)
     builder.result
   }

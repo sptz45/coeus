@@ -11,13 +11,13 @@ import view.View
 import core.RequestContext
 
 /**
- * A stackable trait to filter the requests that a {@code RequestInterceptor}
+ * A stackable trait to filter the requests that a {@code Interceptor}
  * intercepts. 
  */
-trait RequestFilter extends RequestInterceptor {
+trait RequestFilter extends Interceptor {
   
   /**
-   * Decide if the <code>RequestInterceptor</code> is going to intercept
+   * Decide if the <code>Interceptor</code> is going to intercept
    * the given request.
    * 
    * @param request the current request

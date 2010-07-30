@@ -7,7 +7,7 @@
 package com.coeusweb.scope.support
 
 import com.coeusweb.core.RequestContext
-import com.coeusweb.interceptor.RequestInterceptor
+import com.coeusweb.interceptor.Interceptor
 import com.coeusweb.scope.FlashScope
 
 /**
@@ -17,7 +17,7 @@ import com.coeusweb.scope.FlashScope
  * <p>This interceptor in required for the correct behavior of the framework
  * and it is registered by default.</p>
  */
-class FlashScopeInterceptor extends RequestInterceptor {
+class FlashScopeInterceptor extends Interceptor {
   
   def preHandle(context: RequestContext) = continue
   

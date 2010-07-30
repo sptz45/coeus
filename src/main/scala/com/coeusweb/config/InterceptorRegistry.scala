@@ -11,7 +11,7 @@ import com.coeusweb.interceptor._
 import com.coeusweb.scope.support.FlashScopeInterceptor
 
 /**
- * A trait to register <code>RequestInterceptor</code> instances for a
+ * A trait to register <code>Interceptor</code> instances for a
  * {@code DispatcherServlet}.
  */
 trait InterceptorRegistry {
@@ -22,12 +22,12 @@ trait InterceptorRegistry {
    * <p>Interceptors are called during request execution in the order that are
    * registered.</p>
    * 
-   * <p>{@link ThreadLocalRequestInterceptor} and {@link FlashScopeInterceptor}
+   * <p>{@link ThreadLocalInterceptor} and {@link FlashScopeInterceptor}
    * are registered by default because basic framework features depend on their
    * function.</p>
    */
-  val interceptors: Builder[RequestInterceptor, Seq[RequestInterceptor]] = new ListBuffer
+  val interceptors: Builder[Interceptor, Seq[Interceptor]] = new ListBuffer
   
-  interceptors += new ThreadLocalRequestInterceptor
+  interceptors += new ThreadLocalInterceptor
   interceptors += new FlashScopeInterceptor
 }

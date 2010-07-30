@@ -7,7 +7,7 @@
 package com.coeusweb.test
 
 import com.coeusweb.core.RequestContext
-import com.coeusweb.interceptor.RequestInterceptor
+import com.coeusweb.interceptor.Interceptor
 import com.coeusweb.view.{View, ViewResolver}
 
 
@@ -16,7 +16,7 @@ class MockViewResolver(views: Map[String, View]) extends ViewResolver {
 }
 
 
-class MockInterceptor extends RequestInterceptor {
+class MockInterceptor extends Interceptor {
   
   private var pre, post, after = false
   

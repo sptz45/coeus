@@ -17,7 +17,7 @@ import com.coeusweb.core.RequestContext
  * @see Interceptors
  * @see {@link com.coeusweb.core.ControllerRegistry ControllerRegistry}
  */
-trait RequestInterceptor {
+trait Interceptor {
   
   /**
    * Called before the request's Handler.
@@ -43,13 +43,13 @@ trait RequestInterceptor {
   def afterRender(context: RequestContext)
   
   /**
-   * When returned from the {@link RequestInterceptor#preHandle(context)} method
+   * When returned from the {@link Interceptor#preHandle(context)} method
    * tells the framework to continue with the handling of the request.
    */
   protected def continue = true
   
   /**
-   * When returned from the {@link RequestInterceptor#preHandle(context)} method
+   * When returned from the {@link Interceptor#preHandle(context)} method
    * tells the framework that the request has been handled.
    */
   protected def stop = false

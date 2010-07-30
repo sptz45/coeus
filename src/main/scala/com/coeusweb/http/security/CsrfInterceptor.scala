@@ -6,7 +6,7 @@
  */
 package com.coeusweb.http.security
 
-import com.coeusweb.interceptor.RequestInterceptor
+import com.coeusweb.interceptor.Interceptor
 import com.coeusweb.core.RequestContext
 import com.coeusweb.view.View
 
@@ -15,7 +15,7 @@ import com.coeusweb.view.View
  * 
  * @see CsrfProtection
  */
-class CsrfInterceptor extends RequestInterceptor {
+class CsrfInterceptor extends Interceptor {
 
   def preHandle(context: RequestContext) = {
     CsrfProtection.assertOrigin(context.request)
