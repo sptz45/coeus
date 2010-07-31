@@ -35,12 +35,11 @@ public class MultipartHttpServletRequest extends HttpServletRequestWrapper{
   }
   
   @Override
-  @SuppressWarnings("unchecked")
-  public Enumeration getParameterNames() {
-    return new Enumeration() {
+  public Enumeration<?> getParameterNames() {
+    return new Enumeration<String>() {
       Iterator<String> names = parameters.keySet().iterator();
       public boolean hasMoreElements() { return names.hasNext(); }
-      public Object nextElement() { return names.next(); }
+      public String nextElement() { return names.next(); }
     };
   }
   
@@ -50,8 +49,7 @@ public class MultipartHttpServletRequest extends HttpServletRequestWrapper{
   }
   
   @Override
-  @SuppressWarnings("unchecked")
-  public Map getParameterMap() {
+  public Map<?, ?> getParameterMap() {
     return parameters;
   }
   
