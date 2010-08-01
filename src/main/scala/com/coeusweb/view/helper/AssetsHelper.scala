@@ -11,12 +11,13 @@ import javax.servlet.ServletContext
 import scala.util.Random
 
 /**
- * Contains helper methods for generating tags that link to asset files.
+ * Helper methods for generating tags that link to asset files.
  * 
  * <p>Can generate tags for Javascript, CSS and image files.</p>
  */
 trait AssetsHelper {
   
+  /** The {@code ServletContext} of the web application. */
   val servletContext: ServletContext
   
   /**

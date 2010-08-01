@@ -78,15 +78,11 @@ object StreamingView {
    * @param file the <code>File</code> to send to the client
    * @param contentType the response's content-type 
    */
-  def streamFile(file: File, contentType: String): StreamingView = {
-    require(file.canRead)
-    new StreamingView(
-      input = new FileInputStream(file),
-      length = file.length(),
-      filename = file.getName,
-      contentType = contentType)
+  def streamFile(file: File, contentType: String): StreamingView = { 
+    require(file.canRead, "Unable to stream file '"+file+"', because the file is unreadable.")
+    new StreamingView(input = new FileInputStream(file),
+                      length = file.length(),
+                      filename = file.getName,
+                      contentType = contentType)
   }
 }
-
-
-
