@@ -40,6 +40,8 @@ object CsrfProtection {
    * </ol>
    * </p>
    * 
+   * @param request the request to check for forgery
+   * 
    * @throws IllegalStateException if the request must be protected and a WebSession does not exist
    * @throws RequiredAttributeException if the value of the CSRF token in not found in session
    * @throws MaliciousRequestException if the token in the request parameter is missing or if it

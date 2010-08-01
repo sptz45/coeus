@@ -19,7 +19,10 @@ trait FormHelper {
   
   private[this] val EmptyElem = Text("")
   
+  /** Contains the i18n messages. */
   val messages: MessageBundle
+  
+  /** Formats the error messages of validators. */
   val errorFormatter: ErrorFormatter
   
   
@@ -34,7 +37,7 @@ trait FormHelper {
    */
   def error(field: String)(implicit scopes: ScopeAccessor) = {
     bindingResult.error(field) match {
-      case None        => EmptyElem
+      case None      => EmptyElem
       case Some(err) =>
         <span class="error">{ errorFormatter.format(err, scopes.request.locale) }</span>
     }

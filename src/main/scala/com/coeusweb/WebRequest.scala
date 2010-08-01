@@ -63,7 +63,7 @@ class WebRequest(
   
   private[this] var _session: WebSession = _
   
-  /** Return the WebSession and optionally creates one if it doesn't exist */
+  /** Return the WebSession and optionally creates one if it doesn't exist. */
   def session = {
     if (_session eq null)
       _session = new WebSession(servletRequest.getSession)
@@ -91,16 +91,16 @@ class WebRequest(
     session
   }
   
-  /** Returns the flash scope */
+  /** Returns the flash scope. */
   lazy val flash = new FlashScope(session)
   
-  /** Returns the application scope */
+  /** Returns the application scope. */
   lazy val application = new ApplicationScope(session.servletSession.getServletContext)
   
-  /** Returns the scope of request parameters */
+  /** Returns the request parameters. */
   lazy val params = new RequestParameters(servletRequest, locale, converters)
   
-  /** Returns the scope of path variables */
+  /** Returns the path variables. */
   lazy val path = new PathParameters(servletRequest, locale, converters, pathContext)
   
   /** The user's locale as returned by the configured <code>LocaleResolver</code>. */
