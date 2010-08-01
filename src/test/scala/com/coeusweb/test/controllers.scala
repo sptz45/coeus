@@ -32,7 +32,7 @@ class UploadController extends Controller {
   
   @Post("")
   def handleUpload() = {
-    val f = request.file("document")
+    val f = request.files("document")
     assertSome(f, "The request must contain a file with name=document")
     assertEquals("scala.txt", f.get.filename)
     GlogalState.uploadedFile = f.get

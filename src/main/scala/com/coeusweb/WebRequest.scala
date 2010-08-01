@@ -173,7 +173,7 @@ class WebRequest(
    */
   def isMultipart = WebRequest.isMultipart(servletRequest)
   
-  def file(name: String): Option[FormFile] = servletRequest match {
+  def files(name: String): Option[FormFile] = servletRequest match {
     case multipart: MultipartHttpServletRequest => Option(multipart.getFile(name))
     case _ => None
   }

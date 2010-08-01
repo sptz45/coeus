@@ -126,6 +126,6 @@ class WebRequestTest extends scope.AbstractScopedContainerTest {
   @Test
   def no_files_available_when_no_multipart() {
     assertFalse(request.isMultipart)
-    assertNone(request.file("form-file"))
+    assertNone(request.files("form-file"))
   }
 }
