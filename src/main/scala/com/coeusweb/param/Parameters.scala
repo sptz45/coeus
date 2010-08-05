@@ -60,7 +60,7 @@ trait Parameters extends Iterable[(String, String)] {
   def contains(name: String) = getParameter(name) ne null
   
   /**
-   * Retrieve the parameter the specified name.
+   * Retrieve the parameter with the specified name.
    * 
    * @param name the name of the parameter
    * 
@@ -85,7 +85,7 @@ trait Parameters extends Iterable[(String, String)] {
   def get(name: String): Option[String] = Option(getParameter(name))
   
   /**
-   * Retrieve the parameter the specified name.
+   * Retrieve the parameter with the specified name.
    * 
    * @param T the type to convert this parameter to
    * @param name the name of the parameter
@@ -100,7 +100,7 @@ trait Parameters extends Iterable[(String, String)] {
   }
   
   /**
-   * Retrieve the parameter the specified name.
+   * Retrieve the parameter with the specified name.
    * 
    * @param T the type to convert this parameter to
    * @param parser the <code>Parser</code> to use for converting the parameter to <code>T</code>
