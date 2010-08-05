@@ -8,32 +8,41 @@ package com.coeusweb.param
 
 import org.junit.Test
 import org.junit.Assert._
+import com.coeusweb.test.Assertions._
 import com.coeusweb.bind.Parser
 import com.coeusweb.bind.converter.CurrencyConverter
 
 abstract class AbstractParametersTest {
   
   /* The scope under test */
-  val param: Parameters
+  val params: Parameters
   
   /* Sets a parameter in the scope under test */
   def setParameter(name: String, value: String)
 
   @Test(expected=classOf[MissingParameterException])
   def read_nonexisting_parameter() {
-    param.parse[String]("does not exist")
+    assertNull(params.getParameter("does not exists"))
+    params("does not exist")
   }
   
   @Test(expected=classOf[MissingParameterException])
-  def nonexisting_parameter_and_custom_parserer_with_no_default_value() {
+  def empty_string_is_the_same_as_a_missing_parameter() {
+    setParameter("empty", "")
+    assertNull(params.getParameter("empty"))
+    params("empty")
+  }
+  
+  @Test
+  def nonexisting_parameter_and_custom_parsrer_with_no_default_value() {
     val parser: Parser[Int] = null
-    param.parse("does not exist", parser, None)
+    assertNone(params.parse("does not exist", parser))
   }
   
   @Test
   def return_string_if_no_type_argument_specified() {
     setParameter("message", "hello")
-    assertEquals("hello", param("message"))
+    assertSome("hello", params.parse("message"))
   }
   
   @Test
@@ -41,37 +50,37 @@ abstract class AbstractParametersTest {
     import java.util._, java.net.URI, java.math.BigDecimal
     
     setParameter("message", "hello")
-    assertEquals("hello", param.parse[String]("message"))
+    assertSome("hello", params.parse[String]("message"))
     
     setParameter("ten", "10")
-    assertEquals(10, param.parse[Int]("ten"))
-    assertEquals(10, param.parse[java.lang.Integer]("ten"))
-    assertEquals(10, param.parse[Long]("ten"))
+    assertSome(10, params.parse[Int]("ten"))
+    assertSome(10, params.parse[java.lang.Integer]("ten"))
+    assertSome(10L, params.parse[Long]("ten"))
     
     setParameter("half", "0.5")
-    assertEquals(0.5, param.parse[Float]("half"), 0.01)
-    assertEquals(0.5, param.parse[Double]("half"), 0.01)
+    assertEquals(0.5, params.parse[Float]("half").get, 0.01)
+    assertEquals(0.5, params.parse[Double]("half").get, 0.01)
     
     setParameter("birthDate", "1980/4/15")
-    assertEquals(birthDate.getTime, param.parse[java.util.Date]("birthDate"))
-    assertEquals(birthDate, param.parse[java.util.Calendar]("birthDate"))
+    assertSome(birthDate.getTime, params.parse[Date]("birthDate"))
+    assertSome(birthDate, params.parse[Calendar]("birthDate"))
     
     setParameter("locale", Locale.US.toString)
-    assertEquals(Locale.US, param.parse[Locale]("locale"))
+    assertSome(Locale.US, params.parse[Locale]("locale"))
     
     setParameter("blog", "http://tzavellas.com/techblog")
-    assertEquals(new URI("http://tzavellas.com/techblog"), param.parse[URI]("blog"))
+    assertSome(new URI("http://tzavellas.com/techblog"), params.parse[URI]("blog"))
     
     setParameter("decimal", "123.4567890")
-    assertEquals(new BigDecimal("123.4567890"), param.parse[BigDecimal]("decimal"))
+    assertSome(new BigDecimal("123.4567890"), params.parse[BigDecimal]("decimal"))
   }
   
   @Test
   def read_parameter_using_custom_parser() {
     import java.math.BigDecimal
     setParameter("10 dollars", "$10")
-    assertEquals(new BigDecimal("10.00"),
-                 param.parse("10 dollars", new CurrencyConverter))
+    assertSome(new BigDecimal("10.00"),
+                 params.parse("10 dollars", new CurrencyConverter))
   }
   
   

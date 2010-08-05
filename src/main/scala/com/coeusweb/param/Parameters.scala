@@ -35,6 +35,12 @@ trait Parameters extends Iterable[(String, String)] {
   /** The current Servlet request. */
   def servletRequest: HttpServletRequest
   
+  private [param] def sanitizeParameter(param: String): String = {
+    if (param eq null) return null
+    val trimmed = param.trim
+    if (trimmed == "") null else trimmed
+  }
+  
   /**
    * Retrieve the parameter with the specified name.
    * 
@@ -73,13 +79,13 @@ trait Parameters extends Iterable[(String, String)] {
    * 
    * @param name the name of the parameter
    * 
-   * @return an <code>Option</code> containing the parameter value
-   *          if the parameter exists.
+   * @return an <code>Option</code> containing the parameter value if
+   *         the parameter exists.
    */
-  def optional(name: String) = Option(getParameter(name))
+  def get(name: String): Option[String] = Option(getParameter(name))
   
   /**
-   * Retrieve the parameter with the specified name.
+   * Retrieve the parameter the specified name.
    * 
    * @param T the type to convert this parameter to
    * @param name the name of the parameter
@@ -87,7 +93,7 @@ trait Parameters extends Iterable[(String, String)] {
    * @return an <code>Option</code> containing the parameter value converted to
    *         {@code T} if the parameter exists.
    */
-  def get[T](name: String)(implicit m: Manifest[T]): Option[T] = {
+  def parse[T](name: String)(implicit m: Manifest[T]): Option[T] = {
     val parameter = getParameter(name)
     if (parameter eq null) None
     else Some(parseValue(m, parameter, null))
@@ -97,40 +103,15 @@ trait Parameters extends Iterable[(String, String)] {
    * Retrieve the parameter the specified name.
    * 
    * @param T the type to convert this parameter to
-   * @param name the name of the parameter
-   * 
-   * @throws MissingParameterException if a parameter with the specified name does not exist.
-   * 
-   * @return the parameter value converted to <code>T</code>.
-   */
-  def parse[T](name: String)(implicit m: Manifest[T]): T = {
-    parseValue(m, apply(name), null)
-  }
-  
-  /**
-   * Retrieve the parameter the specified name.
-   * 
-   * @param T the type to convert this parameter to
    * @param parser the <code>Parser</code> to use for converting the parameter to <code>T</code>
    * @param name the name of the parameter
-   * @param default an optional default value
    * 
-   * @throws MissingParameterException if a parameter with the specified name does not exist and
-   *         <code>default</code> is <code>None</code>.
-   * 
-   * @return the parameter value converted to <code>T</code> or <code>default</code>
-   *         if a parameter with the specified name does not exist and <code>default</code> has a
-   *         value of <code>Some</code> else throws <code>MissingParameterException</code>. 
+   * @return an <code>Option</code> containing the parameter value converted to
+   *         {@code T} if the parameter exists.
    */
-  def parse[T](name: String, parser: Parser[T], default: Option[T] = None)(implicit m: Manifest[T]): T = {
+  def parse[T](name: String, parser: Parser[T])(implicit m: Manifest[T]): Option[T] = {
     val parameter = getParameter(name)
-    if (parameter eq null)
-      default match {
-        case None => throw new MissingParameterException(name)
-        case Some(value) => value
-    } else {
-      parseValue(m, parameter, parser)
-    }
+    if (parameter eq null) None else Some(parseValue(m, parameter, parser))
   }
   
   

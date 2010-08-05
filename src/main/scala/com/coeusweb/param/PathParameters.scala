@@ -19,7 +19,7 @@ import com.coeusweb.bind.ConverterRegistry
  * 
  * @param servletRequest the current Servlet request
  * @param config the module's configuration
- * @param context a partial function that takes the parameter's name and return the parameter's value
+ * @param context a map that takes the parameter's name and return the parameter's value
  */
 class PathParameters(
   val servletRequest: HttpServletRequest,
@@ -29,13 +29,11 @@ class PathParameters(
   
   def getParameter(name: String) = {
     try {
-      val param = context(name)
-      if (param ne null) param.trim else null
+      sanitizeParameter(context(name))
     } catch {
       case e: RuntimeException => null
     }
   }
-  
   
   def iterator = context.iterator
 }

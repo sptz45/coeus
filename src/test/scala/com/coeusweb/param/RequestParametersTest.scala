@@ -13,7 +13,7 @@ import com.coeusweb.test.servlet.MockHttpServletRequest
 class RequestParametersTest extends AbstractParametersTest {
   
   val mock = new MockHttpServletRequest
-  val param = new RequestParameters(mock, Locale.US, DefaultConverterRegistry)
+  val params = new RequestParameters(mock, Locale.US, DefaultConverterRegistry)
   
   
   def setParameter(name: String, value: String) {

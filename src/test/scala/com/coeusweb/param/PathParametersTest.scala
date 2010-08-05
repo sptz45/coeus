@@ -14,7 +14,7 @@ import com.coeusweb.test.servlet.MockHttpServletRequest
 class PathParametersTest extends AbstractParametersTest {
 
   val pathVariables = Map[String, String]()
-  val param = new PathParameters(null, Locale.US, DefaultConverterRegistry, pathVariables)
+  val params = new PathParameters(null, Locale.US, DefaultConverterRegistry, pathVariables)
   
   def setParameter(name: String, value: String) {
     pathVariables += (name -> value)
