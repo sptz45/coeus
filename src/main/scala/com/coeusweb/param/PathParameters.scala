@@ -29,7 +29,7 @@ class PathParameters(
   
   def getParameter(name: String) = {
     try {
-      sanitizeParameter(context(name))
+      context(name)
     } catch {
       case e: RuntimeException => null
     }

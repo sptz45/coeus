@@ -20,33 +20,37 @@ abstract class AbstractParametersTest {
   /* Sets a parameter in the scope under test */
   def setParameter(name: String, value: String)
 
-  @Test(expected=classOf[MissingParameterException])
+  @Test
   def read_nonexisting_parameter() {
     assertNull(params.getParameter("does not exists"))
-    params("does not exist")
+    assertFalse(params.contains("does not exist"))
+    assertNone(params.get("does not exist"))
+    assertNone(params.parse[String]("does not exist"))
+    assertThrows[MissingParameterException] {
+      params("does not exist")
+    }
   }
   
-  @Test(expected=classOf[MissingParameterException])
+  @Test
   def empty_string_is_the_same_as_a_missing_parameter() {
     setParameter("empty", "")
-    assertNull(params.getParameter("empty"))
-    params("empty")
+    assertEquals("", params.getParameter("empty"))
+    assertTrue(params.contains("empty"))
+    assertNone(params.get("empty"))
+    assertNone(params.parse[String]("empty"))
+    assertThrows[MissingParameterException] {
+      params("empty")
+    }
   }
   
   @Test
-  def nonexisting_parameter_and_custom_parsrer_with_no_default_value() {
-    val parser: Parser[Int] = null
-    assertNone(params.parse("does not exist", parser))
-  }
-  
-  @Test
-  def return_string_if_no_type_argument_specified() {
+  def parse_shoule_return_string_if_no_type_argument_specified() {
     setParameter("message", "hello")
     assertSome("hello", params.parse("message"))
   }
   
   @Test
-  def read_parameter_using_default_parsers() {
+  def parse_parameters_using_the_default_parsers() {
     import java.util._, java.net.URI, java.math.BigDecimal
     
     setParameter("message", "hello")
@@ -76,11 +80,10 @@ abstract class AbstractParametersTest {
   }
   
   @Test
-  def read_parameter_using_custom_parser() {
-    import java.math.BigDecimal
+  def parse_parameter_using_custom_parser() {
     setParameter("10 dollars", "$10")
-    assertSome(new BigDecimal("10.00"),
-                 params.parse("10 dollars", new CurrencyConverter))
+    assertSome(new java.math.BigDecimal("10.00"),
+               params.parse("10 dollars", new CurrencyConverter))
   }
   
   

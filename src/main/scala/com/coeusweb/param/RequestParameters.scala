@@ -21,8 +21,7 @@ class RequestParameters(
   val locale: Locale,
   val converters: ConverterRegistry) extends Parameters {
   
-  def getParameter(name: String) =
-    sanitizeParameter(servletRequest.getParameter(name))
+  def getParameter(name: String) = servletRequest.getParameter(name)
   
   def iterator = new Iterator[(String, String)] {
     val names = servletRequest.getParameterNames.asInstanceOf[java.util.Enumeration[String]]
