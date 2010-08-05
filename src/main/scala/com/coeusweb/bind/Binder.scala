@@ -42,11 +42,11 @@ object Binder {
   }
   
   def denyVars(vars: String*): Restriction = new Restriction {
-    def canBindTo(name: String) = ! vars.exists(name.startsWith(_))
+    def canBindTo(name: String) = ! vars.contains(name)
   }
   
   def allowVars(vars: String*): Restriction = new Restriction {
-    def canBindTo(name: String) = ! vars.exists(name.startsWith(_))
+    def canBindTo(name: String) = vars.contains(name)
   }
 
   def allowAll: Restriction = new Restriction {
