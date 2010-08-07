@@ -4,16 +4,25 @@ import java.util._
 import com.coeusweb.bind.Converter
 
 /**
- * A converter for Java collections.
+ * A {@code Converter} for Java collections.
+ *
+ * @param Coll        the type of the collection
+ * @param Elem        the type of the collection's elements
+ *
+ * @param converter   the {@code Converter} for the collection's elements
+ * @param separator   the string that separates the collection elements (default is ",")
+ * @param appendSpace whether to append a space character after the separator when
+ *                    formatting the collection (default is {@code true})
  */
 class JavaCollectionConverter[Coll[Elem] <: Collection[Elem], Elem](
   converter: Converter[Elem],
   newCollection: Int => Coll[Elem],
-  separator: String = ",", appendSpace: Boolean = true)
+  separator: String = ",",
+  appendSpace: Boolean = true)
     extends Converter[Coll[Elem]] {
 
   def parse(text: String, locale: Locale): Coll[Elem] = {
-    if ((text eq null) || (text.trim.isEmpty))
+    if ((text eq null) || text.trim.isEmpty)
       return newCollection(0)
       
     val input = text.split(separator).map(_.trim).filterNot(_.isEmpty)

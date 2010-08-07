@@ -9,7 +9,7 @@ package com.coeusweb.bind
 import java.util.Locale
 
 class Binder(
-  var converters: ConverterRegistry,
+  converters: ConverterRegistry,
   restriction: Binder.Restriction = Binder.allowAll) {
   
   def bind[T <: AnyRef](parameters: Iterable[(String, String)], target: T, locale: Locale): BindingResult[T] = {

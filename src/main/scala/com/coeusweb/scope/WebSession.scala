@@ -25,7 +25,7 @@ class WebSession(val servletSession: HttpSession) extends ScopedContainer with C
    * use the <code>HttpSessionMutexListener</code> check if your container always returns the
    * same object instance for the same <code>HttpSession</code>.</p> 
    * 
-   * @see core.HttpSessionMutexListener
+   * @see {@link com.coeusweb.scope.support.HttpSessionMutexListener HttpSessionMutexListener}
    */
   protected def mutex: AnyRef = WebSession.getMutex(servletSession)
   
