@@ -8,24 +8,22 @@ package com.coeusweb
 
 package object mvc {
   
-  type Path = com.coeusweb.annotation.Path
-  type Get = com.coeusweb.annotation.Get
-  type Post = com.coeusweb.annotation.Post
-  type Put = com.coeusweb.annotation.Put
-  type Delete = com.coeusweb.annotation.Delete
-  type HttpMethod = com.coeusweb.annotation.HttpMethod
-  
-  type Binder = com.coeusweb.bind.Binder
-  
   type Controller = com.coeusweb.Controller
   
-  type AbstractController = com.coeusweb.controller.AbstractController
+  type Path = annotation.Path
+  type Get = annotation.Get
+  type Post = annotation.Post
+  type Put = annotation.Put
+  type Delete = annotation.Delete
+  type HttpMethod = annotation.HttpMethod
   
-  type ResponseHelpers = com.coeusweb.controller.ResponseHelpers
+  type Binder = bind.Binder
   
-  type BeforeFilter = com.coeusweb.controller.BeforeFilter
+  type AbstractController = controller.AbstractController
+  type ResponseHelpers = controller.ResponseHelpers
   
-  type AfterFilter = com.coeusweb.controller.AfterFilter
+  type BeforeFilter = controller.BeforeFilter
+  type AfterFilter = controller.AfterFilter
   
-  type View = com.coeusweb.view.View
+  type View = view.View
 }

@@ -86,7 +86,7 @@ class DashedControllerClassNameTranslator(rootPackages: Iterable[String])
  * <p>Translates the controller's name by:</p>
  * <ol>
  * <li>prepending the transformed package according to the superclass</li>
- * <li>transforming the first character of the simple class name to lower case and..</li>
+ * <li>transforming the first character of the simple class name to lower case and...</li>
  * <li>by removing the "Controller" suffix if present.</li>
  * </ol>
  * 
