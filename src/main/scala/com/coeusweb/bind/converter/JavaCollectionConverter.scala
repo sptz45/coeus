@@ -52,16 +52,49 @@ class JavaCollectionConverter[Coll[Elem] <: Collection[Elem], Elem](
   }
 }
 
+/**
+ * Factory methods for creating converters for Java collections.
+ */
 object JavaCollectionConverter {
   
+  /**
+   * Creates a {@code Converter} for {@see java.util.ArrayList}.
+   *
+   * @param E           the type of the ArrayList's elements
+   *
+   * @param converter   the {@code Converter} for the ArrayList's elements
+   * @param separator   the string that separates the ArrayList elements (default is ",")
+   * @param appendSpace whether to append a space character after the separator when
+   *                    formatting the ArrayList (default is {@code true})
+   */
   def forArrayList[E](converter: Converter[E], separator: String = ",", appendSpace: Boolean = true) = {
     new JavaCollectionConverter[ArrayList, E](converter, { size: Int => new ArrayList[E](size) }, separator, appendSpace)
   }
-    
+  
+  /**
+   * Creates a {@code Converter} for {@link java.util.LinkedList}.
+   *
+   * @param E           the type of the LinkedList's elements
+   *
+   * @param converter   the {@code Converter} for the LinkedList's elements
+   * @param separator   the string that separates the LinkedList elements (default is ",")
+   * @param appendSpace whether to append a space character after the separator when
+   *                    formatting the LinkedList (default is {@code true})
+   */
   def forLinkedList[E](converter: Converter[E], separator: String = ",", appendSpace: Boolean = true) = {
     new JavaCollectionConverter[LinkedList, E](converter, { size: Int => new LinkedList[E]}, separator, appendSpace)
   }
   
+  /**
+   * Creates a {@code Converter} for {@link java.util.HashSet}.
+   *
+   * @param E           the type of the HashSet elements
+   *
+   * @param converter   the {@code Converter} for the HashSet's elements
+   * @param separator   the string that separates the HashSet elements (default is ",")
+   * @param appendSpace whether to append a space character after the separator when
+   *                    formatting the HashSet (default is {@code true})
+   */
   def forHashSet[E](converter: Converter[E], separator: String = ",", appendSpace: Boolean = true) = {
     new JavaCollectionConverter[HashSet, E](converter, { size: Int => new HashSet[E](size)}, separator, appendSpace)
   }
