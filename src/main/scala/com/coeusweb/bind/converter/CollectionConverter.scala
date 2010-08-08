@@ -10,15 +10,15 @@ import com.coeusweb.bind.Converter
  * @param Coll        the type of the collection
  * @param Elem        the type of the collection's elements
  *
- * @param converter   the {@code Converter} for the collection's elements
  * @param newBuilder  creates a builder for the collection
+ * @param converter   the {@code Converter} for the collection's elements
  * @param separator   the string that separates the collection elements (default is ",")
  * @param appendSpace whether to append a space character after the separator when
  *                    formatting the collection (default is {@code true})
  */
 class CollectionConverter[Coll[Elem] <: Traversable[Elem], Elem](
+  newBuilder: Int => Builder[Elem, Coll[Elem]],
   converter: Converter[Elem],
-  newBuilder: Int => Builder[Elem, Coll[Elem]], 
   separator: String = ",",
   appendSpace: Boolean = true) extends Converter[Coll[Elem]] {
   
@@ -54,6 +54,7 @@ class CollectionConverter[Coll[Elem] <: Traversable[Elem], Elem](
  * Factory methods for creating converters for Scala collections.
  */
 object CollectionConverter {
+
   import scala.collection.generic.GenericCompanion
   
   /**
@@ -74,8 +75,8 @@ object CollectionConverter {
     separator: String = ",",
     appendSpace: Boolean = true) = {
     
-    new CollectionConverter[Coll, Elem](converter,
+    new CollectionConverter[Coll, Elem](
       { size => val b = companion.newBuilder[Elem]; b.sizeHint(size); b },
-      separator, appendSpace)
+      converter, separator, appendSpace)
   }
 }

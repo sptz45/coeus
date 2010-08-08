@@ -15,8 +15,8 @@ import com.coeusweb.bind.Converter
  *                    formatting the collection (default is {@code true})
  */
 class JavaCollectionConverter[Coll[Elem] <: Collection[Elem], Elem](
-  converter: Converter[Elem],
   newCollection: Int => Coll[Elem],
+  converter: Converter[Elem],
   separator: String = ",",
   appendSpace: Boolean = true)
     extends Converter[Coll[Elem]] {
@@ -68,7 +68,7 @@ object JavaCollectionConverter {
    *                    formatting the ArrayList (default is {@code true})
    */
   def forArrayList[E](converter: Converter[E], separator: String = ",", appendSpace: Boolean = true) = {
-    new JavaCollectionConverter[ArrayList, E](converter, { size: Int => new ArrayList[E](size) }, separator, appendSpace)
+    new JavaCollectionConverter[ArrayList, E]({ size: Int => new ArrayList[E](size) }, converter, separator, appendSpace)
   }
   
   /**
@@ -82,7 +82,7 @@ object JavaCollectionConverter {
    *                    formatting the LinkedList (default is {@code true})
    */
   def forLinkedList[E](converter: Converter[E], separator: String = ",", appendSpace: Boolean = true) = {
-    new JavaCollectionConverter[LinkedList, E](converter, { size: Int => new LinkedList[E]}, separator, appendSpace)
+    new JavaCollectionConverter[LinkedList, E]({ size: Int => new LinkedList[E]}, converter, separator, appendSpace)
   }
   
   /**
@@ -96,6 +96,6 @@ object JavaCollectionConverter {
    *                    formatting the HashSet (default is {@code true})
    */
   def forHashSet[E](converter: Converter[E], separator: String = ",", appendSpace: Boolean = true) = {
-    new JavaCollectionConverter[HashSet, E](converter, { size: Int => new HashSet[E](size)}, separator, appendSpace)
+    new JavaCollectionConverter[HashSet, E]({ size: Int => new HashSet[E](size)}, converter, separator, appendSpace)
   }
 }
