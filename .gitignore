@@ -1,3 +1,6 @@
 target
 .scala_dependencies
 .settings
+lib_managed/
+src_managed/
+project/boot/
