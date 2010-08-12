@@ -21,6 +21,8 @@ import com.coeusweb.bind.Converter
  * @param separator   the string that separates the collection elements (default is ",")
  * @param appendSpace whether to append a space character after the separator when
  *                    formatting the collection (default is {@code true})
+ * 
+ * @see CollectionConverter
  */
 class TraversableConverter[Coll[Elem] <: Traversable[Elem], Elem](
   newBuilder: Int => Builder[Elem, Coll[Elem]],

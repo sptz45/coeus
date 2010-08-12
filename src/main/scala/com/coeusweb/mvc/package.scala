@@ -18,6 +18,7 @@ package object mvc {
   type HttpMethod = annotation.HttpMethod
   
   type Binder = bind.Binder
+  val  Binder = bind.Binder
   
   type AbstractController = controller.AbstractController
   type ResponseHelpers = controller.ResponseHelpers
