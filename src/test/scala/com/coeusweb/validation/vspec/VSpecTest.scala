@@ -52,7 +52,7 @@ class VSpecTest {
       ensure("username", satisfies { s: String => firstCalled = true; true })
       ensure("username", satisfies { s: String => secondCalled = true; true })
     }
-    validator.validate(new User(null, null, 12))
+    validator.validate(new User("", "", 12))
     assertTrue("first constraint not called", firstCalled)
     assertTrue("second constraint not called", secondCalled)
   }
@@ -93,7 +93,7 @@ class VSpecTest {
   def validate_using_custom_constraints() {
     val validator = new VSpec[User] { 
       ensure("username", isNotNull, satisfies { s: String => s == s.reverse })
-      ensure("email",    isNullOrSatisfies    { s: String => s == s.reverse })
+      ensure("email",    satisfies { s: String => s == s.reverse })
     }
     val user = new User("spiros", null, 0)
     assertErrors(1, validator.validate(user))
@@ -149,7 +149,7 @@ class VSpecTest {
       ensure("author", validatesWith(second))
       
     }
-    validator.validate(new Post(null, null, new User(null, "", 12)))
+    validator.validate(new Post("", "", new User("", "", 12)))
     assertTrue("first validator not called", firstCalled)
     assertTrue("second validator not called", secondCalled)
   }

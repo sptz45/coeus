@@ -25,16 +25,16 @@ trait GenericConstraints {
   }
   
   def satisfies[T](test: T => Boolean) = new Constraint[T] {
-    def isValid(value: T) = test(value)
+    def isValid(value: T) = value == null || test(value)
     
     def getError(targetClass: Class[_], field: String, value: T) = 
       Error.validationFailure("constraint", field, targetClass, value)
   }
   
-  def isNullOrSatisfies[T](test: T => Boolean) = new Constraint[T] {
-    def isValid(value: T) = value == null || test(value)
+  def isUnique[T](query: T => Option[_]) = new Constraint[T] {
+    def isValid(value: T) = value == null || query(value) == None
     
     def getError(targetClass: Class[_], field: String, value: T) = 
-      Error.validationFailure("constraint", field, targetClass, value)
+      Error.validationFailure("unique", field, targetClass, value)
   }
 }
