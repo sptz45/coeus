@@ -12,6 +12,9 @@ class Binder(
   converters: ConverterRegistry,
   restriction: Binder.Restriction = Binder.allowAll) {
   
+  def this(converters: ConverterRegistry, denyVars: String*) =
+    this(converters, Binder.denyVars(denyVars:_*))
+  
   def bind[T <: AnyRef](parameters: Iterable[(String, String)], target: T, locale: Locale): BindingResult[T] = {
     require(target != null, "Cannot bind to null!")
     

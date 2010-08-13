@@ -99,6 +99,16 @@ class BinderTest {
     assertTrue(result.hasErrors)
     assertEquals("long.type-mismatch", result.error("id").get.code)
   }
+  
+  @Test
+  def construct_using_deny_vars() {
+    val binder = new Binder(DefaultConverterRegistry, denyVars="id")
+    val user = new User
+    val idBeforeBinding = user.id
+    val result = binder.bind(Map("id" -> "42", "name" -> "spiros"), user, locale)
+    assertEquals(idBeforeBinding, user.id)
+    assertEquals("spiros", user.name)
+  }
 }
 
 object BinderTest {
