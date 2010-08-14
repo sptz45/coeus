@@ -133,5 +133,31 @@ trait FormHelper {
     <input type="hidden" name={CsrfProtection.tokenName} value={CsrfProtection.getToken(scopes.session)}/>
   }
   
+  def csrf_meta_tags(implicit scopes: ScopeAccessor) = {
+    <xml:group>
+      <meta name="csrf-param" content={CsrfProtection.tokenName}/>
+      <meta name="csrf-token" content={CsrfProtection.getToken(scopes.session)}/>
+    </xml:group>
+  }
+  
+  def action_link(href: String, text: String, attrs: (Symbol, String)* ) = {
+    val a = new java.lang.StringBuilder("a href=\"")
+    a.append(href).append("\"")
+    for ((attr, value) <- attrs) {
+      val name = attr.name match {
+        case "method"       => "data-method"
+        case "remote"       => "data-remote"
+        case "confirm"      => "data-confirm"
+        case "disable-with" => "data-disable-with"
+        case name           => name
+      }
+      a.append(" ").append(name).append("=\"").append(value).append("\"")
+    }
+    a.append(">")
+    a.append(text)
+    a.append("</a>")
+    a.toString
+  }
+  
   private def bindingResult(implicit s: ScopeAccessor) = ModelAttributes.getBindingResult(s.request)
 }
