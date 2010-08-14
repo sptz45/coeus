@@ -88,6 +88,9 @@ private class RequestExecutor(
       case view: View =>
         view.render(request, response)
         view
+      
+      case unit: Unit =>
+        processViewName(viewNameForRequest(request))
     }
   }
   
