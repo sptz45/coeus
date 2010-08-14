@@ -76,16 +76,16 @@ private class RequestExecutor(
 
       case name: String =>
         processViewName(name)
-
-      case xml: NodeSeq =>
-        val view = new XhtmlView(xml)
-        view.render(request, response)
-        view
         
       case ViewReference(name) =>
         processViewName(name)
 
       case view: View =>
+        view.render(request, response)
+        view
+      
+      case xml: NodeSeq =>
+        val view = new XhtmlView(xml)
         view.render(request, response)
         view
       
