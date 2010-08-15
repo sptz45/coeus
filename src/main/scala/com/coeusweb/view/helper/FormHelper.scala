@@ -142,7 +142,7 @@ trait FormHelper {
   
   def action_link(href: String, text: String, attrs: (Symbol, String)* ) = {
     val a = new java.lang.StringBuilder("a href=\"")
-    a.append(href).append("\"")
+    a.append(href).append("\" rel=\"nofollow\"")
     for ((attr, value) <- attrs) {
       val name = attr.name match {
         case "method"       => "data-method"
