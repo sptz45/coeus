@@ -11,10 +11,7 @@ import com.coeusweb.config._
 import com.coeusweb.http.multipart.{ MultipartRequestParser, CommonsMultipartRequestParser }
 
 
-class ExampleDispatcherContext(sc: ServletConfig)
-  extends ConfigBuilder(sc)
-     with ControllerRegistry
-     with InterceptorRegistry {
+class ExampleWebModule(sc: ServletConfig) extends WebModule(sc) {
   
   controllers += classOf[BlogController]
   controllers += classOf[UploadController]

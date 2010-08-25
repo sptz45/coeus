@@ -7,7 +7,6 @@
 package com.coeusweb.config
 
 import javax.servlet.ServletConfig
-import com.coeusweb.view.scalate.ScalateViewResolver
 
 /**
  * Creates the configuration for {@code DispatcherServlet}.
@@ -18,7 +17,9 @@ import com.coeusweb.view.scalate.ScalateViewResolver
  * @see DispatcherConfig
  * @see {@link com.coeusweb.core.DispatcherServlet DispatcherServlet}
  */
-class ConfigBuilder(servletConfig: ServletConfig) {
+trait ConfigBuilder {
+  
+  val servletConfig: ServletConfig
   
   /**
    * The configuration of {@code DispatcherServlet}.

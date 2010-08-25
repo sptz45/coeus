@@ -22,7 +22,7 @@ class DispatcherServletTest {
   @Before
   def initializeServlet() {
     GlogalState.interceptor.reset()
-    servletConfig.addInitParameter("context", classOf[ExampleDispatcherContext].getName.toString)
+    servletConfig.addInitParameter("web-module", classOf[ExampleWebModule].getName.toString)
     servlet.init(servletConfig)
   }
   
@@ -65,7 +65,7 @@ class DispatcherServletTest {
   def handler_not_found_if_hide_resources() {
     val no405 = new DispatcherServlet
     val config = new MockServletConfig("sweb-test-with-no-405")
-    config.addInitParameter("context", classOf[ExampleContextWithNo405].getName.toString)
+    config.addInitParameter("web-module", classOf[ExampleWebModuleWithNo405].getName.toString)
     no405.init(config)
     
     no405.service(req("DELETE", "/blog/index"), response)
