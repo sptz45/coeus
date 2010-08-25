@@ -9,13 +9,13 @@ package com.coeusweb.view
 import com.coeusweb.{ WebRequest, WebResponse }
 
 /**
- * This <code>View</code> serves as a reference to a <code>View</code> that will get
- * resolved by a <code>ViewResolver</code> using the specified view name.
+ * A <code>View</code> that holds a <em>view name</em> that can be used to
+ * resolve another <code>View</code> using a <code>ViewResolver</code>. 
  * 
  * @param name the name of the View this view refers to
  * @see ViewResolver
  */
-final case class ViewReference(name: String) extends View {
+final case class ViewName(name: String) extends View {
   
   /** The content-type is {@code null}. */ 
   def contentType = null

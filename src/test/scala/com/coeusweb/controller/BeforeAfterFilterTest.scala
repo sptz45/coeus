@@ -9,7 +9,7 @@ package com.coeusweb.controller
 import org.junit.Test
 import org.junit.Assert._
 import com.coeusweb.Controller
-import com.coeusweb.view.{ View, ViewReference, NullView }
+import com.coeusweb.view.{ View, ViewName, NullView }
 import com.coeusweb.core.Handler
 import com.coeusweb.core.factory.SimpleControllerFactory
 
@@ -25,7 +25,7 @@ class BeforeAfterFilterTest {
     val handler = new Handler(controllerClass, handlerMethod)
     
     handler.handle(factory, null, null) match {
-      case ViewReference(name) => assertEquals("set-from-interceptor", name)
+      case ViewName(name) => assertEquals("set-from-interceptor", name)
       case r => fail("result must be a view name but was: '"+r+"'")
     }
   }
@@ -37,7 +37,7 @@ class BeforeAfterFilterTest {
     val handler = new Handler(controllerClass, handlerMethod)
     
     handler.handle(factory, null, null) match {
-      case ViewReference(name) => assertEquals("intercepted", name)
+      case ViewName(name) => assertEquals("intercepted", name)
       case r => fail("result must be a view name but was: '"+r+"'")
     }
   }
@@ -88,7 +88,7 @@ object BeforeAfterFilterTest {
     def index(): View = result
 
     def before(): Option[View] = {
-      result = ViewReference("set-from-interceptor")
+      result = ViewName("set-from-interceptor")
       None
     }
     
@@ -96,7 +96,7 @@ object BeforeAfterFilterTest {
   }
 
   class NoHandlerExecutionController extends InterceptedController {
-    override def before() = Some(ViewReference("intercepted"))
+    override def before() = Some(ViewName("intercepted"))
     override def index(): View = throw new AssertionError("interceptor should have prevented the execution of this method")
   }
 

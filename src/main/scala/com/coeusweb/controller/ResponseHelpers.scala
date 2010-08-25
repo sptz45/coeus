@@ -35,7 +35,7 @@ trait ResponseHelpers {
   }
   
   /**
-   * Returns a {@link ViewReference} to the view with the specified name.
+   * Returns the {@link ViewName} with the specified name.
    * 
    * <p>This method is useful when you want to return a view name from the
    * {@link #ifValid()} and the {@link BeforeFilter#before()} methods that
@@ -44,7 +44,7 @@ trait ResponseHelpers {
    * @param viewName the name of the view
    * @see {@link com.coeusweb.view.ViewResolver ViewResolver}
    */
-  def render(viewName: String) = new ViewReference(viewName)
+  def render(viewName: String) = new ViewName(viewName)
   
   /**
    * Returns a <code>View</code> that when rendered will redirect to the

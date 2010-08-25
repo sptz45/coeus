@@ -66,13 +66,13 @@ private class RequestExecutor(
     }
     
     def findView(): View = result match {
-      case null                => findByName(viewNameForRequest(request))
-      case name: String        => findByName(name)
-      case ViewReference(name) => findByName(name)
-      case view: View          => view
-      case xml: NodeSeq        => new XhtmlView(xml)
-      case unit: Unit          => findByName(viewNameForRequest(request))
-      case _                   =>
+      case null           => findByName(viewNameForRequest(request))
+      case name: String   => findByName(name)
+      case ViewName(name) => findByName(name)
+      case view: View     => view
+      case xml: NodeSeq   => new XhtmlView(xml)
+      case unit: Unit     => findByName(viewNameForRequest(request))
+      case _              =>
         throw new InvalidControllerClassException(
           "Controller method ["+handler.controllerMethod+"] does not have a valid return type. " +
           "Valid return types are: String, NodeSeq, View and Unit.")

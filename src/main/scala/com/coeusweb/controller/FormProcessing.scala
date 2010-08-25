@@ -11,7 +11,7 @@ import com.coeusweb.bind.{ Binder, BindingResult }
 import com.coeusweb.core.convention.{ Conventions, RequestToViewNameTranslator }
 import com.coeusweb.scope.RequiredAttributeException
 import com.coeusweb.validation.Validator
-import com.coeusweb.view.{ View, ViewReference }
+import com.coeusweb.view.{ View, ViewName }
 
 trait FormProcessing {
   
@@ -89,7 +89,7 @@ trait FormProcessing {
    */
   def ifValid[T <: AnyRef](target: T, modelName: String = null)(onSuccess: T => View)(implicit validator: Validator[T]): View = {
     val result = validate(modelName, target)(validator)
-    if (result.hasErrors) new ViewReference(formView) else onSuccess(target)
+    if (result.hasErrors) formView else onSuccess(target)
   }
  
   /**
@@ -109,7 +109,7 @@ trait FormProcessing {
     try {
       val target: T = session[T](modelName)
       val result = validate(modelName, target)(validator)
-      if (result.hasErrors) new ViewReference(formView) else { session -= modelName; onSuccess(target) }
+      if (result.hasErrors) formView else { session -= modelName; onSuccess(target) }
     } catch {
       case e: RequiredAttributeException if !storeModelInSession =>
         throw new RequiredAttributeException(e.attribute, e.scopeClass,
@@ -139,5 +139,5 @@ trait FormProcessing {
    * <p>This method returns a view name by invoking the {@link RequestToViewNameTranslator}. Subclasses
    * can override this method to return a different view name.</p>
    */
-  def formView: String = RequestToViewNameTranslator.viewNameForRequest(request)
+  def formView: View = new ViewName(RequestToViewNameTranslator.viewNameForRequest(request))
 }

@@ -10,7 +10,7 @@ import java.util.Locale
 import org.junit.{ Before, Test }
 import org.junit.Assert._
 import com.coeusweb._
-import com.coeusweb.view.ViewReference
+import com.coeusweb.view.ViewName
 import com.coeusweb.test.servlet.{ MockHttpServletRequest, MockHttpServletResponse }
 
 
@@ -80,7 +80,7 @@ class AbstractControllerTest {
   def assertSuccess(view: Any) {
     def doAssert(name: String) = assertEquals("Should have returned the success view", SUCCESS_VIEW, name)
     view match {
-      case ViewReference(name) => doAssert(name)
+      case ViewName(name) => doAssert(name)
       case name: String => doAssert(name)
     }
   }
@@ -88,7 +88,7 @@ class AbstractControllerTest {
   def assertErrors(view: Any) {
     def doAssert(name: String) = assertEquals("Should have returned the error view", ERROR_VIEW, name)
     view match {
-      case ViewReference(name) => doAssert(name)
+      case ViewName(name) => doAssert(name)
       case name: String => doAssert(name)
     }
   }
@@ -120,7 +120,7 @@ object AbstractControllerTest {
   class PostController extends AbstractController {
     
     override def storeModelInSession = true
-    override def formView = ERROR_VIEW
+    override def formView = render(ERROR_VIEW)
     
     def showSessionForm() {
       model += new Post
@@ -128,7 +128,7 @@ object AbstractControllerTest {
     
     def handleUsingValidate() = {
       val result = validate(new Post)
-      if (result.hasErrors) formView else SUCCESS_VIEW
+      if (result.hasErrors) formView else render(SUCCESS_VIEW)
     }
     
     def handleUsingIfValid() = ifValid(new Post) {
