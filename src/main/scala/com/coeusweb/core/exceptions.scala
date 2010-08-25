@@ -15,8 +15,7 @@ class FrameworkException(message: String = null, cause: Throwable = null)
   extends RuntimeException(message, cause)
 
 /**
- * Thrown during framework initialization when a <code>Controller<code> class has
- * invalid structure.
+ * Thrown when a <code>Controller<code> class has invalid structure.
  * 
  * @see {@link com.coeusweb.Controller Controller}
  */

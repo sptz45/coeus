@@ -6,7 +6,7 @@
  */
 package com.coeusweb.core
 
-import org.hamcrest.{BaseMatcher, Description}
+import org.hamcrest.{ BaseMatcher, Description }
 import org.junit.Test
 import org.junit.Assert._
 import org.mockito.Mockito._
@@ -26,6 +26,7 @@ class RequestExecutorTest extends TestHelpers {
   val handler = mock[Handler[Controller]]
   val interceptor = mock[Interceptor]
   val error = new RuntimeException
+  
   
   @Test
   def call_handler_with_no_interceptors() {
@@ -61,10 +62,13 @@ class RequestExecutorTest extends TestHelpers {
   @Test
   def no_view_found_throws_exception() {
     when(handler.handle(any(), any(), any())).thenReturn("does not exist", Array[Object](): _*)
+    when(exceptionHandler.handle(any())).thenReturn(ErrorPageView)
+    
     assertThrows[NoViewFoundException] {
       execute()
     }
-    verifyZeroInteractions(exceptionHandler)
+    
+    verify(exceptionHandler).handle(any())
   }
   
   @Test
@@ -152,6 +156,17 @@ class RequestExecutorTest extends TestHelpers {
   }
   
   
+  @Test
+  def exception_when_controller_method_has_invalid_return_type() {
+    when(exceptionHandler.handle(any())).thenReturn(ErrorPageView)
+    val executor = new RequestExecutor(Nil, exceptionHandler, null, new SimpleControllerFactory)
+    val cc = classOf[RequestExecutorTest.SampleController]
+    val handler = new Handler(cc, cc.getMethod("invalidReturnType"))
+    assertThrows[InvalidControllerClassException] {
+      executor.execute(makeRequestContext(handler))
+    }
+  }
+  
   // -- Helpers ---------------------------------------------------------
   
   private def hasError(error: Throwable) = new BaseMatcher[RequestContext] {
@@ -204,5 +219,12 @@ class RequestExecutorTest extends TestHelpers {
       override def locale = java.util.Locale.ENGLISH
     }
     new RequestContext(request, response, handler)
+  }
+}
+
+
+object RequestExecutorTest {
+  class SampleController extends Controller {
+    def invalidReturnType = 43
   }
 }

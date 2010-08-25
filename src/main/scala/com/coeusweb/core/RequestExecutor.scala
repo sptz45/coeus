@@ -58,39 +58,36 @@ private class RequestExecutor(
   private def renderView(context: RequestContext) {
     import context._
     
-    def processViewName(name: String): View = {
+    def findByName(name: String): View = {
       val view = viewResolver.resolve(name)
-      if (view eq null) {
-        context.error = new NoViewFoundException(name)
-        ErrorPageView
-      } else {
-        view.render(request, response)
-        view
-      }
+      if (view eq null)
+        throw new NoViewFoundException(name)
+      view
     }
-
-    context.result = result match {
-      
-      case null =>
-        processViewName(viewNameForRequest(request))
-
-      case name: String =>
-        processViewName(name)
-        
-      case ViewReference(name) =>
-        processViewName(name)
-
-      case view: View =>
-        view.render(request, response)
-        view
-      
-      case xml: NodeSeq =>
-        val view = new XhtmlView(xml)
-        view.render(request, response)
-        view
-      
-      case unit: Unit =>
-        processViewName(viewNameForRequest(request))
+    
+    def findView(): View = result match {
+      case null                => findByName(viewNameForRequest(request))
+      case name: String        => findByName(name)
+      case ViewReference(name) => findByName(name)
+      case view: View          => view
+      case xml: NodeSeq        => new XhtmlView(xml)
+      case unit: Unit          => findByName(viewNameForRequest(request))
+      case _                   =>
+        throw new InvalidControllerClassException(
+          "Controller method ["+handler.controllerMethod+"] does not have a valid return type. " +
+          "Valid return types are: String, NodeSeq, View and Unit.")
+    }
+    
+    try {
+      val view = findView()
+      view.render(request, response)
+    } catch {
+      case t =>
+        error = t
+        val errorView = exceptionHandler.handle(context)
+        result = errorView
+        if (! response.isCommited)
+          errorView.render(request, response)
     }
   }
   

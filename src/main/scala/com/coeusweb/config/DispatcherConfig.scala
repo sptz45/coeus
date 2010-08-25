@@ -91,7 +91,7 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * of <em>405</em> (Method Not Allowed) when a resource exist but does not support
    * the requested method.
    * 
-   * <p>This is useful if for security reasons when we would like to hide the
+   * <p>This is useful when (for security reasons) we would like to hide the
    * existence of a resource.</p>
    * 
    * <p>The default value is {@code false}.</p>
