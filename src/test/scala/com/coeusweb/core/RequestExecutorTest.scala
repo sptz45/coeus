@@ -157,6 +157,16 @@ class RequestExecutorTest extends TestHelpers {
   
   
   @Test
+  def exceptions_during_view_rendering_are_caught() {
+    when(exceptionHandler.handle(any())).thenReturn(NullView)
+    when(handler.handle(any(), any(), any())).thenThrow(error)
+    
+    execute()
+    
+    verify(exceptionHandler).handle(argThat(hasError(error)))
+  }
+  
+  @Test
   def exception_when_controller_method_has_invalid_return_type() {
     when(exceptionHandler.handle(any())).thenReturn(ErrorPageView)
     val executor = new RequestExecutor(Nil, exceptionHandler, null, new SimpleControllerFactory)
