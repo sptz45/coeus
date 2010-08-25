@@ -158,8 +158,11 @@ class RequestExecutorTest extends TestHelpers {
   
   @Test
   def exceptions_during_view_rendering_are_caught() {
+    val view = mock[View]
+    when(view.render(any(), any())).thenThrow(error)
+    when(views.resolve(any())).thenReturn(view)
     when(exceptionHandler.handle(any())).thenReturn(NullView)
-    when(handler.handle(any(), any(), any())).thenThrow(error)
+    when(handler.handle(any(), any(), any())).thenReturn("view-name", Array[Object](): _*)
     
     execute()
     
@@ -169,9 +172,11 @@ class RequestExecutorTest extends TestHelpers {
   @Test
   def exception_when_controller_method_has_invalid_return_type() {
     when(exceptionHandler.handle(any())).thenReturn(ErrorPageView)
+    
     val executor = new RequestExecutor(Nil, exceptionHandler, null, new SimpleControllerFactory)
     val cc = classOf[RequestExecutorTest.SampleController]
     val handler = new Handler(cc, cc.getMethod("invalidReturnType"))
+    
     assertThrows[InvalidControllerClassException] {
       executor.execute(makeRequestContext(handler))
     }
@@ -234,7 +239,9 @@ class RequestExecutorTest extends TestHelpers {
 
 
 object RequestExecutorTest {
+  
   class SampleController extends Controller {
+    
     def invalidReturnType = 43
   }
 }
