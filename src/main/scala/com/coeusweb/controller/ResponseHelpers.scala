@@ -10,6 +10,7 @@ import java.io.{ File, InputStream }
 import scala.xml.NodeSeq
 import com.coeusweb.Controller
 import com.coeusweb.http.HttpStatus
+import com.coeusweb.core.convention.RequestToViewNameTranslator
 import com.coeusweb.view._
 
 trait ResponseHelpers {
@@ -37,6 +38,10 @@ trait ResponseHelpers {
   /**
    * Returns the {@link ViewName} with the specified name.
    * 
+   * <p>If the {@code viewName} parameter is not specified then the default
+   * value will be determined by consulting {@code RequestToViewNameTranslator}
+   * for the current request.</p>
+   * 
    * <p>This method is useful when you want to return a view name from the
    * {@link #ifValid()} and the {@link BeforeFilter#before()} methods that
    * must always return a <code>View</code> object.</p>
@@ -44,7 +49,7 @@ trait ResponseHelpers {
    * @param viewName the name of the view
    * @see {@link com.coeusweb.view.ViewResolver ViewResolver}
    */
-  def render(viewName: String) = new ViewName(viewName)
+  def render(viewName: String = RequestToViewNameTranslator.viewNameForRequest(request)) = new ViewName(viewName) 
   
   /**
    * Returns a <code>View</code> that when rendered will redirect to the
