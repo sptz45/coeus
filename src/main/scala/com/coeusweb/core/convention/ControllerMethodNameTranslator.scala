@@ -38,3 +38,10 @@ class DashedControllerMethodNameTranslator extends ControllerMethodNameTranslato
 class DefaultControllerMethodNameTranslator extends ControllerMethodNameTranslator {
   def translate(method: Method) = method.getName
 }
+
+/**
+ * Always returns the empty string.
+ */
+object NullControllerMethodNameTranslator  extends ControllerMethodNameTranslator {
+  def translate(method: Method) = ""
+}
