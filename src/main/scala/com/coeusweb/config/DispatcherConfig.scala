@@ -33,12 +33,14 @@ import com.coeusweb.view.scalate.{ ScalateViewResolver, ScalateConfig }
  * @see ConfigBuilder
  * @see {@link com.coeusweb.core.DispatcherServlet DispatcherServlet}
  */
-class DispatcherConfig(val servletConfig: ServletConfig) {
+trait DispatcherConfig {
+
+  val servletConfig: ServletConfig 
   
   /**
    * The factory that creates the controller's instance in each request.
    */
-  lazy val controllerFactory: ControllerFactory = new SimpleControllerFactory
+  var controllerFactory: ControllerFactory = new SimpleControllerFactory
   
   /**
    * Translates the controller's class into a base path.
@@ -51,7 +53,7 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * @see ControllerClassNameTranslator
    * @see {@link com.coeusweb.annotation.Path Path}
    */
-  lazy val classNameTranslator: ControllerClassNameTranslator = new DefaultControllerClassNameTranslator(Nil)
+  var classNameTranslator: ControllerClassNameTranslator = new DefaultControllerClassNameTranslator(Nil)
   
   /**
    * Translates the controller's annotated methods into paths.
@@ -61,19 +63,19 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * 
    * @see MethodNameTranslator
    */
-  lazy val methodNameTranslator: ControllerMethodNameTranslator = new DefaultControllerMethodNameTranslator
+  var methodNameTranslator: ControllerMethodNameTranslator = new DefaultControllerMethodNameTranslator
   
   /**
    * Finds the appropriate handler for a given request.
    */
-  lazy val requestResolver: RequestResolver = new TreeBasedRequestResolver
+  var requestResolver: RequestResolver = new TreeBasedRequestResolver
   
   /**
    * Called when an exception occurs during the request processing.
    * 
    * <p>By default the exception gets propagated to the Servlet container.</p>
    */
-  lazy val exceptionHandler: ExceptionHandler = ExceptionHandler.defaultHandler(servletConfig.getServletName)
+  var exceptionHandler: ExceptionHandler = ExceptionHandler.defaultHandler(servletConfig.getServletName)
   
   /**
    * Tells the <code>DispatcherServlet</code> to set the encoding of the Servlet
@@ -84,7 +86,7 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * 
    * <p>The default value is "UTF-8".</p>
    */ 
-  lazy val requestEncoding: Option[String] = Some("UTF-8")
+  var requestEncoding: Option[String] = Some("UTF-8")
   
   /**
    * Tells the {@code DispatcherServlet} to send <em>404</em> (Not Found) instead
@@ -96,7 +98,7 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * 
    * <p>The default value is {@code false}.</p>
    */
-  lazy val hideResources = false
+  var hideResources = false
   
   /**
    * Resolves the user's locale for a given request.
@@ -108,7 +110,7 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * @see AcceptHeaderLocaleResolver
    * @see Locale
    */
-  lazy val localeResolver: LocaleResolver = new AcceptHeaderLocaleResolver
+  var localeResolver: LocaleResolver = new AcceptHeaderLocaleResolver
   
   /**
    * Loads the i18n messages.
@@ -126,7 +128,7 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * @see {@link com.coeusweb.i18n.msg.ClasspathMessageBundle ClasspathMessageBundle}
    * @see {@link java.util.ResourceBundle ResourceBundle}
    */
-  lazy val messageBundle: MessageBundle = new ServletMessageBundle(servletConfig.getServletContext, 1000)
+  var messageBundle: MessageBundle = new ServletMessageBundle(servletConfig.getServletContext, 1000)
   
   /**
    * A collection with pre-configured converters to be used by default when binding
@@ -136,7 +138,7 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * @see ConverterRegistry#newRegistryWithDefaults
    * @see {@link com.coeusweb.WebRequest WebRequest}
    */
-  lazy val converters: ConverterRegistry = DefaultConverterRegistry
+  var converters: ConverterRegistry = DefaultConverterRegistry
   
   /**
    * Parses multipart requests (used in file uploads).
@@ -145,7 +147,7 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * This is done in order to avoid having a dependency to an external library by default. If your application
    * handles multipart requests you must use another parser (such as {@code CommonsMultipartRequestParser}).</p>
    */
-  lazy val multipartParser: MultipartRequestParser = new NullMultipartRequestParser
+  var multipartParser: MultipartRequestParser = new NullMultipartRequestParser
 
   /**
    * Maps view names to view instances.
@@ -159,7 +161,7 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * @see ScalateViewResolver
    * @see ScalateConfig
    */
-  lazy val viewResolver: ViewResolver = {
+  var viewResolver: ViewResolver = {
     val config = new ScalateConfig
     config.bind[DefaultViewHelpers].to(viewHelpers).using(name="c", importMembers=false, isImplicit=false)
     new ScalateViewResolver(servletConfig.getServletContext, config)
@@ -172,7 +174,7 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * you want to use another {@code Validatior} implementation use must create a
    * {@code DefaultViewHelpers} with the correct {@code ErrorFormatter} implementation.</p>
    */
-  lazy val viewHelpers = {
+  var viewHelpers = {
     val errorFormatter = new VSpecErrorFormatter(messageBundle, converters)
     new DefaultViewHelpers(servletConfig.getServletContext, messageBundle, errorFormatter)
   }

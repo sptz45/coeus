@@ -34,6 +34,6 @@ import javax.servlet.ServletConfig
   &lt;/servlet-mapping&gt;
  * </pre>
  */
-class WebModule(val servletConfig: ServletConfig) extends ConfigBuilder
+class WebModule(val servletConfig: ServletConfig) extends DispatcherConfig
                                                      with ControllerRegistry
                                                      with InterceptorRegistry

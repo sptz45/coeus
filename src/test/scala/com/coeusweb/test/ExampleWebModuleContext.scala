@@ -13,15 +13,13 @@ import com.coeusweb.http.multipart.{ MultipartRequestParser, CommonsMultipartReq
 
 class ExampleWebModule(sc: ServletConfig) extends WebModule(sc) {
   
+  viewResolver    = GlogalState.viewResolver
+  multipartParser = new CommonsMultipartRequestParser(sizeThreshold = 1 /* byte */)
+  
   controllers += classOf[BlogController]
   controllers += classOf[UploadController]
-  interceptors += GlogalState.interceptor
   
-  override def dispatcherConfig = new DispatcherConfig(sc) {
-    override lazy val viewResolver = GlogalState.viewResolver
-    override lazy val multipartParser: MultipartRequestParser =
-      new CommonsMultipartRequestParser(sizeThreshold = 1 /* byte */)
-  }
+  interceptors += GlogalState.interceptor  
 }
 
 

@@ -45,7 +45,7 @@ class WebModuleLoaderTest {
   def successfully_load_the_web_module() {
     setModuleParam(classOf[EmptyWebModule].getName)
     val module = loadModule()
-    assertNotNull(module.dispatcherConfig)
+    assertEquals(false, module.hideResources)
     assertTrue(module.controllers.result.isEmpty)
     assertFalse(module.interceptors.result.isEmpty)
   }

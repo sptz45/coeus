@@ -6,8 +6,10 @@
  */
 package com.coeusweb.core
 
+import javax.servlet.ServletConfig
 import org.junit.Test
 import org.junit.Assert._
+import com.coeusweb.test.servlet.MockServletConfig
 import com.coeusweb.Controller
 import com.coeusweb.annotation.Get
 import com.coeusweb.config.DispatcherConfig
@@ -44,9 +46,9 @@ class ControllerRegistrarTest {
   
   def assertHandlerFound(path: String, m: Symbol = 'GET) {
     config.requestResolver.resolve(path, m) match {
-      case HandlerNotFound => fail("No handler found for path %s".format(path))
+      case HandlerNotFound  => fail("No handler found for path %s".format(path))
       case MethodNotAllowed => fail("Method %s not allowed for path %s".format(m.toString, path))
-      case _ => ()
+      case _                => ()
     }
   }
 
@@ -65,8 +67,11 @@ object ControllerRegistrarTest {
     @Get def list() = "projects"
   }
   
-  class CustomConfig(factory: ControllerFactory) extends DispatcherConfig(null) {
-    override lazy val controllerFactory = factory 
+  class CustomConfig(
+    factory: ControllerFactory,
+    val servletConfig: ServletConfig = new MockServletConfig("test-servlet"))
+      extends DispatcherConfig {
+    controllerFactory = factory 
   }
   
   class TestFactory extends SimpleControllerFactory {

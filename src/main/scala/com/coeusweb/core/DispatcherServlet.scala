@@ -44,7 +44,7 @@ class DispatcherServlet extends HttpServlet {
     val webModule = WebModuleLoader.load(servletConfig)
 
     // setup configuration
-    val dispatcherConfig = webModule.dispatcherConfig
+    val dispatcherConfig = webModule
     
     resolver = dispatcherConfig.requestResolver
     
