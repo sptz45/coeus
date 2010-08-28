@@ -12,7 +12,7 @@ import com.coeusweb.bind.{ ConverterRegistry, DefaultConverterRegistry }
 import com.coeusweb.core._
 import com.coeusweb.core.convention._
 import com.coeusweb.core.factory.{ ControllerFactory, SimpleControllerFactory }
-import com.coeusweb.error.{ ExceptionHandler, ErrorPageExceptionHandler }
+import com.coeusweb.error.ExceptionHandler
 import com.coeusweb.http.multipart.{ MultipartRequestParser, NullMultipartRequestParser }
 import com.coeusweb.i18n.locale.{ LocaleResolver, AcceptHeaderLocaleResolver }
 import com.coeusweb.i18n.msg.{ MessageBundle, ServletMessageBundle }
@@ -73,7 +73,7 @@ class DispatcherConfig(val servletConfig: ServletConfig) {
    * 
    * <p>By default the exception gets propagated to the Servlet container.</p>
    */
-  lazy val exceptionHandler: ExceptionHandler = new ErrorPageExceptionHandler(servletConfig.getServletName)
+  lazy val exceptionHandler: ExceptionHandler = ExceptionHandler.defaultHandler(servletConfig.getServletName)
   
   /**
    * Tells the <code>DispatcherServlet</code> to set the encoding of the Servlet
