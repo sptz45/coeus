@@ -174,7 +174,7 @@ trait DispatcherConfig {
    * you want to use another {@code Validatior} implementation use must create a
    * {@code DefaultViewHelpers} with the correct {@code ErrorFormatter} implementation.</p>
    */
-  var viewHelpers = {
+  def viewHelpers = {
     val errorFormatter = new VSpecErrorFormatter(messageBundle, converters)
     new DefaultViewHelpers(servletConfig.getServletContext, messageBundle, errorFormatter)
   }
