@@ -30,7 +30,6 @@ import com.coeusweb.view.scalate.{ ScalateViewResolver, ScalateConfig }
  * @param servletConfig the <code>ServletConfig</code> of the Servlet
  *                      that this instance holds the configuration for.
  * 
- * @see ConfigBuilder
  * @see {@link com.coeusweb.core.DispatcherServlet DispatcherServlet}
  */
 trait DispatcherConfig {
@@ -81,12 +80,12 @@ trait DispatcherConfig {
    * Tells the <code>DispatcherServlet</code> to set the encoding of the Servlet
    * requests to the specified value.
    * 
-   * <p>If {@code requestEncoding} is {@code None} then the {@code DispatcherServlet}
+   * <p>If {@code requestEncoding} is {@code null} then the {@code DispatcherServlet}
    * does not set the encoding of the request.</p>
    * 
    * <p>The default value is "UTF-8".</p>
    */ 
-  var requestEncoding: Option[String] = Some("UTF-8")
+  var requestEncoding: String = "UTF-8"
   
   /**
    * Tells the {@code DispatcherServlet} to send <em>404</em> (Not Found) instead

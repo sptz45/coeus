@@ -29,7 +29,7 @@ class DispatcherServlet extends HttpServlet {
   
   private[this] var localeResolver: LocaleResolver = _
   private[this] var converters: ConverterRegistry = _
-  private[this] var requestEncoding: Option[String] = None
+  private[this] var requestEncoding: String = _
   private[this] var hideResources: Boolean = _
   private[this] var multipartParser: MultipartRequestParser = _ 
   
@@ -79,9 +79,9 @@ class DispatcherServlet extends HttpServlet {
   override final protected def service(request: HttpServletRequest, response: HttpServletResponse) {
     
     // set the encoding, if configured
-    for (encoding <- requestEncoding) {
-      request.setCharacterEncoding(encoding)
-      response.setCharacterEncoding(encoding)
+    if (requestEncoding ne null) {
+      request.setCharacterEncoding(requestEncoding)
+      response.setCharacterEncoding(requestEncoding)
     }
     
     // resolve and execute
