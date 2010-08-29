@@ -16,14 +16,8 @@ import com.coeusweb.core.FrameworkException
 /**
  * Register all the {@code Controller} classes from the bindings in a Guice
  * injector.
- * 
- * <p>Should be used in conjunction with
- * {@link com.coeusweb.core.factory.GuiceControllerFactory GuiceControllerFactory}.</p>
- * 
- * @see Controller
- * @see <a href="http://code.google.com/p/google-guice/">Guice</a>
  */
-object GuiceRegistrar {
+private object GuiceRegistrar {
   
   /**
    * Register all the {@code Controller} classes from the specified Guice
