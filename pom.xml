@@ -40,17 +40,6 @@
 
 	<repositories>
 		<repository>
-			<id>scala-tools.org</id>
-			<name>Scala-Tools Maven2 Repository</name>
-			<url>http://scala-tools.org/repo-releases</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
 			<id>jboss</id>
 			<url>http://repository.jboss.org/nexus/content/repositories/releases/</url>
 			<releases>
@@ -61,14 +50,6 @@
 			</snapshots>
 		</repository>
 	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>scala-tools.org</id>
-			<name>Scala-Tools Maven2 Repository</name>
-			<url>http://scala-tools.org/repo-releases</url>
-		</pluginRepository>
-	</pluginRepositories>
 
 	<dependencies>
 		<dependency>
@@ -216,6 +197,35 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<archive>
+						<compress>true</compress>
+						<index>true</index>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0-beta-1</version>
+				<configuration>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.scala-tools</groupId>
+							<artifactId>maven-scala-plugin</artifactId>
+							<version>2.14.1</version>
+							<configuration>
+								<scalaVersion>${scala.version}</scalaVersion>
+							</configuration>
+						</plugin>
+					</reportPlugins>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
