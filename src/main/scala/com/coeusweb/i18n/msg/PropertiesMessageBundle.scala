@@ -7,7 +7,7 @@
 package com.coeusweb.i18n.msg
 
 import java.util.{ Locale, ResourceBundle, PropertyResourceBundle }
-import com.coeusweb.core.util.{ NumericVariableInterpolator => Interpolator } 
+import com.coeusweb.core.util.Interpolator 
 
 /**
  * An abstract <code>MessageBundle</code> that provides common logic for loading
@@ -23,7 +23,7 @@ abstract class PropertiesMessageBundle extends MessageBundle {
   final def apply(locale: Locale, code: String, args: Any*): String = {
     try {
      val message = getBundle(locale).getString(code)
-     Interpolator.interpolate(message, args)
+     Interpolator.interpolateNumericVars(message, args)
     } catch {
       case cause: RuntimeException => throw new MessageNotFoundException(code, locale, cause)
     }
@@ -32,7 +32,7 @@ abstract class PropertiesMessageBundle extends MessageBundle {
   final def get(locale: Locale, code: String, args: Any*): Option[String] = {
     val message = getBundle(locale).handleGetObject(code).asInstanceOf[String]
     if (message eq null) None
-    else Some(Interpolator.interpolate(message, args))
+    else Some(Interpolator.interpolateNumericVars(message, args))
   }
   
   /**

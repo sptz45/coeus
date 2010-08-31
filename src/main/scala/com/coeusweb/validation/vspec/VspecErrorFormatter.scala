@@ -8,7 +8,7 @@ package com.coeusweb.validation.vspec
 
 import java.util.Locale
 import com.coeusweb.bind.{ ConverterRegistry, Error, ErrorFormatter }
-import com.coeusweb.core.util.{ Strings, NumericVariableInterpolator }
+import com.coeusweb.core.util.{ Strings, Interpolator }
 import com.coeusweb.i18n.msg._
 
 class VSpecErrorFormatter(
@@ -26,7 +26,7 @@ class VSpecErrorFormatter(
         case ref: AnyRef   => formatters.formatter(ref.getClass).format(ref, locale)
         case any: Any      => any.toString
       }
-      NumericVariableInterpolator.interpolate(msg, args, fmt)
+      Interpolator.interpolateNumericVars(msg, args, fmt)
     }
 
     def errorMessage: String = {

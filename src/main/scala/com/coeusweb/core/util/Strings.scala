@@ -8,8 +8,6 @@ package com.coeusweb.core.util
 
 /**
  * Helper methods for working with Strings.
- * 
- * @author spiros
  */
 object Strings {
 
