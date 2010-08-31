@@ -59,10 +59,10 @@ class VSpecErrorFormatterTest extends TestHelpers {
   @Test
   def message_with_internpolation_variables() {
     when(messages.get(any(), any(), any())).thenReturn(None)
-    when(messages(any(), any(), any())).thenReturn("{0} in {1} cannot be {2}")
-                                                  .thenReturn("{0}{1}{2}")
-                                                  .thenReturn(" {2} {1} {0} ")
-                                                  .thenReturn("error:{0} is {2}")
+    when(messages(any(), any(), any())).thenReturn("{1} in {2} cannot be {3}")
+                                                  .thenReturn("{1}{2}{3}")
+                                                  .thenReturn(" {3} {2} {1} ")
+                                                  .thenReturn("error:{1} is {3}")
     
     assertEquals("email in User cannot be null", format(emailHasNoText, locale))
     assertEquals("emailUsernull", format(emailHasNoText, locale))
