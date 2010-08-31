@@ -35,8 +35,19 @@ class UrlHelperTest extends TestHelpers {
     assertEquals("/page", helper.url("/page"))
   }
   
-  @Test(expected=classOf[IllegalArgumentException])
+  @Test
   def url_expects_non_empty_path() {
-    assertEquals("/test/", helper.url(""))
+    assertThrows[IllegalArgumentException] {
+      helper.url("")
+    }
+    assertThrows[IllegalArgumentException] {
+      helper.url("", 42)
+    }
+  }
+  
+  @Test
+  def substitute_vars_in_path() {
+    when(context.getContextPath).thenReturn("/test")
+    assertEquals("/test/page/42/edit", helper.url("/page/{id}/edit", 42))
   }
 }
