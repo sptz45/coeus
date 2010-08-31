@@ -53,6 +53,8 @@ class BindingResult[+T <: AnyRef](converters: ConverterRegistry, val target: T) 
    */
   def error(expr: String): Option[Error] = errorMap.get(expr)
   
+  def fieldValue(expr: String): Any = ExpressionLanguage.eval(target, expr)
+  
   def format(expr: String, locale: Locale) = {
     formatValue(ExpressionLanguage.eval(target, expr), locale)
   }

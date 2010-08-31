@@ -66,7 +66,7 @@ object ExceptionHandler {
    * then the returned handler also sets the HTTP status code of the response
    * using the {@link HttpException#httpStatus} field of the exception.</p>
    */
-  def forServlet(servletName: String)(errorViewMap: PartialFunction[Throwable, View] = Map()): ExceptionHandler = {  
+  def forServlet(servletName: String)(errorViewMap: PartialFunction[Throwable, View]): ExceptionHandler = {
     val views: Throwable => View = errorViewMap orElse { case _ => ErrorPageView }
     new ExceptionHandler {
       def handle(context: RequestContext) = {

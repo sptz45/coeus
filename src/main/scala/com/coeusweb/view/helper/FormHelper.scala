@@ -114,6 +114,21 @@ trait FormHelper {
     </xml:group>
   }
   
+  private val id: Any => Any = { x => x }
+  
+  def select[T](field: String, coll: Traversable[T],
+    toLabel: T => Any = id,
+    toValue: T => Any = null)
+      (implicit scopes: ScopeAccessor) = {
+    val _toValue = if (toValue eq null) toLabel else toValue
+    val existing = bindingResult.fieldValue(field)
+    <select name={field}>
+    { for (elem <- coll) yield
+      if (existing != elem) <option label={toLabel(elem).toString} values={_toValue(elem).toString}/>
+      else <option label={toLabel(elem).toString} values={_toValue(elem).toString} selected="selected"/> }
+    </select>
+  }
+  
   def format_field(field: Symbol)(implicit scopes: ScopeAccessor): String = {
     format_field(field.toString)(scopes)
   }
@@ -140,11 +155,11 @@ trait FormHelper {
     </xml:group>
   }
   
-  def action_link(href: String, text: String, attrs: (Symbol, String)* ) = {
+  def action_link(href: String, text: String, attrs: (String, String)* ) = {
     val a = new java.lang.StringBuilder("<a href=\"")
     a.append(href).append("\" rel=\"nofollow\"")
     for ((attr, value) <- attrs) {
-      val name = attr.name match {
+      val name = attr match {
         case "method"       => "data-method"
         case "remote"       => "data-remote"
         case "confirm"      => "data-confirm"
