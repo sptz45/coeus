@@ -60,6 +60,9 @@ class BindingResult[+T <: AnyRef](converters: ConverterRegistry, val target: T) 
   }
   
   def formatValue(value: Any, locale: Locale): String = {
-    converters.formatter(value.asInstanceOf[AnyRef].getClass).format(value, locale)
+    if (value != null)
+      converters.formatter(value.asInstanceOf[AnyRef].getClass).format(value, locale)
+    else
+      ""
   }
 }

@@ -142,9 +142,13 @@ trait FormHelper {
   }
   
   def format_value(value: Any)(implicit scopes: ScopeAccessor): String = {
-    val ref = value.asInstanceOf[AnyRef]
-    val fmt = scopes.request.converters.formatter(ref.getClass)
-    fmt.format(ref, scopes.request.locale)
+    if (value != null) {
+      val ref = value.asInstanceOf[AnyRef]
+      val fmt = scopes.request.converters.formatter(ref.getClass)
+      fmt.format(ref, scopes.request.locale)
+    } else {
+      ""
+    }
   }
   
   /**
