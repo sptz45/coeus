@@ -53,6 +53,10 @@ object ConverterRegistry {
       else if (c == classOf[Int]) super.+=(classOf[java.lang.Integer] -> fmt)
       else if (c == classOf[Long]) super.+=(classOf[java.lang.Long] -> fmt)
       else if (c == classOf[Short]) super.+=(classOf[java.lang.Short] -> fmt)
+      else if (c == classOf[java.util.Date]) {
+        super.+=(classOf[java.sql.Date] -> fmt)
+        super.+=(classOf[java.sql.Timestamp] -> fmt)
+      }
       
       this
     }
