@@ -137,8 +137,14 @@ trait FormHelper {
     bindingResult.format(field, scopes.request.locale)
   }
   
-  def format_value(value: Any)(implicit scopes: ScopeAccessor): String = {
+  def format_field(value: Any)(implicit scopes: ScopeAccessor): String = {
     bindingResult.formatValue(value, scopes.request.locale)
+  }
+  
+  def format_value(value: Any)(implicit scopes: ScopeAccessor): String = {
+    val ref = value.asInstanceOf[AnyRef]
+    val fmt = scopes.request.converters.formatter(ref.getClass)
+    fmt.format(ref, scopes.request.locale)
   }
   
   /**
