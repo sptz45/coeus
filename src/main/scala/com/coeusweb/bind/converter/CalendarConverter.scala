@@ -18,10 +18,12 @@ class CalendarConverter(
   
   private[this] val converter = new DateConverter(patternOrStyle, lenient, timeZone)
   
-  def parse(string: String, locale: Locale) = {
-    val calendar = Calendar.getInstance
-    calendar.setTime(converter.parse(string, locale))
-    calendar
+  def parse(text: String, locale: Locale) = {
+    if (text eq null) null else { 
+      val calendar = Calendar.getInstance
+      calendar.setTime(converter.parse(text, locale))
+      calendar
+    }
   }
   
   def format(calendar: Calendar, locale: Locale) = converter.format(calendar.getTime, locale)

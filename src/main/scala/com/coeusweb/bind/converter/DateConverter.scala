@@ -16,7 +16,8 @@ class DateConverter(
   timeZone: Option[TimeZone] = None)
     extends Converter[Date] {
   
-  def parse(string: String, locale: Locale) = dateFormat(locale).parse(string)
+  def parse(text: String, locale: Locale) =
+    if(text eq null) null else dateFormat(locale).parse(text)
   
   def format(value: Date, locale: Locale) = dateFormat(locale).format(value)
     
