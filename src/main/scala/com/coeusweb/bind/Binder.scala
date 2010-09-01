@@ -23,7 +23,6 @@ class Binder(
     for ((expr, value) <- parameters) {
       if (restriction.canBindTo(expr)) {
         try {
-          if (shouldBindParameter(value))
             ExpressionLanguage.bind(target, expr, value, locale, converters)
         } catch {
           case e: ParserException =>
@@ -31,11 +30,8 @@ class Binder(
         }
       }
     }
-
     result
   }
-  
-  private def shouldBindParameter(value: String) = value != ""
 }
 
 object Binder {

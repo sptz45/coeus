@@ -21,14 +21,6 @@ class BinderTest {
   }
   
   @Test
-  def do_not_bind_if_parameter_is_empty_string() {
-    val user = new User
-    binder.bind(Map("id" -> "1", "name" -> ""), user, locale)
-    assertNull(user.name)
-    assertEquals(1, user.id)
-  }
-  
-  @Test
   def bind_to_object() {
     val user = new User
     binder.bind(Map("id" -> "12",
