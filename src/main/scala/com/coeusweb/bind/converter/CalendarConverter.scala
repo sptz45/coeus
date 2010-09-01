@@ -19,9 +19,10 @@ class CalendarConverter(
   private[this] val converter = new DateConverter(patternOrStyle, lenient, timeZone)
   
   def parse(text: String, locale: Locale) = {
-    if (text eq null) null else { 
+    val date = converter.parse(text, locale)
+    if (date eq null) null else {
       val calendar = Calendar.getInstance
-      calendar.setTime(converter.parse(text, locale))
+      calendar.setTime(date)
       calendar
     }
   }

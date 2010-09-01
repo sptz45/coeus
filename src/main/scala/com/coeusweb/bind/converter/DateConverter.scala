@@ -14,10 +14,10 @@ class DateConverter(
   patternOrStyle: Either[String, Int] = Left("yyyy/MM/dd"),
   lenient: Boolean = false,
   timeZone: Option[TimeZone] = None)
-    extends Converter[Date] {
+    extends AbstractConverter[Date] {
   
   def parse(text: String, locale: Locale) =
-    if(text eq null) null else dateFormat(locale).parse(text)
+    filterEmpty(text, null, dateFormat(locale).parse(_))
   
   def format(value: Date, locale: Locale) = dateFormat(locale).format(value)
     
