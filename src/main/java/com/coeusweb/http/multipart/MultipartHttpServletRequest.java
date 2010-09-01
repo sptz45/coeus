@@ -7,12 +7,14 @@
 package com.coeusweb.http.multipart;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+
+import com.coeusweb.http.MutableHttpServletRequest;
+
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 
-public class MultipartHttpServletRequest extends HttpServletRequestWrapper{
+public class MultipartHttpServletRequest extends MutableHttpServletRequest {
   
   private Map<String, String[]> parameters;
   private Map<String, FormFile[]> files;

@@ -124,8 +124,8 @@ trait FormHelper {
     val existing = bindingResult.fieldValue(field)
     <select name={field}>
     { for (elem <- coll) yield
-      if (existing != elem) <option label={toLabel(elem).toString} values={_toValue(elem).toString}/>
-      else <option label={toLabel(elem).toString} values={_toValue(elem).toString} selected="selected"/> }
+      if (existing != elem) <option value={_toValue(elem).toString}>{toLabel(elem)}</option>
+      else <option value={_toValue(elem).toString} selected="selected">{toLabel(elem)}</option> }
     </select>
   }
   
@@ -153,6 +153,10 @@ trait FormHelper {
       <meta name="csrf-param" content={CsrfProtection.tokenName}/>
       <meta name="csrf-token" content={CsrfProtection.getToken(scopes.session)}/>
     </xml:group>
+  }
+  
+  def http_method(method: String) = {
+    <input type="hidden" name="_method" value={method}/>
   }
   
   def action_link(href: String, text: String, attrs: (String, String)* ) = {

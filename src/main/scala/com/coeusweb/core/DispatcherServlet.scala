@@ -13,6 +13,7 @@ import com.coeusweb.bind.ConverterRegistry
 import com.coeusweb.i18n.locale.LocaleResolver
 import com.coeusweb.{WebRequest, WebResponse}
 import com.coeusweb.config._
+import com.coeusweb.http.MutableHttpServletRequest
 import com.coeusweb.http.multipart.MultipartRequestParser
 import com.coeusweb.scope.ApplicationScope
 
@@ -31,6 +32,7 @@ class DispatcherServlet extends HttpServlet {
   private[this] var converters: ConverterRegistry = _
   private[this] var requestEncoding: String = _
   private[this] var hideResources: Boolean = _
+  private[this] var changeHttpMethod: Boolean = _
   private[this] var multipartParser: MultipartRequestParser = _ 
   
   
@@ -41,29 +43,26 @@ class DispatcherServlet extends HttpServlet {
   override final def init(servletConfig: ServletConfig) {
     super.init(servletConfig)
     
-    val webModule = WebModuleLoader.load(servletConfig)
+    val module = WebModuleLoader.load(servletConfig)
 
-    // setup configuration
-    val dispatcherConfig = webModule
+    resolver         = module.requestResolver    
+    localeResolver   = module.localeResolver
+    converters       = module.converters
+    requestEncoding  = module.requestEncoding
+    hideResources    = module.hideResources
+    changeHttpMethod = module.changeHttpMethod
     
-    resolver = dispatcherConfig.requestResolver
-    
-    localeResolver = dispatcherConfig.localeResolver
-    converters = dispatcherConfig.converters
-    requestEncoding = dispatcherConfig.requestEncoding
-    hideResources = dispatcherConfig.hideResources
-    
-    multipartParser = dispatcherConfig.multipartParser
+    multipartParser = module.multipartParser
     multipartParser.init(servletConfig.getServletContext)
 
     // register the configured controller classes
-    new ControllerRegistrar(dispatcherConfig).registerAll(webModule.controllers.result)
+    new ControllerRegistrar(module).registerAll(module.controllers.result)
 
     // create the request executor
-    executor = new RequestExecutor(webModule.interceptors.result,
-                                   dispatcherConfig.exceptionHandler,
-                                   dispatcherConfig.viewResolver,
-                                   dispatcherConfig.controllerFactory)
+    executor = new RequestExecutor(module.interceptors.result,
+                                   module.exceptionHandler,
+                                   module.viewResolver,
+                                   module.controllerFactory)
     
     // setup the lock for ApplicationScope
     ApplicationScope.setupMutex(servletConfig.getServletContext)
@@ -86,7 +85,9 @@ class DispatcherServlet extends HttpServlet {
     
     // resolve and execute
     val path = removeContextFromPath(request.getRequestURI)
-    resolver.resolve(path, Symbol(request.getMethod)) match {
+    val method = getHttpMethod(request)
+    
+    resolver.resolve(path, Symbol(method)) match {
 
       case HandlerNotFound =>
         response.sendError(HttpServletResponse.SC_NOT_FOUND)
@@ -100,16 +101,26 @@ class DispatcherServlet extends HttpServlet {
 
       case SuccessfulResolution(handler, pathVariables) =>
         if (WebRequest.isMultipart(request)) {
-          val multipartRequest = multipartParser.parse(request) 
+          val multipartRequest = multipartParser.parse(request)
+          if (mustChangeMethod(request))
+            multipartRequest.setMethod(method)
           execute(multipartRequest, response, handler, pathVariables)
           multipartParser.cleanupFiles(multipartRequest)
         } else {
-          execute(request, response, handler, pathVariables)
+          var wrappedReq = request 
+          if (mustChangeMethod(request)) {
+            wrappedReq = new MutableHttpServletRequest(request, method)
+          }
+          execute(wrappedReq, response, handler, pathVariables)
         }
     }
   }
   
-  private def execute(req: HttpServletRequest, res: HttpServletResponse, handler: Handler[_], vars: Map[String, String]) {
+  private def execute(req: HttpServletRequest,
+                      res: HttpServletResponse,
+                      handler: Handler[_],
+                      vars: Map[String, String]) {
+    
     executor.execute(new RequestContext(
       new WebRequest(req, vars, localeResolver, converters),
       new WebResponse(res),
@@ -118,5 +129,17 @@ class DispatcherServlet extends HttpServlet {
   
   private def removeContextFromPath(requestUri: String) = {
     util.Strings.removePrefix(requestUri, getServletConfig.getServletContext.getContextPath)
+  }
+  
+  private def mustChangeMethod(req: HttpServletRequest): Boolean = {
+    if (!changeHttpMethod) return false
+    val _method = req.getParameter("_method")
+    if (_method ne null) req.getMethod != _method.toUpperCase else false
+  }
+  
+  private def getHttpMethod(req: HttpServletRequest): String = {
+    if (!changeHttpMethod) return req.getMethod
+    val _method = req.getParameter("_method")
+    if (_method eq null) req.getMethod else _method.toUpperCase
   }
 }

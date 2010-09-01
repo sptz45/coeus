@@ -10,7 +10,6 @@ import java.util.{ Date, Enumeration, Locale }
 import javax.servlet.http.HttpServletRequest
 import scala.collection.Map
 import scala.collection.JavaConversions.asIterator
-import scala.io.Source
 import bind.ConverterRegistry
 import i18n.locale.LocaleResolver
 import http.HttpRequestHeaders

@@ -88,6 +88,17 @@ trait DispatcherConfig {
   var requestEncoding: String = "UTF-8"
   
   /**
+   * Tells the <code>DispatcherServlet</code> to set the HTTP method to the value
+   * of the <em>_method</em> request parameter.
+   * 
+   * <p>This is useful from implementing RESTful applications.</p>
+   * 
+   * <p>The default value is false.</p>
+   * 
+   */
+  var changeHttpMethod: Boolean = false
+  
+  /**
    * Tells the {@code DispatcherServlet} to send <em>404</em> (Not Found) instead
    * of <em>405</em> (Method Not Allowed) when a resource exist but does not support
    * the requested method.
