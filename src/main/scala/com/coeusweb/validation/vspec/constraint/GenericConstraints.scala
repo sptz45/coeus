@@ -28,7 +28,7 @@ trait GenericConstraints {
     def isValid(value: T) = value == null || test(value)
     
     def getError(targetClass: Class[_], field: String, value: T) = 
-      Error.validationFailure("constraint", field, targetClass, value)
+      Error.validationFailure("generic", field, targetClass, value)
   }
   
   def isUnique[T](query: T => Option[_]) = new Constraint[T] {

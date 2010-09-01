@@ -30,9 +30,13 @@ abstract class PropertiesMessageBundle extends MessageBundle {
   }
   
   final def get(locale: Locale, code: String, args: Any*): Option[String] = {
-    val message = getBundle(locale).handleGetObject(code).asInstanceOf[String]
-    if (message eq null) None
-    else Some(Interpolator.interpolateNumericVars(message, args))
+    val bundle = getBundle(locale)
+    if (bundle.containsKey(code)) {
+      val message = bundle.getString(code)
+      Some(Interpolator.interpolateNumericVars(message, args))
+    } else {
+      None
+    }
   }
   
   /**
@@ -52,8 +56,8 @@ abstract class PropertiesMessageBundle extends MessageBundle {
 object PropertiesMessageBundle {
 
   /** Do not cache the loaded messages. */
-  val DONT_CACHE = ResourceBundle.Control.TTL_DONT_CACHE
+  def DONT_CACHE = ResourceBundle.Control.TTL_DONT_CACHE
   
   /** Loaded messages never expire from cache. */
-  val NO_EXPIRATION = ResourceBundle.Control.TTL_NO_EXPIRATION_CONTROL
+  def NO_EXPIRATION = ResourceBundle.Control.TTL_NO_EXPIRATION_CONTROL
 }
