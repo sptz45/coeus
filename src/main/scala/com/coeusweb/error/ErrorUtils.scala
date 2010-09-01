@@ -18,6 +18,7 @@ object ErrorUtils {
    * Sets various error related request attributes.
    */
   def setupErrorPageAttributes(request: WebRequest, error: Throwable, servletName: String) {
+    request("exception") = error
     request("javax.servlet.error.exception") = error
     request("javax.servlet.error.exception_type") = error.getClass
     request("javax.servlet.error.message") = error.getMessage
