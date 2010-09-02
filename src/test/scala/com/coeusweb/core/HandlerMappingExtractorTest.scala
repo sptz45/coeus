@@ -16,8 +16,8 @@ class HandlerMappingExtractorTest {
   import HandlerMappingExtractorTest._
   
   private val extractor = new HandlerMappingExtractor(
-    new DefaultControllerClassNameTranslator(Nil),
-    new DefaultControllerMethodNameTranslator)
+    ControllerConventions.useClassName(),
+    ControllerConventions.useMethodName)
 
   @Test(expected=classOf[InvalidControllerClassException])
   def exception_if_the_class_does_not_have_annotations() {

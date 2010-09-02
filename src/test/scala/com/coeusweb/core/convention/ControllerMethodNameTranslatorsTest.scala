@@ -6,16 +6,17 @@
  */
 package com.coeusweb.core.convention
 
+import java.lang.reflect.Method
 import org.junit.Test
 import org.junit.Assert._
 
-class ControllerMethodNameTranslatorTest {
+class ControllerMethodNameTranslatorsTest {
 
-  var translator: ControllerMethodNameTranslator = _
+  var translator: Method => String = _
   
   @Test
   def default_translator() {
-    translator = new DefaultControllerMethodNameTranslator
+    translator = ControllerConventions.useMethodName
     assertEquals("method", translate("method"))
     assertEquals("camelCase", translate("camelCase"))
     assertEquals("with_underscore", translate("with_underscore"))
@@ -23,13 +24,13 @@ class ControllerMethodNameTranslatorTest {
   
   @Test
   def dashed_translator() {
-    translator = new DashedControllerMethodNameTranslator
+    translator = ControllerConventions.useMethodNameWithDashes
     assertEquals("method", translate("method"))
     assertEquals("camel-case", translate("camelCase"))
     assertEquals("with_underscore", translate("with_underscore"))
   }
   
-  def translate(methodName: String) = translator.translate(classOf[SampleClass].getMethod(methodName))
+  def translate(methodName: String) = translator(classOf[SampleClass].getMethod(methodName))
   
   abstract class SampleClass {
     def method

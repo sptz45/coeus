@@ -17,8 +17,8 @@ import com.coeusweb.view.View
  * Creates handler mappings from a controller class.
  */
 private class HandlerMappingExtractor(
-  classTranslator: ControllerClassNameTranslator,
-  methodTranslator: ControllerMethodNameTranslator) {
+  classToPath: Class[_] => String,
+  methodToPath: Method => String) {
   
   /**
    * Create hander mappings for the annotated methods of the specified controller
@@ -59,16 +59,16 @@ private class HandlerMappingExtractor(
   private def mapClassName(c: Class[_]): String = {
     for (ctrl <- c.getDeclaredAnnotations.collect{ case a: Path => a }) {
       return ctrl.value match {
-        case "#" => classTranslator.translate(c)
+        case "#" => classToPath(c)
         case path => path
       }
     }
-    return classTranslator.translate(c)
+    return classToPath(c)
   }
   
   private def mapMethodName(m: Method, a: Annotation): String = {
     val path = AnnotationProcessor.getValueFrom(a)
-    if (path == "#") methodTranslator.translate(m) else path 
+    if (path == "#") methodToPath(m) else path 
   }
   
   private def makeAbsolutePath(path: String) = path match {

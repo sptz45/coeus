@@ -9,7 +9,7 @@ package com.coeusweb.core.convention
 import com.coeusweb.core.util.Strings
 
 /**
- * Contains utility methods that encode various naming conventions. 
+ * Utility methods that encode various naming conventions.
  */
 object Conventions {
   
@@ -25,7 +25,7 @@ object Conventions {
    * the specified base packages and by replacing the dots (".") with slashes
    * ("/").
    */
-  def packageNameToPath(roots: Iterable[String], pkg: String): String = {
+  def packageNameToPath(roots: Traversable[String], pkg: String): String = {
     for (root <- roots if pkg.startsWith(root)) {
       if (pkg.length == root.length) return ""
       else  return packageNameToPath(pkg.substring(root.length + 1))

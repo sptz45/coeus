@@ -69,10 +69,10 @@ object HttpStatus {
   // --- Series ---
   
   def isInformational(status: Int) = (status / 100 == 1)
-  def isSuccessful(status: Int) = (status / 100 == 2)
-  def isRedirection(status: Int) = (status / 100 == 3)
-  def isClientError(status: Int) = (status / 100 == 4)
-  def isServerError(status: Int) = (status / 100 == 5)
+  def isSuccessful(status: Int)    = (status / 100 == 2)
+  def isRedirection(status: Int)   = (status / 100 == 3)
+  def isClientError(status: Int)   = (status / 100 == 4)
+  def isServerError(status: Int)   = (status / 100 == 5)
   
   def isError(status: Int) = isClientError(status) || isServerError(status)
 }
