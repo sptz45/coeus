@@ -32,7 +32,7 @@ class DispatcherServlet extends HttpServlet {
   private[this] var converters: ConverterRegistry = _
   private[this] var requestEncoding: String = _
   private[this] var hideResources: Boolean = _
-  private[this] var changeHttpMethod: Boolean = _
+  private[this] var overrideHttpMethod: Boolean = _
   private[this] var multipartParser: MultipartRequestParser = _ 
   
   
@@ -45,12 +45,12 @@ class DispatcherServlet extends HttpServlet {
     
     val module = WebModuleLoader.load(servletConfig)
 
-    resolver         = module.requestResolver    
-    localeResolver   = module.localeResolver
-    converters       = module.converters
-    requestEncoding  = module.requestEncoding
-    hideResources    = module.hideResources
-    changeHttpMethod = module.changeHttpMethod
+    resolver           = module.requestResolver    
+    localeResolver     = module.localeResolver
+    converters         = module.converters
+    requestEncoding    = module.requestEncoding
+    hideResources      = module.hideResources
+    overrideHttpMethod = module.overrideHttpMethod
     
     multipartParser = module.multipartParser
     multipartParser.init(servletConfig.getServletContext)
@@ -132,13 +132,13 @@ class DispatcherServlet extends HttpServlet {
   }
   
   private def mustChangeMethod(req: HttpServletRequest): Boolean = {
-    if (!changeHttpMethod) return false
+    if (!overrideHttpMethod) return false
     val _method = req.getParameter("_method")
     if (_method ne null) req.getMethod != _method.toUpperCase else false
   }
   
   private def getHttpMethod(req: HttpServletRequest): String = {
-    if (!changeHttpMethod) return req.getMethod
+    if (!overrideHttpMethod) return req.getMethod
     val _method = req.getParameter("_method")
     if (_method eq null) req.getMethod else _method.toUpperCase
   }

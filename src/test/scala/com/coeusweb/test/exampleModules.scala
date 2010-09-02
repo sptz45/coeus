@@ -7,8 +7,8 @@
 package com.coeusweb.test
 
 import javax.servlet.ServletConfig
-import com.coeusweb.config._
-import com.coeusweb.http.multipart.{ MultipartRequestParser, CommonsMultipartRequestParser }
+import com.coeusweb.config.WebModule
+import com.coeusweb.http.multipart.CommonsMultipartRequestParser
 
 
 class ExampleWebModule(sc: ServletConfig) extends WebModule(sc) {
@@ -22,5 +22,11 @@ class ExampleWebModule(sc: ServletConfig) extends WebModule(sc) {
   interceptors += GlogalState.interceptor  
 }
 
+class WebModuleWithNo405(sc: ServletConfig) extends ExampleWebModule(sc) {
+  hideResources = true
+}
 
+class WebModuleWithOverrideMethod(sc: ServletConfig) extends ExampleWebModule(sc) {
+  overrideHttpMethod = true
+}
 

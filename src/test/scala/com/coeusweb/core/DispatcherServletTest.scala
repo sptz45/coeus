@@ -66,7 +66,7 @@ class DispatcherServletTest {
   def handler_not_found_if_hide_resources() {
     val no405 = new DispatcherServlet
     val config = new MockServletConfig("sweb-test-with-no-405")
-    config.addInitParameter("web-module", classOf[ExampleWebModuleWithNo405].getName.toString)
+    config.addInitParameter("web-module", classOf[WebModuleWithNo405].getName.toString)
     no405.init(config)
     
     no405.service(req("DELETE", "/blog/index"), response)
@@ -118,6 +118,26 @@ class DispatcherServletTest {
     GlogalState.uploadedFile = null
   }
 
+  @Test
+  def override_http_method_if_enabled_and_method_param_present() {
+    val restful = new DispatcherServlet
+    val config = new MockServletConfig("sweb-test-with-http-override")
+    config.addInitParameter("web-module", classOf[WebModuleWithOverrideMethod].getName.toString)
+    restful.init(config)
+    
+    val request = req("POST", "/blog/post")
+    request.setParameter("_method", "delete")
+    restful.service(request, response)
+    assertEquals(HttpServletResponse.SC_OK, response.getStatus)
+  }
+  
+  @Test
+  def do_not_override_http_method_if_disabled() {
+    val request = req("POST", "/blog/post")
+    request.setParameter("_method", "delete")
+    servlet.service(request, response)
+    assertEquals(HttpServletResponse.SC_METHOD_NOT_ALLOWED, response.getStatus)
+  }
 
   def req(method: String, uri: String) = {
     val request = new MockHttpServletRequest

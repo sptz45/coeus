@@ -90,7 +90,7 @@ trait DispatcherConfig {
    * <p>If {@code requestEncoding} is {@code null} then the {@code DispatcherServlet}
    * does not set the encoding of the request.</p>
    * 
-   * <p>The default value is "UTF-8".</p>
+   * <p>The default value is {@code "UTF-8"}.</p>
    */ 
   var requestEncoding: String = "UTF-8"
   
@@ -98,12 +98,12 @@ trait DispatcherConfig {
    * Tells the <code>DispatcherServlet</code> to set the HTTP method to the value
    * of the <em>_method</em> request parameter.
    * 
-   * <p>This is useful from implementing RESTful applications.</p>
+   * <p>This is useful for implementing RESTful applications.</p>
    * 
-   * <p>The default value is false.</p>
+   * <p>The default value is {@code false}.</p>
    * 
    */
-  var changeHttpMethod: Boolean = false
+  var overrideHttpMethod: Boolean = false
   
   /**
    * Tells the {@code DispatcherServlet} to send <em>404</em> (Not Found) instead

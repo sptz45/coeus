@@ -26,6 +26,9 @@ class BlogController extends Controller {
   
   @Get
   def noView() = "noview"
+  
+  @Delete("/post")
+  def deletePost() = NullView
 }
 
 class UploadController extends Controller {
