@@ -16,10 +16,8 @@ class LocaleConverter(default: Locale = Locale.US) extends AbstractConverter[Loc
   
   def format(value: Locale, locale: Locale) = value.toString
   
-  private def str2locale(text: String) = {
-    text match {
-      case LocaleRegex(language, country) => new Locale(language, country)
-      case _ => new Locale(text)
-    }
+  private def str2locale(text: String) = text match {
+    case LocaleRegex(language, country) => new Locale(language, country)
+    case _                              => new Locale(text)
   }
 }

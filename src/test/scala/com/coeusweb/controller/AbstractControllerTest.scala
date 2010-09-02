@@ -74,7 +74,7 @@ class AbstractControllerTest {
     val mock = new MockHttpServletRequest("GET", "/post")
     for ((name, value) <- params) mock.setParameter(name, value)
     val resolver = new i18n.locale.FixedLocaleResolver(Locale.US)
-    new WebRequest(mock, null, resolver, bind.DefaultConverterRegistry)
+    new WebRequest(mock, null, resolver, bind.ConverterRegistry.defaultConverters )
   }
   
   def assertSuccess(view: Any) {

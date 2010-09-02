@@ -12,7 +12,7 @@ import org.junit.Assert._
 class BinderTest {
   import BinderTest._
   
-  val binder = new Binder(DefaultConverterRegistry)
+  val binder = new Binder(ConverterRegistry.defaultConverters )
   val locale = null
 
   @Test(expected=classOf[IllegalArgumentException])
@@ -94,7 +94,7 @@ class BinderTest {
   
   @Test
   def construct_using_deny_vars() {
-    val binder = new Binder(DefaultConverterRegistry, denyVars="id")
+    val binder = new Binder(ConverterRegistry.defaultConverters , denyVars="id")
     val user = new User
     val idBeforeBinding = user.id
     val result = binder.bind(Map("id" -> "42", "name" -> "spiros"), user, locale)

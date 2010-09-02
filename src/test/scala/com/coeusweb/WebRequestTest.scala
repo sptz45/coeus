@@ -9,7 +9,7 @@ package com.coeusweb
 import java.util.Locale
 import org.junit.Test
 import org.junit.Assert._
-import bind.DefaultConverterRegistry
+import bind.ConverterRegistry
 import i18n.locale.FixedLocaleResolver
 import test.Assertions._
 import test.servlet.MockHttpServletRequest
@@ -17,7 +17,7 @@ import test.servlet.MockHttpServletRequest
 class WebRequestTest extends scope.AbstractScopedContainerTest {
 
   val mock = new MockHttpServletRequest("GET", "/index")
-  val request = new WebRequest(mock, null, new FixedLocaleResolver(Locale.US), DefaultConverterRegistry)
+  val request = new WebRequest(mock, null, new FixedLocaleResolver(Locale.US), ConverterRegistry.defaultConverters )
   
   val attributes = request
   

@@ -11,7 +11,7 @@ import org.junit.Assert._
 
 class ConverterRegistryTest {
 
-  val registry = DefaultConverterRegistry
+  val registry = ConverterRegistry.defaultConverters 
   
   @Test
   def retrieve_a_converter() {

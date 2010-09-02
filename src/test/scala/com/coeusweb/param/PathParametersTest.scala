@@ -8,13 +8,13 @@ package com.coeusweb.param
 
 import java.util.Locale
 import scala.collection.mutable.Map
-import com.coeusweb.bind.DefaultConverterRegistry
+import com.coeusweb.bind.ConverterRegistry
 import com.coeusweb.test.servlet.MockHttpServletRequest
 
 class PathParametersTest extends AbstractParametersTest {
 
   val pathVariables = Map[String, String]()
-  val params = new PathParameters(null, Locale.US, DefaultConverterRegistry, pathVariables)
+  val params = new PathParameters(null, Locale.US, ConverterRegistry.defaultConverters , pathVariables)
   
   def setParameter(name: String, value: String) {
     pathVariables += (name -> value)

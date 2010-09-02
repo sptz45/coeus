@@ -11,7 +11,7 @@ import java.util.{ Date, Locale }
 import java.net.URI
 import org.junit.Test
 import org.junit.Assert._
-import com.coeusweb.bind.DefaultConverterRegistry
+import com.coeusweb.bind.ConverterRegistry
 import com.coeusweb.i18n.locale.FixedLocaleResolver
 import test.servlet.MockHttpServletRequest
 import test.Assertions._
@@ -19,7 +19,7 @@ import test.Assertions._
 class HttpRequestHeadersTest {
 
   val mock = new MockHttpServletRequest
-  val request = new WebRequest(mock, null, new FixedLocaleResolver(Locale.US), DefaultConverterRegistry)
+  val request = new WebRequest(mock, null, new FixedLocaleResolver(Locale.US), ConverterRegistry.defaultConverters )
   
   @Test
   def read_string_headers_does_not_require_type_argument() {

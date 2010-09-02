@@ -7,13 +7,13 @@
 package com.coeusweb.param
 
 import java.util.Locale
-import com.coeusweb.bind.DefaultConverterRegistry
+import com.coeusweb.bind.ConverterRegistry
 import com.coeusweb.test.servlet.MockHttpServletRequest
 
 class RequestParametersTest extends AbstractParametersTest {
   
   val mock = new MockHttpServletRequest
-  val params = new RequestParameters(mock, Locale.US, DefaultConverterRegistry)
+  val params = new RequestParameters(mock, Locale.US, ConverterRegistry.defaultConverters )
   
   
   def setParameter(name: String, value: String) {

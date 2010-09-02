@@ -14,7 +14,7 @@ class ExpressionLanguageTest {
   import ExpressionLanguage.{eval, bind}
   
   val target = new Target("t", new B(11))
-  val parsers = DefaultConverterRegistry
+  val parsers = ConverterRegistry.defaultConverters 
 
   @Test
   def test_eval_precondictions() {

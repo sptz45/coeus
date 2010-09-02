@@ -6,15 +6,33 @@
  */
 package com.coeusweb.bind
 
-object DefaultConverterRegistry extends ConverterRegistry(ConverterRegistry.builderWithDefaults)
 
-class ConverterRegistry(converterMap: Map[Class[_], Converter[_]]) {
+class ConverterRegistry private (converterMap: Map[Class[_], Converter[_]]) {
   
-  def this(builder: ConverterRegistry.Builder) = this(builder.result)
+  def this() = this(Map())
   
-  def add(c: Class[_], conv: Converter[_]) = new ConverterRegistry(converterMap + (c -> conv))
+  def add[T](conv: Converter[T])(implicit m: Manifest[T]): ConverterRegistry = {
+    add(m.erasure, conv)
+  }
   
-  def add[T](conv: Converter[T])(implicit m: Manifest[T]) = new ConverterRegistry(converterMap + (m.erasure -> conv))
+  def add(c: Class[_], conv: Converter[_]) = {
+    var convs = converterMap + (c -> conv)
+    
+    if (c == classOf[Boolean])     convs = convs + (classOf[java.lang.Boolean] -> conv)
+    else if (c == classOf[Byte])   convs = convs + (classOf[java.lang.Byte] -> conv)
+    else if (c == classOf[Char])   convs = convs + (classOf[java.lang.Character] -> conv)
+    else if (c == classOf[Double]) convs = convs + (classOf[java.lang.Double] -> conv)
+    else if (c == classOf[Float])  convs = convs + (classOf[java.lang.Float] -> conv)
+    else if (c == classOf[Int])    convs = convs + (classOf[java.lang.Integer] -> conv)
+    else if (c == classOf[Long])   convs = convs + (classOf[java.lang.Long] -> conv)
+    else if (c == classOf[Short])  convs = convs + (classOf[java.lang.Short] -> conv)
+    else if (c == classOf[java.util.Date]) {
+      convs = convs + (classOf[java.sql.Date] -> conv)
+      convs = convs + (classOf[java.sql.Timestamp] -> conv)
+    }
+    
+    new ConverterRegistry(convs)
+  }
   
   def apply[T](klass: Class[T]) = converter(klass)
   
@@ -34,51 +52,22 @@ class ConverterRegistry(converterMap: Map[Class[_], Converter[_]]) {
 
 object ConverterRegistry {
   
-  import scala.collection.mutable.{ MapBuilder, Builder => SBuilder }
   import converter._
   
-  type Builder = SBuilder[(Class[_], Converter[_]), Map[Class[_], Converter[_]]]
-  
-  def newBuilder: Builder = new MapBuilder[Class[_], Converter[_], Map[Class[_], Converter[_]]](Map()) {
-    
-    override def += (entry: (Class[_], Converter[_])): this.type = {    
-      super.+=(entry)
-      
-      val (c, fmt) = entry
-      if (c == classOf[Boolean]) super.+=(classOf[java.lang.Boolean] -> fmt)
-      else if (c == classOf[Byte]) super.+=(classOf[java.lang.Byte] -> fmt)
-      else if (c == classOf[Char]) super.+=(classOf[java.lang.Character] -> fmt)
-      else if (c == classOf[Double]) super.+=(classOf[java.lang.Double] -> fmt)
-      else if (c == classOf[Float]) super.+=(classOf[java.lang.Float] -> fmt)
-      else if (c == classOf[Int]) super.+=(classOf[java.lang.Integer] -> fmt)
-      else if (c == classOf[Long]) super.+=(classOf[java.lang.Long] -> fmt)
-      else if (c == classOf[Short]) super.+=(classOf[java.lang.Short] -> fmt)
-      else if (c == classOf[java.util.Date]) {
-        super.+=(classOf[java.sql.Date] -> fmt)
-        super.+=(classOf[java.sql.Timestamp] -> fmt)
-      }
-      
-      this
-    }
-  }
-  
-  def builderWithDefaults = {
-    val converters = newBuilder
-    converters += (classOf[String] -> new StringConverter)
-    converters += (classOf[Boolean] -> new BooleanConverter)
-    converters += (classOf[Byte] -> new SimpleByteConverter)
-    converters += (classOf[Char] -> new CharConverter)
-    converters += (classOf[Double] -> new SimpleDoubleConverter)
-    converters += (classOf[Float] -> new SimpleFloatConverter)
-    converters += (classOf[Int] -> new SimpleIntConverter) 
-    converters += (classOf[Long] -> new SimpleLongConverter)
-    converters += (classOf[Short] -> new SimpleShortConverter)
-    converters += (classOf[BigDecimal] -> new SBigDecimalConverter)
-    converters += (classOf[java.math.BigDecimal] -> new BigDecimalConverter)
-    converters += (classOf[java.net.URI] -> new UriConverter) 
-    converters += (classOf[java.util.Locale] -> new LocaleConverter)
-    converters += (classOf[java.util.Date] -> new DateConverter)
-    converters += (classOf[java.util.Calendar] -> new CalendarConverter)
-    converters
-  }
+  val defaultConverters = new ConverterRegistry()
+    .add(classOf[String], new StringConverter)
+    .add(classOf[Boolean], new BooleanConverter)
+    .add(classOf[Byte], new SimpleByteConverter)
+    .add(classOf[Char], new CharConverter)
+    .add(classOf[Double], new SimpleDoubleConverter)
+    .add(classOf[Float], new SimpleFloatConverter)
+    .add(classOf[Int], new SimpleIntConverter) 
+    .add(classOf[Long], new SimpleLongConverter)
+    .add(classOf[Short], new SimpleShortConverter)
+    .add(classOf[BigDecimal], new SBigDecimalConverter)
+    .add(classOf[java.math.BigDecimal] , new BigDecimalConverter)
+    .add(classOf[java.net.URI], new UriConverter) 
+    .add(classOf[java.util.Locale] , new LocaleConverter)
+    .add(classOf[java.util.Date], new DateConverter)
+    .add(classOf[java.util.Calendar], new CalendarConverter)
 }

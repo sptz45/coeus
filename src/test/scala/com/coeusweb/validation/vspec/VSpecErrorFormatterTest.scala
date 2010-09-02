@@ -12,7 +12,7 @@ import org.junit.Assert._
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 import scala.collection.mutable.HashMap
-import com.coeusweb.bind.{ DefaultConverterRegistry, Error }
+import com.coeusweb.bind.{ ConverterRegistry, Error }
 import com.coeusweb.i18n.msg._
 import com.coeusweb.test.TestHelpers
 
@@ -21,7 +21,7 @@ class VSpecErrorFormatterTest extends TestHelpers {
 
   val locale: Locale = null
   val messages = mock[MessageBundle]
-  val format = new VSpecErrorFormatter(messages, DefaultConverterRegistry).format(_, _)
+  val format = new VSpecErrorFormatter(messages, ConverterRegistry.defaultConverters ).format(_, _)
   
   @Test
   def per_object_error_code() {

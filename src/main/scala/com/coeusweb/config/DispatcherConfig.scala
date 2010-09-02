@@ -9,7 +9,7 @@ package com.coeusweb.config
 import java.lang.reflect.Method
 import java.util.Locale
 import javax.servlet.ServletConfig
-import com.coeusweb.bind.{ ConverterRegistry, DefaultConverterRegistry }
+import com.coeusweb.bind.ConverterRegistry
 import com.coeusweb.core._
 import com.coeusweb.core.convention._
 import com.coeusweb.core.factory.{ ControllerFactory, SimpleControllerFactory }
@@ -155,7 +155,7 @@ trait DispatcherConfig {
    * @see ConverterRegistry#newRegistryWithDefaults
    * @see {@link com.coeusweb.WebRequest WebRequest}
    */
-  var converters: ConverterRegistry = DefaultConverterRegistry
+  var converters: ConverterRegistry = ConverterRegistry.defaultConverters 
   
   /**
    * Parses multipart requests (used in file uploads).
