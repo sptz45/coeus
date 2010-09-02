@@ -10,7 +10,7 @@ import scala.xml.NodeSeq
 import com.coeusweb.error.{ ExceptionHandler, ErrorPageView }
 import com.coeusweb.interceptor.Interceptor
 import com.coeusweb.view._
-import convention.RequestToViewNameTranslator.viewNameForRequest
+import convention.Conventions.viewNameForRequest
 import factory.ControllerFactory
 
 

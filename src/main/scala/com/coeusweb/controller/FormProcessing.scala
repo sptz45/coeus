@@ -8,7 +8,7 @@ package com.coeusweb.controller
 
 import com.coeusweb.Controller
 import com.coeusweb.bind.{ Binder, BindingResult }
-import com.coeusweb.core.convention.{ Conventions, RequestToViewNameTranslator }
+import com.coeusweb.core.convention.Conventions
 import com.coeusweb.scope.RequiredAttributeException
 import com.coeusweb.validation.Validator
 import com.coeusweb.view.{ View, ViewName }
@@ -136,8 +136,8 @@ trait FormProcessing {
   /**
    * Return a <code>View</code> to be used when the validation fails in the {@link #ifValid} methods.
    * 
-   * <p>This method returns a view name by invoking the {@link RequestToViewNameTranslator}. Subclasses
-   * can override this method to return a different view name.</p>
+   * <p>This method returns a view name by invoking the {@link Conventions#viewNameForRequest}.
+   * Subclasses can override this method to return a different view name.</p>
    */
-  def formView: View = new ViewName(RequestToViewNameTranslator.viewNameForRequest(request))
+  def formView: View = new ViewName(Conventions.viewNameForRequest(request))
 }

@@ -8,27 +8,37 @@ package com.coeusweb.core.convention
 
 import org.junit.Test
 import org.junit.Assert._
+import com.coeusweb.WebRequest
+import com.coeusweb.test.servlet.MockHttpServletRequest
 
 class ConventionsTest {
+  import Conventions._
 
   @Test
-  def class_to_attribute_name() {
-    assertEquals("string", Conventions.classToAttributeName(classOf[String]))
-    assertEquals("threadLocal", Conventions.classToAttributeName(classOf[ThreadLocal[_]]))
-    assertEquals("illegalStateException", Conventions.classToAttributeName(classOf[IllegalStateException]))
+  def the_attribute_name_is_the_simple_class_name_with_the_first_char_to_lower_case() {
+    assertEquals("string", classToAttributeName(classOf[String]))
+    assertEquals("threadLocal", classToAttributeName(classOf[ThreadLocal[_]]))
+    assertEquals("illegalStateException", classToAttributeName(classOf[IllegalStateException]))
   }
   
   @Test
-  def package_name_to_path() {
-    assertEquals("/", Conventions.packageNameToPath(""))
-    assertEquals("blog/", Conventions.packageNameToPath("blog"))
-    assertEquals("blog/comments/", Conventions.packageNameToPath("blog.comments"))
+  def the_view_name_is_the_request_uri() {
+    assertEquals("index", viewNameForRequest(request("/index")))
+    assertEquals("blog/entries/test", viewNameForRequest(request("/blog/entries/test/")))
   }
   
   @Test
-  def package_name_to_path_excluding_roots() {
-    assertEquals("blog/", Conventions.packageNameToPath(Nil, "blog"))
-    assertEquals("blog/", Conventions.packageNameToPath(List("com.example"), "com.example.blog"))
-    assertEquals("blog/", Conventions.packageNameToPath(List("com.example"), "blog"))
+  def the_view_name_of_root_uri_is_index() {
+    assertEquals("index", viewNameForRequest(request("/")))
   }
+  
+  @Test
+  def the_view_name_does_not_contain_file_extensions() {
+    assertEquals("index",      viewNameForRequest(request("/index.html")))
+    assertEquals("index.html", viewNameForRequest(request("/index.html/")))
+    assertEquals("file.index", viewNameForRequest(request("/file.index.html")))
+  }
+  
+  def request(uri: String) =
+    new WebRequest(new MockHttpServletRequest("GET", uri), null, null, null)
 }

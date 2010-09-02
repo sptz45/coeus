@@ -82,5 +82,5 @@ object ControllerConventions {
   }
   
   private def translatePackage(roots: Traversable[String], pkg: String) =
-    if (roots.isEmpty) "" else Conventions.packageNameToPath(roots, pkg)
+    if (roots.isEmpty) "" else ConventionUtils.packageNameToPath(roots, pkg)
 }

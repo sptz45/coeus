@@ -6,10 +6,11 @@
  */
 package com.coeusweb.core.convention
 
+import com.coeusweb.WebRequest
 import com.coeusweb.core.util.Strings
 
 /**
- * Utility methods that encode various naming conventions.
+ * Utility methods that encode various conventions.
  */
 object Conventions {
   
@@ -21,21 +22,33 @@ object Conventions {
   def classToAttributeName(c: Class[_]) = Strings.firstCharToLower(c.getSimpleName)
   
   /**
-   * Translate the package name into a path name by stripping for the name
-   * the specified base packages and by replacing the dots (".") with slashes
-   * ("/").
+   * Get a view name from the request URI of the specified request.
+   * 
+   * <p>The file extension and any leading and trailing slashes get removed.</p>
+   * 
+   * <p>The view name for the root URI "/" is "index".</p>
+   * 
+   * <p>This is useful for convention-over-configuration, when we want to
+   * allow the user to omit specifying a view name from the controller method
+   * and have the framework come up with an appropriate new name.</p>
+   *
+   * @see {@link com.coeusweb.Controller Controller}
+   * @see {@link com.coeusweb.view.ViewResolver ViewResolver}
    */
-  def packageNameToPath(roots: Traversable[String], pkg: String): String = {
-    for (root <- roots if pkg.startsWith(root)) {
-      if (pkg.length == root.length) return ""
-      else  return packageNameToPath(pkg.substring(root.length + 1))
+  def viewNameForRequest(request: WebRequest): String = {
+    def dropSlashes(s: String) = {
+      var tmp = s
+      if (s.charAt(0) == '/') tmp = tmp.substring(1)
+      if (s.charAt(s.length - 1) == '/') tmp = tmp.substring(0, tmp.length - 1)
+      tmp
     }
-    return packageNameToPath(pkg)
+    def dropFileExtension(s: String) = {
+      if (s.contains(".") && s.charAt(s.length - 1) != '/') s.substring(0, s.lastIndexOf("."))
+      else s
+    }
+    
+    val uri = request.requestUri
+    if (uri == "/") return "index"
+    dropSlashes(dropFileExtension(uri))
   }
-  
-  /**
-   * Translate the package name into a path name by replacing the dots (".")
-   * with slashes ("/").
-   */
-  def packageNameToPath(pkg: String): String = pkg.replace(".", "/") + "/"
 }

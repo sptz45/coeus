@@ -10,7 +10,7 @@ import java.io.{ File, InputStream }
 import scala.xml.NodeSeq
 import com.coeusweb.Controller
 import com.coeusweb.http.HttpStatus
-import com.coeusweb.core.convention.RequestToViewNameTranslator
+import com.coeusweb.core.convention.Conventions
 import com.coeusweb.view._
 
 trait ResponseHelpers extends ViewFactory {
@@ -31,5 +31,5 @@ trait ResponseHelpers extends ViewFactory {
 
    * @see {@link com.coeusweb.view.ViewResolver ViewResolver}
    */
-  def render = new ViewName(RequestToViewNameTranslator.viewNameForRequest(request)) 
+  def render = new ViewName(Conventions.viewNameForRequest(request)) 
 }
