@@ -14,8 +14,6 @@ import com.coeusweb.config._
 
 class WebModuleLoaderTest {
   
-  import WebModuleLoaderTest._
-  
   val servletConfig = new MockServletConfig("sweb-test")
   
   @Test(expected=classOf[javax.servlet.ServletException])
@@ -31,7 +29,7 @@ class WebModuleLoaderTest {
   
   @Test(expected=classOf[javax.servlet.ServletException])
   def module_class_is_not_a_WebModule() {
-    servletConfig.addInitParameter("web-module", "java.util.ArrayList")
+    servletConfig.addInitParameter(paramName, "java.util.ArrayList")
     loadModule()
   }
   
@@ -49,15 +47,16 @@ class WebModuleLoaderTest {
     assertTrue(module.controllers.result.isEmpty)
     assertFalse(module.interceptors.result.isEmpty)
   }
+
   
+  def paramName = WebModuleLoader.webModuleParamName
+
   def loadModule() = WebModuleLoader.load(servletConfig)
   
   def setModuleParam(moduleClass: String) {
-    servletConfig.addInitParameter("web-module", moduleClass)
+    servletConfig.addInitParameter(paramName, moduleClass)
   }
-}  
-
-object WebModuleLoaderTest {
+  
   
   class EmptyWebModule(sc: ServletConfig) extends WebModule(sc)
   

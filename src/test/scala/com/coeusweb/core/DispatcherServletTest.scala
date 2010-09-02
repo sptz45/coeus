@@ -22,7 +22,8 @@ class DispatcherServletTest {
   @Before
   def initializeServlet() {
     GlogalState.interceptor.reset()
-    servletConfig.addInitParameter("web-module", classOf[ExampleWebModule].getName.toString)
+    servletConfig.addInitParameter(WebModuleLoader.webModuleParamName,
+                                   classOf[ExampleWebModule].getName)
     servlet.init(servletConfig)
   }
   

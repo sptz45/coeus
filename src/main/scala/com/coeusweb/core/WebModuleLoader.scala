@@ -15,13 +15,16 @@ import com.coeusweb.config._
  */
 private object WebModuleLoader {
   
+  def webModuleParamName = "web-module"
+  
   def load(config: ServletConfig): WebModule = {
 
-    val moduleClassName = config.getInitParameter("web-module")
+    val moduleClassName = config.getInitParameter(webModuleParamName)
     if (moduleClassName eq null)
       throw new ServletException(
-        "Could not initialize DispatcherServlet '%s' because no servlet init parameter named 'context' was configured in web.xml for the servlet"
-        .format(config.getServletName))
+        "Could not initialize DispatcherServlet %s because no servlet init parameter named %s " +
+        "was configured in web.xml for the servlet."
+          .format(config.getServletName, webModuleParamName))
 
     val moduleClass = {
       try {
@@ -29,14 +32,14 @@ private object WebModuleLoader {
       } catch {
         case e: ClassNotFoundException =>
           throw new ServletException(
-            "Could not initialize DispatcherServlet %s because the module class [%s] was not found."
+            "Could not initialize DispatcherServlet %s because the web-module class [%s] was not found."
               .format(config.getServletName, moduleClassName), e)
       }
     }
 
     if (! classOf[WebModule].isAssignableFrom(moduleClass)) {
       throw new ServletException(
-        "Could not initialize DispatcherServlet %s because the module class [%s] does not extend %s"
+        "Could not initialize DispatcherServlet %s because the web-module class [%s] does not extend %s"
           .format(config.getServletName, moduleClassName, classOf[WebModule].getName))
     }
 
