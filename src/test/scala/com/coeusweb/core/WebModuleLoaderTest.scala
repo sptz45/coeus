@@ -14,6 +14,8 @@ import com.coeusweb.config._
 
 class WebModuleLoaderTest {
   
+  import WebModuleLoaderTest._
+  
   val servletConfig = new MockServletConfig("sweb-test")
   
   @Test(expected=classOf[javax.servlet.ServletException])
@@ -56,7 +58,9 @@ class WebModuleLoaderTest {
   def setModuleParam(moduleClass: String) {
     servletConfig.addInitParameter(paramName, moduleClass)
   }
-  
+}
+
+object WebModuleLoaderTest {
   
   class EmptyWebModule(sc: ServletConfig) extends WebModule(sc)
   
