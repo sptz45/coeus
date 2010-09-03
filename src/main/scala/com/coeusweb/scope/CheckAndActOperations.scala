@@ -77,7 +77,7 @@ trait CheckAndActOperations {
    * 
    * @param block the code to execute while the underlying container is synchronized
    */
-  def synchronizeAndExecute(block: => Unit): Unit = mutex.synchronized(block)
+  def synchronizeAndExecute[U](block: => U): U = mutex.synchronized(block)
 }
 
 /**
