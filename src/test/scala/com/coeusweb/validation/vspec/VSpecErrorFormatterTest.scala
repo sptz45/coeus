@@ -21,7 +21,7 @@ class VSpecErrorFormatterTest extends TestHelpers {
 
   val locale: Locale = null
   val messages = mock[MessageBundle]
-  val format = new VSpecErrorFormatter(messages, ConverterRegistry.defaultConverters ).format(_, _)
+  val format = new VSpecErrorFormatter(messages, ConverterRegistry.defaultConverters ).format(_: Error, locale)
   
   @Test
   def per_object_error_code() {
@@ -29,7 +29,7 @@ class VSpecErrorFormatterTest extends TestHelpers {
       
     when(messages.get(locale, expectedCode)).thenReturn(Some("Email is required"))
     
-    assertEquals("Email is required", format(emailHasNoText, locale))
+    assertEquals("Email is required", format(emailHasNoText))
   }
   
   @Test
@@ -40,20 +40,20 @@ class VSpecErrorFormatterTest extends TestHelpers {
     when(messages.get(locale, perObjectCode)).thenReturn(None)
     when(messages(locale, defaultCode)).thenReturn("Field is required")
     
-    assertEquals("Field is required", format(emailHasNoText, locale))
+    assertEquals("Field is required", format(emailHasNoText))
   }
   
   @Test(expected=classOf[MessageNotFoundException])
   def exception_when_no_message_found() {
     when(messages.get(any(), any(), any())).thenReturn(None)
     when(messages(any(), any(), any())).thenThrow(new MessageNotFoundException("any", locale, null))
-    format(emailHasNoText, locale)
+    format(emailHasNoText)
   }
   
   @Test
   def message_with_no_internpolation_variables() {
     when(messages.get(any(), any(), any())).thenReturn(Some("is required"))
-    assertEquals("is required", format(emailHasNoText, locale))
+    assertEquals("is required", format(emailHasNoText))
   }
   
   @Test
@@ -64,10 +64,10 @@ class VSpecErrorFormatterTest extends TestHelpers {
                                                   .thenReturn(" {3} {2} {1} ")
                                                   .thenReturn("error:{1} is {3}")
     
-    assertEquals("email in User cannot be null", format(emailHasNoText, locale))
-    assertEquals("emailUsernull", format(emailHasNoText, locale))
-    assertEquals(" null User email ", format(emailHasNoText, locale))
-    assertEquals("error:email is null", format(emailHasNoText, locale))
+    assertEquals("email in User cannot be null", format(emailHasNoText))
+    assertEquals("emailUsernull", format(emailHasNoText))
+    assertEquals(" null User email ", format(emailHasNoText))
+    assertEquals("error:email is null", format(emailHasNoText))
   }
 }
 
