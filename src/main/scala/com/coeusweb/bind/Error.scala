@@ -40,4 +40,12 @@ object Error {
    */
   def typeMismatch(field: String, fieldClass: Class[_], source: String) =
     new Error(fieldClass.getName + ".type-mismatch", field, fieldClass, source)
+  
+  /**
+   * Tests whether the specified error is the result of a type mismatch during
+   * binding.
+   * 
+   * @param error the Error to test
+   */
+  def isTypeMismatch(error: Error) = error.code.endsWith(".type-mismatch")
 }
