@@ -143,7 +143,15 @@ trait FormProcessing {
    * Subclasses can override this method to return a different view name.</p>
    */
   def formView: View = new ViewName(Conventions.viewNameForRequest(request))
-  
+
+  /**
+   * Format the specified error using the formatter of the implicit validator.
+   * 
+   * @param error     the error to format
+   * @param validator specifies the ErrorFormatter to use
+   * 
+   * @return a formatted error message for the specified error
+   */
   def format(error: Error)(implicit validator: Validator[_]): String = {
     validator.errorFormatter.format(error, request.locale, request.messages, request.converters)
   }
