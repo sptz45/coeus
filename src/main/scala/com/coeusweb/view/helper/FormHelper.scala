@@ -7,6 +7,7 @@
 package com.coeusweb.view.helper
 
 import scala.xml.{ Elem, Text }
+import com.coeusweb.WebRequest
 import com.coeusweb.bind.{ BindingResult, ErrorFormatter }
 import com.coeusweb.controller.ModelAttributes
 import com.coeusweb.i18n.msg.MessageBundle
@@ -43,14 +44,13 @@ trait FormHelper {
     }
   }
   
-  private def labelMessage(field: String, code: String, scopes: ScopeAccessor) = {
-    val request = scopes.request
+  private def labelMessage(field: String, code: String, request: WebRequest) = {
     val msgCode = if (code ne null) code else field
     if (ModelAttributes.containsModelAttribute(request)) {
-      val modelName= ModelAttributes.getModelAttributeName(scopes.request)
-      messages(scopes.request.locale, modelName + "." + msgCode)
+      val modelName= ModelAttributes.getModelAttributeName(request)
+      messages(request.locale, modelName + "." + msgCode)
     } else {
-      messages(scopes.request.locale, msgCode)
+      messages(request.locale, msgCode)
     }
   }
 
@@ -65,7 +65,7 @@ trait FormHelper {
    *              {@code null} to use the field's name as a i18n message code.
    */
   def label(field: String, code: String = null)(implicit scopes: ScopeAccessor) = {
-    <label for={field}>{ labelMessage(field, code, scopes) }</label>
+    <label for={field}>{ labelMessage(field, code, scopes.request) }</label>
   }
   
   /**
@@ -83,7 +83,7 @@ trait FormHelper {
    * @see {@link #error}
    */
   def label_and_error(field: String, code: String = null)(implicit scopes: ScopeAccessor) = {
-    <label for={field}>{ labelMessage(field, code, scopes) } { error(field) }</label>
+    <label for={field}>{ labelMessage(field, code, scopes.request) } { error(field) }</label>
   }
 
   /**
