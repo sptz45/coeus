@@ -16,7 +16,7 @@ import com.coeusweb.test.servlet.MockHttpServletRequest
 class CsrfProtectionTest {
   
   val mock = new MockHttpServletRequest("POST", "/")
-  val request = new WebRequest(mock, null, new FixedLocaleResolver(java.util.Locale.US), null)
+  val request = new WebRequest(null, mock, null, new FixedLocaleResolver(java.util.Locale.US), null, null)
   
   @Test
   def non_post_requests_are_not_checked() {

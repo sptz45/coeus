@@ -12,12 +12,19 @@ import org.junit.Assert._
 import bind.ConverterRegistry
 import i18n.locale.FixedLocaleResolver
 import test.Assertions._
-import test.servlet.MockHttpServletRequest
+import test.servlet.{MockHttpServletRequest, MockServletContext}
 
 class WebRequestTest extends scope.AbstractScopedContainerTest {
 
+  val mockContext = new MockServletContext
   val mock = new MockHttpServletRequest("GET", "/index")
-  val request = new WebRequest(mock, null, new FixedLocaleResolver(Locale.US), ConverterRegistry.defaultConverters )
+  
+  val request = new WebRequest(servletContext = mockContext,
+                               servletRequest = mock,
+                               pathContext = null,
+                               localeResolver = new FixedLocaleResolver(Locale.US),
+                               converters = ConverterRegistry.defaultConverters,
+                               messages = null)
   
   val attributes = request
   
@@ -47,6 +54,13 @@ class WebRequestTest extends scope.AbstractScopedContainerTest {
     assertNotSame(oldSession, newSession)
     assertSame(newSession, request.session)
     assertTrue(oldSession.attributes.isEmpty)
+  }
+  
+  @Test
+  def getting_the_application_scope_does_not_create_a_session() {
+    assertEquals(None, request.existingSession)
+    assertNotNull(request.application)
+    assertEquals(None, request.existingSession)
   }
   
   @Test

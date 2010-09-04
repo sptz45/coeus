@@ -17,7 +17,7 @@ class RedirectViewTest {
 
   val mockRequest = new MockHttpServletRequest
   val mock = new MockHttpServletResponse
-  val request = new WebRequest(mockRequest, null, null, null)
+  val request = new WebRequest(null, mockRequest, null, null, null, null)
   val response = new WebResponse(mock)
   val controller = new AbstractController { }
   controller.response = response

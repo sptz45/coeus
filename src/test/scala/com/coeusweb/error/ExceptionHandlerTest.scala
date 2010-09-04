@@ -11,7 +11,7 @@ import param.MissingParameterException
 class ExceptionHandlerTest {
   
   val context = {
-    val req = new WebRequest(new MockHttpServletRequest, Map(), null, null)
+    val req = new WebRequest(null, new MockHttpServletRequest, Map(), null, null, null)
     val res = new WebResponse(new MockHttpServletResponse)
     new core.RequestContext(req, res, null)
   }

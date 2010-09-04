@@ -230,7 +230,7 @@ class RequestExecutorTest extends TestHelpers {
   
   private def makeRequestContext(handler: Handler[_]) = {
     val response = new WebResponse(new MockHttpServletResponse)
-    val request = new WebRequest(null, null, null, null) {
+    val request = new WebRequest(null, null, null, null, null, null) {
       override def locale = java.util.Locale.ENGLISH
     }
     new RequestContext(request, response, handler)

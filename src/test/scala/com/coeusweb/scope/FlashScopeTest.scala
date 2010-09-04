@@ -14,6 +14,9 @@ import com.coeusweb.test.servlet.{ MockHttpSession, MockHttpServletRequest }
 class FlashScopeTest extends AbstractScopedContainerTest {
   
   val mock = new MockHttpSession
+  val servletRequest = new MockHttpServletRequest
+  servletRequest.setSession(mock)
+  
   val session = new WebSession(mock)
   val attributes = new FlashScope(session)
   
@@ -23,41 +26,32 @@ class FlashScopeTest extends AbstractScopedContainerTest {
   
   @Test
   def attributes_get_removed_after_read_from_flash() {
-    val servletRequest = new MockHttpServletRequest
-    servletRequest.setSession(mock)
-    
-    val creating = new WebRequest(servletRequest, null, null, null)
+    val creating = createWebRequest
     creating.flash("ten") = 10L
     FlashScope.sweep(creating)
     
-    val reading = new WebRequest(servletRequest, null, null, null)
+    val reading = createWebRequest
     assertEquals(10, reading.flash("ten"))
     FlashScope.sweep(reading)
     
-    val evicted = new WebRequest(servletRequest, null, null, null)
+    val evicted = createWebRequest
     assertEquals(None, evicted.flash.get("ten"))
   }
   
   @Test
   def attributes_get_removed_after_read_even_when_created_on_the_same_request() {
-    val servletRequest = new MockHttpServletRequest
-    servletRequest.setSession(mock)
-    
-    val creating = new WebRequest(servletRequest, null, null, null)
+    val creating = createWebRequest
     creating.flash("ten") = 10L
     assertEquals(10, creating.flash("ten"))
     FlashScope.sweep(creating)
     
-    val evicted = new WebRequest(servletRequest, null, null, null)
+    val evicted = createWebRequest
     assertEquals(None, evicted.flash.get("ten"))
   }
   
   @Test
   def no_object_in_session_if_flash_is_empty() {
-    val servletRequest = new MockHttpServletRequest
-    servletRequest.setSession(mock)
-    
-    val creating = new WebRequest(servletRequest, null, null, null)
+    val creating = createWebRequest
     creating.flash("ten") = 10L
     assertEquals(10, creating.flash("ten"))
     FlashScope.sweep(creating)
@@ -67,14 +61,11 @@ class FlashScopeTest extends AbstractScopedContainerTest {
   
   @Test
   def no_race_condition_if_one_request_sweeps_the_flash_while_the_other_is_updating_it() {
-    val servletRequest = new MockHttpServletRequest
-    servletRequest.setSession(mock)
-    
-    val sweeper = new WebRequest(servletRequest, null, null, null)
+    val sweeper = createWebRequest
     sweeper.flash("ten") = 10L
     assertEquals(10, sweeper.flash("ten"))
     
-    val mutator = new WebRequest(servletRequest, null, null, null)
+    val mutator = createWebRequest
     
     FlashScope.sweep(sweeper)
     assertFalse("No elements in flash, so session must be empty", mock.getAttributeNames.hasMoreElements)
@@ -87,40 +78,38 @@ class FlashScopeTest extends AbstractScopedContainerTest {
   
   @Test
   def attribute_persists_multiple_request_if_not_read() {
-    val servletRequest = new MockHttpServletRequest
-    servletRequest.setSession(mock)
-    
-    val creating = new WebRequest(servletRequest, null, null, null)
+    val creating = createWebRequest
     creating.flash("ten") = 10L
     FlashScope.sweep(creating)
     
-    val intermediate = new WebRequest(servletRequest, null, null, null)
+    val intermediate = createWebRequest
     FlashScope.sweep(intermediate)
     
-    val reading = new WebRequest(servletRequest, null, null, null)
+    val reading = createWebRequest
     assertEquals(10, reading.flash("ten"))
     FlashScope.sweep(reading)
     
-    val evicted = new WebRequest(servletRequest, null, null, null)
+    val evicted = createWebRequest
     assertEquals(None, evicted.flash.get("ten"))
   }
   
   @Test
   def attributes_get_removed_after_a_time_period_even_if_not_read() {
-    val servletRequest = new MockHttpServletRequest
-    servletRequest.setSession(mock)
-    
-    val creating = new WebRequest(servletRequest, null, null, null)
+    val creating = createWebRequest
     creating.flash("ten") = 10L
     FlashScope.sweep(creating)
     
-    val expired = new WebRequest(servletRequest, null, null, null) with ExpiredFlashScope
+    val expired = createWebRequestWithExpiredFlash
     FlashScope.sweep(expired)
     
-    val evicted = new WebRequest(servletRequest, null, null, null)
+    val evicted = createWebRequest
     assertEquals(None, evicted.flash.get("ten"))
   }
   
+  def createWebRequest = new WebRequest(null, servletRequest, null, null, null, null)
+  
+  def createWebRequestWithExpiredFlash =
+    new WebRequest(null, servletRequest, null, null, null, null) with ExpiredFlashScope
   
   // static mocks ------------------------------------------------
   

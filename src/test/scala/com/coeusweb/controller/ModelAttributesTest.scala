@@ -16,7 +16,7 @@ import com.coeusweb.test.servlet.MockHttpServletRequest
 
 class ModelAttributesTest {
   
-  val request = new WebRequest(new MockHttpServletRequest, null, null, null)
+  val request = new WebRequest(null, new MockHttpServletRequest, null, null, null, null)
   val model = new ModelAttributes(new Binder(null), request, storeInSession=true)
   
   @Test

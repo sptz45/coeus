@@ -11,6 +11,7 @@ import javax.servlet.{ServletConfig, ServletException}
 import scala.collection.Map
 import com.coeusweb.bind.ConverterRegistry
 import com.coeusweb.i18n.locale.LocaleResolver
+import com.coeusweb.i18n.msg.MessageBundle
 import com.coeusweb.{WebRequest, WebResponse}
 import com.coeusweb.config._
 import com.coeusweb.http.MutableHttpServletRequest
@@ -29,6 +30,7 @@ class DispatcherServlet extends HttpServlet {
   private[this] var executor: RequestExecutor = _
   
   private[this] var localeResolver: LocaleResolver = _
+  private[this] var messageBundle: MessageBundle = _
   private[this] var converters: ConverterRegistry = _
   private[this] var requestEncoding: String = _
   private[this] var hideResources: Boolean = _
@@ -47,6 +49,7 @@ class DispatcherServlet extends HttpServlet {
 
     resolver           = module.requestResolver    
     localeResolver     = module.localeResolver
+    messageBundle      = module.messageBundle
     converters         = module.converters
     requestEncoding    = module.requestEncoding
     hideResources      = module.hideResources
@@ -122,7 +125,7 @@ class DispatcherServlet extends HttpServlet {
                       vars: Map[String, String]) {
     
     executor.execute(new RequestContext(
-      new WebRequest(req, vars, localeResolver, converters),
+      new WebRequest(getServletContext, req, vars, localeResolver, converters, messageBundle),
       new WebResponse(res),
       handler))
   }

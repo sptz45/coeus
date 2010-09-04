@@ -40,5 +40,5 @@ class ConventionsTest {
   }
   
   def request(uri: String) =
-    new WebRequest(new MockHttpServletRequest("GET", uri), null, null, null)
+    new WebRequest(null, new MockHttpServletRequest("GET", uri), null, null, null, null)
 }

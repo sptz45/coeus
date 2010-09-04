@@ -10,14 +10,20 @@ import java.util.Locale
 import org.junit.{ Before, Test }
 import org.junit.Assert._
 import com.coeusweb._
-import com.coeusweb.view.ViewName
-import com.coeusweb.test.servlet.{ MockHttpServletRequest, MockHttpServletResponse }
+import bind.ConverterRegistry.{defaultConverters => converters} 
+import i18n.msg.MessageBundle
+import view.ViewName
+import test.servlet._
 
 
 class AbstractControllerTest {
   import AbstractControllerTest._
 
   val controller = new PostController
+  
+  val messages: MessageBundle = null
+  val servletContext = new MockServletContext
+  
 
   @Test
   def validate_with_errors() {
@@ -74,7 +80,7 @@ class AbstractControllerTest {
     val mock = new MockHttpServletRequest("GET", "/post")
     for ((name, value) <- params) mock.setParameter(name, value)
     val resolver = new i18n.locale.FixedLocaleResolver(Locale.US)
-    new WebRequest(mock, null, resolver, bind.ConverterRegistry.defaultConverters )
+    new WebRequest(servletContext, mock, null, resolver, converters, messages)
   }
   
   def assertSuccess(view: Any) {

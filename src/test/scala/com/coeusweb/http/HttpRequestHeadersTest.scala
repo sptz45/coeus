@@ -19,7 +19,7 @@ import test.Assertions._
 class HttpRequestHeadersTest {
 
   val mock = new MockHttpServletRequest
-  val request = new WebRequest(mock, null, new FixedLocaleResolver(Locale.US), ConverterRegistry.defaultConverters )
+  val request = new WebRequest(null, mock, null, new FixedLocaleResolver(Locale.US), ConverterRegistry.defaultConverters, null)
   
   @Test
   def read_string_headers_does_not_require_type_argument() {

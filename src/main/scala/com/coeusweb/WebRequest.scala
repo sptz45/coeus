@@ -7,11 +7,13 @@
 package com.coeusweb
 
 import java.util.{ Date, Enumeration, Locale }
+import javax.servlet.ServletContext
 import javax.servlet.http.HttpServletRequest
 import scala.collection.Map
 import scala.collection.JavaConversions.asIterator
 import bind.ConverterRegistry
 import i18n.locale.LocaleResolver
+import i18n.msg.MessageBundle
 import http.HttpRequestHeaders
 import http.multipart.{ FormFile, MultipartHttpServletRequest }
 import scope._
@@ -26,10 +28,12 @@ import param._
  * @param converters the default converters
  */
 class WebRequest(
+  val servletContext: ServletContext,
   val servletRequest: HttpServletRequest,
   pathContext: Map[String, String],
   localeResolver: LocaleResolver,
-  val converters: ConverterRegistry) extends ScopedContainer with HttpRequestHeaders {
+  val converters: ConverterRegistry,
+  val messages: MessageBundle) extends ScopedContainer with HttpRequestHeaders {
   
   /**
    * Returns a <code>Reader</code> with the request's body
@@ -94,7 +98,7 @@ class WebRequest(
   lazy val flash = new FlashScope(session)
   
   /** Returns the application scope. */
-  lazy val application = new ApplicationScope(session.servletSession.getServletContext)
+  lazy val application = new ApplicationScope(servletContext)
   
   /** Returns the request parameters. */
   lazy val params = new RequestParameters(servletRequest, locale, converters)
