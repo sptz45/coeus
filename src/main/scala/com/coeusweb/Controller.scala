@@ -133,4 +133,20 @@ abstract class Controller {
   
   /** The path parameters. */
   def path = request.path
+  
+  /** The default converters as configured in {@code WebModule}. */
+  def converters = request.converters
+  
+  /**
+   * Get an i18n message for the specified code and arguments, using the locale
+   * of the configured {@code LocaleResolver}.
+   * 
+   * @param code the code of the message.
+   * @param args any arguments that will be interpolated into the message.
+   * 
+   * @return the interpolated message.
+   * @throws MessageNotFoundException if a message does not exist for the
+   *         specified code and Locale.
+   */
+  def messages(code: String, args: Any*) = request.messages(request.locale, code, args)
 }
