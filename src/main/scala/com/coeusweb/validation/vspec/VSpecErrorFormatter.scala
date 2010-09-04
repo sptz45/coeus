@@ -8,15 +8,12 @@ package com.coeusweb.validation.vspec
 
 import java.util.Locale
 import com.coeusweb.bind.{ ConverterRegistry, Error, ErrorFormatter }
-import com.coeusweb.core.util.{ Strings, Interpolator }
 import com.coeusweb.i18n.msg.MessageBundle
+import com.coeusweb.core.util.{ Strings, Interpolator }
 
-class VSpecErrorFormatter(
-  messages: MessageBundle,
-  formatters: ConverterRegistry)
-    extends ErrorFormatter { 
+object VSpecErrorFormatter extends ErrorFormatter { 
   
-  def format(error: Error, locale: Locale): String = {
+  def format(error: Error, locale: Locale, messages: MessageBundle, formatters: ConverterRegistry) = {
     
     def interpolate(msg: String, args: Seq[Any]) = {
       def fmt: Any => String = {

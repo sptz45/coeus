@@ -20,13 +20,6 @@ trait FormHelper {
   
   private[this] val EmptyElem = Text("")
   
-  /** Contains the i18n messages. */
-  val messages: MessageBundle
-  
-  /** Formats the error messages of validators. */
-  val errorFormatter: ErrorFormatter
-  
-  
   /**
    * Returns a {@code span} element that contains the error for the specified field or
    * an empty XML node if the field has no error.
@@ -37,10 +30,10 @@ trait FormHelper {
    * @param field the name of the field
    */
   def error(field: String)(implicit scopes: ScopeAccessor) = {
-    bindingResult.error(field) match {
+    val req = scopes.request
+    bindingResult.formatError(field, req.locale, req.messages) match {
       case None      => EmptyElem
-      case Some(err) =>
-        <span class="error">{ errorFormatter.format(err, scopes.request.locale) }</span>
+      case Some(err) => <span class="error">{ err }</span>
     }
   }
   
@@ -48,9 +41,9 @@ trait FormHelper {
     val msgCode = if (code ne null) code else field
     if (ModelAttributes.containsModelAttribute(request)) {
       val modelName= ModelAttributes.getModelAttributeName(request)
-      messages(request.locale, modelName + "." + msgCode)
+      request.messages(request.locale, modelName + "." + msgCode)
     } else {
-      messages(request.locale, msgCode)
+      request.messages(request.locale, msgCode)
     }
   }
 

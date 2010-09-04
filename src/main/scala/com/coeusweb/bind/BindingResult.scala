@@ -8,6 +8,7 @@ package com.coeusweb.bind
 
 import java.util.Locale
 import scala.collection.mutable.{ Map => MutableMap }
+import com.coeusweb.i18n.msg.MessageBundle
 
 /**
  * The result of binding to a target object.
@@ -19,6 +20,8 @@ import scala.collection.mutable.{ Map => MutableMap }
 class BindingResult[+T <: AnyRef](converters: ConverterRegistry, val target: T) {
     
   private val errorMap = MutableMap[String, Error]()
+  
+  var errorFormatter: ErrorFormatter = ToStringErrorFormatter
   
   def addError(expr: String, error: Error) {
     errorMap += (expr -> error)
@@ -53,6 +56,9 @@ class BindingResult[+T <: AnyRef](converters: ConverterRegistry, val target: T) 
    */
   def error(expr: String): Option[Error] = errorMap.get(expr)
   
+  def formatError(expr: String, locale: Locale, messages: MessageBundle) =
+    errorMap.get(expr).map(errorFormatter.format(_, locale, null, converters))
+  
   def fieldValue(expr: String): Any = ExpressionLanguage.eval(target, expr)
   
   def format(expr: String, locale: Locale) = {
@@ -65,4 +71,9 @@ class BindingResult[+T <: AnyRef](converters: ConverterRegistry, val target: T) 
     else
       ""
   }
+}
+
+object ToStringErrorFormatter extends ErrorFormatter {
+  def format(error: Error, locale: Locale, messages: MessageBundle, formatters: ConverterRegistry) = 
+    error.toString
 }

@@ -7,7 +7,7 @@
 package com.coeusweb.controller
 
 import com.coeusweb.Controller
-import com.coeusweb.bind.{ Binder, BindingResult }
+import com.coeusweb.bind.{ Binder, BindingResult, ErrorFormatter }
 import com.coeusweb.core.convention.Conventions
 import com.coeusweb.scope.RequiredAttributeException
 import com.coeusweb.validation.Validator
@@ -16,6 +16,8 @@ import com.coeusweb.view.{ View, ViewName }
 trait FormProcessing {
   
   this: Controller =>
+  
+  def errorFormatter: ErrorFormatter
   
   /**
    * Whether to store the model attributes in session.
@@ -48,14 +50,17 @@ trait FormProcessing {
    * attributes the resulting <code>BindingResult</code> and the "modelAttribute".</p> 
    * 
    * @param modelName the attribute name of the model object
-   * @param target the object to bind and validate
+   * @param target    the object to bind and validate
    * @param validator the validator to use for validating the object
+   * 
    * @return the result of the validation
+   * 
    * @see BindingResult
    */
   def validate[T <: AnyRef](modelName: String, target: T)(implicit validator: Validator[T]): BindingResult[T] = {
     val result = binder.bind(request.params, target, request.locale)
     validator.validate(result)
+    result.errorFormatter = errorFormatter
     model.addBindingResult(modelName, result)
     result
   }
@@ -66,8 +71,9 @@ trait FormProcessing {
    * <p>Same as the {@link #validate(modelName, target, validator)} except that the
    * <code>modelName</code> gets automatically generated from the target object's class.</p>
    * 
-   * @param target the object to bind and validate
+   * @param target    the object to bind and validate
    * @param validator the validator to use for validating the object
+   * 
    * @return the result of the validation
    */
   def validate[T <: AnyRef](target: T)(implicit validator: Validator[T]): BindingResult[T] = {

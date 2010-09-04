@@ -7,6 +7,7 @@
 package com.coeusweb.bind
 
 import java.util.Locale
+import com.coeusweb.i18n.msg.MessageBundle
 
 /**
  * Formats error messages.
@@ -17,5 +18,5 @@ trait ErrorFormatter {
    * Returns a formatted, locale specific, error message for the specified
    * {@code Error} instance.
    */
-  def format(error: Error, locale: Locale): String
+  def format(error: Error, locale: Locale, messages: MessageBundle, formatters: ConverterRegistry): String
 }

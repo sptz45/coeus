@@ -7,9 +7,10 @@
 package com.coeusweb.validation.bean
 
 import java.util.Locale
-import com.coeusweb.bind.{ Error, ErrorFormatter }
+import com.coeusweb.bind.{ Error, ErrorFormatter, ConverterRegistry }
+import com.coeusweb.i18n.msg.MessageBundle
 
-class BeanErrorFormatter extends ErrorFormatter {
+object BeanErrorFormatter extends ErrorFormatter {
 
-  def format(error: Error, locale: Locale): String = error.code
+  def format(error: Error, locale: Locale, messages: MessageBundle, formatters: ConverterRegistry) = error.code
 }

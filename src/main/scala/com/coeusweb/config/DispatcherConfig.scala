@@ -180,19 +180,9 @@ trait DispatcherConfig {
    */
   var viewResolver: ViewResolver = {
     val config = new ScalateConfig
-    config.bind[DefaultViewHelpers].to(viewHelpers).using(name="c", importMembers=false, isImplicit=false)
+    config.bind[DefaultViewHelpers]
+          .to(new DefaultViewHelpers(servletConfig.getServletContext))
+          .using(name="c", importMembers=false, isImplicit=false)
     new ScalateViewResolver(servletConfig.getServletContext, config)
-  }
-  
-  /**
-   * The default view helpers for Scalate views.
-   * 
-   * <p>The form helpers are configured to use {@code Vspec} for form validation. If
-   * you want to use another {@code Validatior} implementation use must create a
-   * {@code DefaultViewHelpers} with the correct {@code ErrorFormatter} implementation.</p>
-   */
-  def viewHelpers = {
-    val errorFormatter = new VSpecErrorFormatter(messageBundle, converters)
-    new DefaultViewHelpers(servletConfig.getServletContext, messageBundle, errorFormatter)
   }
 }

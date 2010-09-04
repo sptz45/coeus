@@ -13,10 +13,8 @@ import javax.servlet.ServletContext
 /**
  * The view helpers that are registered by default in <code>DispatcherConfig</code>.
  */
-class DefaultViewHelpers(
-  val servletContext: ServletContext,
-  val messages: MessageBundle,
-  val errorFormatter: ErrorFormatter) extends MessagesHelper
-                                         with AssetsHelper
-                                         with FormHelper
-                                         with UrlHelper
+class DefaultViewHelpers(val servletContext: ServletContext)
+  extends MessagesHelper
+     with AssetsHelper
+     with FormHelper
+     with UrlHelper
