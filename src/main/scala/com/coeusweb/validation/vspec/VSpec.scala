@@ -128,6 +128,8 @@ class VSpec[-T <: AnyRef](implicit m: Manifest[T]) extends Validator[T] {
   private var constraintsMap = Map[String, List[Constraint[_]]]()
   private var associationValidators = Map[String, List[VSpec[_]]]()
   
+  val errorFormatter = VSpecErrorFormatter
+  
   def validate(target: T): Iterable[Error] = {
     val result = new BindingResult(null, target)
     validate(result)
@@ -135,6 +137,7 @@ class VSpec[-T <: AnyRef](implicit m: Manifest[T]) extends Validator[T] {
   }
   
   def validate(result: BindingResult[T]) {
+    result.errorFormatter = errorFormatter
     doValidate(null, result.target, result)
     extraValidation(result)
   }

@@ -7,7 +7,7 @@
 package com.coeusweb.controller
 
 import com.coeusweb.Controller
-import com.coeusweb.bind.{ Binder, BindingResult, ErrorFormatter }
+import com.coeusweb.bind.{ Binder, BindingResult, ErrorFormatter, Error }
 import com.coeusweb.core.convention.Conventions
 import com.coeusweb.scope.RequiredAttributeException
 import com.coeusweb.validation.Validator
@@ -16,8 +16,6 @@ import com.coeusweb.view.{ View, ViewName }
 trait FormProcessing {
   
   this: Controller =>
-  
-  def errorFormatter: ErrorFormatter
   
   /**
    * Whether to store the model attributes in session.
@@ -60,7 +58,6 @@ trait FormProcessing {
   def validate[T <: AnyRef](modelName: String, target: T)(implicit validator: Validator[T]): BindingResult[T] = {
     val result = binder.bind(request.params, target, request.locale)
     validator.validate(result)
-    result.errorFormatter = errorFormatter
     model.addBindingResult(modelName, result)
     result
   }
@@ -146,4 +143,8 @@ trait FormProcessing {
    * Subclasses can override this method to return a different view name.</p>
    */
   def formView: View = new ViewName(Conventions.viewNameForRequest(request))
+  
+  def format(error: Error)(implicit validator: Validator[_]): String = {
+    validator.errorFormatter.format(error, request.locale, request.messages, request.converters)
+  }
 }

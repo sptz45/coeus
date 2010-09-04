@@ -6,7 +6,7 @@
  */
 package com.coeusweb.validation
 
-import com.coeusweb.bind.{ BindingResult, Error }
+import com.coeusweb.bind._
 
 /**
  * Validates objects.
@@ -46,4 +46,6 @@ trait Validator[-T <: AnyRef] {
    *        else <code>None</code>.
    */
   def validateField[S](field: String, value: Any)(implicit m: Manifest[S]): Option[Error]
+  
+  val errorFormatter: ErrorFormatter
 }

@@ -30,6 +30,7 @@ class BeanValidatorTest {
   	assertTrue(result.hasErrors)
   	assertNone(result.error("content"))
   	assertSome(result.error("title"))
+  	assertEquals(validator.errorFormatter, result.errorFormatter)
   }
   
   @Test

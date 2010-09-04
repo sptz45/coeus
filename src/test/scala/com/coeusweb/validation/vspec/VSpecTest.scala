@@ -153,6 +153,14 @@ class VSpecTest {
     assertTrue("first validator not called", firstCalled)
     assertTrue("second validator not called", secondCalled)
   }
+  
+  @Test
+  def validator_sets_the_error_formatter_in_binding_result() {
+    val result = new BindingResult(null, new User("spring", "spiros@example.com", 30))
+    val validator = new VSpec[User]
+    validator.validate(result)
+    assertEquals(validator.errorFormatter, result.errorFormatter)
+  }
 
   def assertValid(errors: Iterable[Error]) {
     assertTrue("Must be valid", errors.isEmpty)

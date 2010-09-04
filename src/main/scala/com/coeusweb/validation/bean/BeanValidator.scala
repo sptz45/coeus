@@ -34,15 +34,19 @@ import com.coeusweb.validation.Validator
  * </pre>
  * 
  * @param validator the JSR303 validator that will be used for validating the objects
+ * 
  * @see BeanErrorFormatter
  */
 class BeanValidator[-T <: AnyRef](val validator: Jsr303Validator) extends Validator[T] {
+  
+  val errorFormatter = BeanErrorFormatter
 
   def validate(target: T): Iterable[Error] = new Iterable[Error] {
     def iterator = new BeanValidator.ErrorIterator(validator.validate(target).iterator)
   }
   
   def validate(result: BindingResult[T]) {
+    result.errorFormatter = errorFormatter
     val violations = validator.validate(result.target).iterator
     while (violations.hasNext) {
       val violation = violations.next
