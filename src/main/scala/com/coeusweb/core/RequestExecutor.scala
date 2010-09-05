@@ -7,11 +7,11 @@
 package com.coeusweb.core
 
 import scala.xml.NodeSeq
-import com.coeusweb.error.{ ExceptionHandler, ErrorPageView }
-import com.coeusweb.interceptor.Interceptor
 import com.coeusweb.view._
 import convention.Conventions.viewNameForRequest
+import error.{ExceptionHandler, ErrorPageView}
 import factory.ControllerFactory
+import interception.Interceptor
 
 
 private class RequestExecutor(

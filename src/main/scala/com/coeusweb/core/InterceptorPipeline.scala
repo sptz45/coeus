@@ -8,9 +8,9 @@ package com.coeusweb.core
 
 import scala.util.control.ControlThrowable
 import scala.collection.mutable.ArrayBuffer
-import com.coeusweb.error._
 import com.coeusweb.view.{ View, NullView }
-import com.coeusweb.interceptor.Interceptor
+import interception.Interceptor
+import error.ExceptionHandler
 
 /**
  * Encapsulates the execution of the specified <code>Interceptor</code>s

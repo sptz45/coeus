@@ -7,7 +7,7 @@
 package com.coeusweb.test
 
 import javax.servlet.ServletConfig
-import com.coeusweb.config.WebModule
+import com.coeusweb.core.config.WebModule
 import com.coeusweb.http.multipart.CommonsMultipartRequestParser
 
 

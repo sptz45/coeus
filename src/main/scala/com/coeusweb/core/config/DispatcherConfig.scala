@@ -4,16 +4,13 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.config
+package com.coeusweb.core
+package config
 
 import java.lang.reflect.Method
 import java.util.Locale
 import javax.servlet.ServletConfig
 import com.coeusweb.bind.ConverterRegistry
-import com.coeusweb.core._
-import com.coeusweb.core.convention._
-import com.coeusweb.core.factory.{ ControllerFactory, SimpleControllerFactory }
-import com.coeusweb.error.ExceptionHandler
 import com.coeusweb.http.multipart.{ MultipartRequestParser, NullMultipartRequestParser }
 import com.coeusweb.i18n.locale.{ LocaleResolver, AcceptHeaderLocaleResolver }
 import com.coeusweb.i18n.msg.{ MessageBundle, ServletMessageBundle }
@@ -21,6 +18,10 @@ import com.coeusweb.validation.vspec.VSpecErrorFormatter
 import com.coeusweb.view.ViewResolver
 import com.coeusweb.view.helper.DefaultViewHelpers
 import com.coeusweb.view.scalate.{ ScalateViewResolver, ScalateConfig }
+
+import error.ExceptionHandler
+import factory.{ ControllerFactory, SimpleControllerFactory }
+
 
 /**
  * Holds the configuration for <code>DispatcherServlet</code>.

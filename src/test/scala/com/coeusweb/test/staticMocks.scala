@@ -7,7 +7,7 @@
 package com.coeusweb.test
 
 import com.coeusweb.core.RequestContext
-import com.coeusweb.interceptor.Interceptor
+import com.coeusweb.core.interception.Interceptor
 import com.coeusweb.view.{View, ViewResolver}
 
 

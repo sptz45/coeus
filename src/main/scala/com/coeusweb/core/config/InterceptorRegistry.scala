@@ -4,10 +4,10 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.config
+package com.coeusweb.core.config
 
 import scala.collection.mutable.{ Builder, ListBuffer }
-import com.coeusweb.interceptor._
+import com.coeusweb.core.interception._
 import com.coeusweb.scope.support.FlashScopeInterceptor
 
 /**

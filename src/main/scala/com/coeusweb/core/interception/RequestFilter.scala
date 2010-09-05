@@ -4,11 +4,11 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb
-package interceptor
+package com.coeusweb.core.interception
 
-import view.View
-import core.RequestContext
+import com.coeusweb.WebRequest
+import com.coeusweb.view.View
+import com.coeusweb.core.RequestContext
 
 /**
  * A stackable trait to filter the requests that a {@code Interceptor}

@@ -4,7 +4,7 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.core.convention
+package com.coeusweb.core.config
 
 import org.junit.Test
 import org.junit.Assert._

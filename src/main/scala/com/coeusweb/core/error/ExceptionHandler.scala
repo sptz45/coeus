@@ -4,7 +4,7 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.error
+package com.coeusweb.core.error
 
 import com.coeusweb.view.View
 import com.coeusweb.core.RequestContext

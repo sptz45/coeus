@@ -7,7 +7,7 @@
 package com.coeusweb.core
 
 import com.coeusweb.Controller
-import com.coeusweb.config._
+import config.DispatcherConfig
 import util.ReflectionHelper
 
 

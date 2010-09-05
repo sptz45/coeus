@@ -10,7 +10,7 @@ import javax.servlet.ServletConfig
 import org.junit.Test
 import org.junit.Assert._
 import com.coeusweb.test.servlet.MockServletConfig
-import com.coeusweb.config._
+import config.WebModule
 
 class WebModuleLoaderTest {
   

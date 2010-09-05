@@ -8,7 +8,7 @@ package com.coeusweb.core
 
 import java.lang.reflect.InvocationTargetException 
 import javax.servlet._
-import com.coeusweb.config._
+import config.WebModule
 
 /**
  * Loads the configuration for the {@code DispatcherServlet}.

@@ -4,11 +4,11 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.config
+package com.coeusweb.core.config
 
 import org.junit.Test
 import org.junit.Assert._
-import com.coeusweb.interceptor.ThreadLocalInterceptor
+import com.coeusweb.core.interception.ThreadLocalInterceptor
 import com.coeusweb.scope.support.FlashScopeInterceptor
 
 class InterceptorRegistryTest {

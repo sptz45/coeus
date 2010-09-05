@@ -4,7 +4,7 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.interceptor
+package com.coeusweb.core.interception
 
 import com.coeusweb.WebRequest
 import com.coeusweb.view.View

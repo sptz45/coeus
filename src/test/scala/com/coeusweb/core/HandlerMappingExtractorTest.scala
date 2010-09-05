@@ -10,7 +10,7 @@ import org.junit.Test
 import org.junit.Assert._
 import com.coeusweb.{ WebRequest, WebResponse, Controller }
 import com.coeusweb.view.View
-import convention._
+import config._
 
 class HandlerMappingExtractorTest {  
   import HandlerMappingExtractorTest._

@@ -4,7 +4,7 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.config
+package com.coeusweb.core.config
 
 import scala.collection.mutable.{ Builder, ListBuffer }
 import com.coeusweb.Controller

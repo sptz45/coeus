@@ -13,10 +13,11 @@ import com.coeusweb.bind.ConverterRegistry
 import com.coeusweb.i18n.locale.LocaleResolver
 import com.coeusweb.i18n.msg.MessageBundle
 import com.coeusweb.{WebRequest, WebResponse}
-import com.coeusweb.config._
 import com.coeusweb.http.MutableHttpServletRequest
 import com.coeusweb.http.multipart.MultipartRequestParser
 import com.coeusweb.scope.ApplicationScope
+
+import config.WebModule
 
 /**
  * DispatcherServlet is the entry point of the framework.

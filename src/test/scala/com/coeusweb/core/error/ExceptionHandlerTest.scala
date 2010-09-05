@@ -1,9 +1,8 @@
-package com.coeusweb
-package error
+package com.coeusweb.core.error
 
 import org.junit.Test
 import org.junit.Assert._
-
+import com.coeusweb._
 import test.servlet._
 import view.ViewFactory._
 import param.MissingParameterException

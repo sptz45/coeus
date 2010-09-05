@@ -12,8 +12,8 @@ import org.junit.Assert._
 import com.coeusweb.test.servlet.MockServletConfig
 import com.coeusweb.Controller
 import com.coeusweb.annotation.Get
-import com.coeusweb.config.DispatcherConfig
-import com.coeusweb.core.factory._
+import config.DispatcherConfig
+import factory._
 
 class ControllerRegistrarTest {
   import ControllerRegistrarTest._

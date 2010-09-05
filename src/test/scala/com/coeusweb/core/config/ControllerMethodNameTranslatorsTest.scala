@@ -4,7 +4,7 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.core.convention
+package com.coeusweb.core.config
 
 import java.lang.reflect.Method
 import org.junit.Test

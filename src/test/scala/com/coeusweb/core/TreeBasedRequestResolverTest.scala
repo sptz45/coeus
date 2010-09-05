@@ -210,7 +210,7 @@ class TreeBasedRequestResolverTest {
   def resolveSuccessfully(path: String, method: Symbol): SuccessfulResolution = {
     resolver.resolve(path, method) match {
       case success: SuccessfulResolution => success
-      case _ => error("excpected sucessful request resolution")
+      case _ => Predef.error("excpected sucessful request resolution")
     }
   }
   

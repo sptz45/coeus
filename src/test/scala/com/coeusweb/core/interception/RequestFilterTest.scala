@@ -4,18 +4,20 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb
-package interceptor
+package com.coeusweb.core
+package interception
 
 import org.junit.Test
+import com.coeusweb.WebRequest
+import com.coeusweb.test.MockInterceptor
 
 class RequestFilterTest {
   
-  val request: core.RequestContext = new core.RequestContext(null, null, null)
+  val request: RequestContext = new RequestContext(null, null, null)
 
   @Test
   def filter_chooses_not_to_execute_the_interceptors_for_the_request() {
-    val interceptor = new test.MockInterceptor with RequestFilter {
+    val interceptor = new MockInterceptor with RequestFilter {
       def accept(wr: WebRequest) = false
     }
     
@@ -28,7 +30,7 @@ class RequestFilterTest {
   
   @Test
   def filter_chooses_to_execute_the_interceptors_for_the_request() {
-    val interceptor = new test.MockInterceptor with RequestFilter {
+    val interceptor = new MockInterceptor with RequestFilter {
       def accept(wr: WebRequest) = true
     }
     

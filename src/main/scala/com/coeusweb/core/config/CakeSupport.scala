@@ -4,7 +4,7 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.config
+package com.coeusweb.core.config
 
 import com.coeusweb.core.factory.CakeControllerFactory
 
