@@ -7,6 +7,7 @@
 package com.coeusweb.mvc.util
 
 import com.coeusweb.WebRequest
+import com.coeusweb.util.internal.Strings
 
 /**
  * Utility methods that encode various conventions.
@@ -18,7 +19,7 @@ object Conventions {
    * 
    * @return the class' simple name with the first character changed to lower case.
    */
-  def classToAttributeName(c: Class[_]) = firstCharToLower(c.getSimpleName)
+  def classToAttributeName(c: Class[_]) = Strings.firstCharToLower(c.getSimpleName)
   
   /**
    * Get a view name from the request URI of the specified request.
@@ -49,12 +50,5 @@ object Conventions {
     val uri = request.requestUri
     if (uri == "/") return "index"
     dropSlashes(dropFileExtension(uri))
-  }
-  
-  
-  private def firstCharToLower(s: String): String = {
-    if (s.isEmpty) s else {
-      if (s(0).isLower) s else s(0).toLower + s.substring(1)
-    }
   }
 }
