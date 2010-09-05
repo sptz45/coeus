@@ -7,7 +7,7 @@
 package com.coeusweb.core
 
 import java.lang.annotation.Annotation
-import com.coeusweb.annotation._
+import com.coeusweb.mvc.annotation._
 
 /**
  * Utility methods for working with the annotations defined in the

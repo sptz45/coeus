@@ -6,8 +6,8 @@
  */
 package com.coeusweb
 
-import com.coeusweb.param._
-import com.coeusweb.scope._
+import com.coeusweb.mvc.param._
+import com.coeusweb.mvc.scope._
 
 /**
  * Provides access to request related objects.

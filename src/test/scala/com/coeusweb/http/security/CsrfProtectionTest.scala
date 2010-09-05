@@ -10,7 +10,7 @@ import org.junit.Test
 import org.junit.Assert._
 import com.coeusweb.WebRequest
 import com.coeusweb.i18n.locale.FixedLocaleResolver
-import com.coeusweb.scope.RequiredAttributeException
+import com.coeusweb.mvc.scope.RequiredAttributeException
 import com.coeusweb.test.servlet.MockHttpServletRequest
 
 class CsrfProtectionTest {

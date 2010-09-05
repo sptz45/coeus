@@ -9,7 +9,7 @@ package com.coeusweb.core.config
 import org.junit.Test
 import org.junit.Assert._
 import com.coeusweb.core.interception.ThreadLocalInterceptor
-import com.coeusweb.scope.support.FlashScopeInterceptor
+import com.coeusweb.mvc.scope.support.FlashScopeInterceptor
 
 class InterceptorRegistryTest {
 

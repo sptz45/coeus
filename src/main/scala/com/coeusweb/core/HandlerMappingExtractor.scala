@@ -9,7 +9,7 @@ package com.coeusweb.core
 import java.lang.annotation.Annotation
 import java.lang.reflect.Method
 import com.coeusweb.Controller
-import com.coeusweb.annotation.Path
+import com.coeusweb.mvc.annotation.Path
 import com.coeusweb.core.convention._
 import com.coeusweb.view.View
 

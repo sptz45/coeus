@@ -8,7 +8,7 @@ package com.coeusweb.http.security
 
 import java.util.UUID
 import com.coeusweb.WebRequest
-import com.coeusweb.scope.WebSession
+import com.coeusweb.mvc.scope.WebSession
 
 /**
  * Protection from Cross-site request forgery attacks.

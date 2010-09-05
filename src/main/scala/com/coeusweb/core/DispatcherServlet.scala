@@ -15,7 +15,7 @@ import com.coeusweb.i18n.msg.MessageBundle
 import com.coeusweb.{WebRequest, WebResponse}
 import com.coeusweb.http.MutableHttpServletRequest
 import com.coeusweb.http.multipart.MultipartRequestParser
-import com.coeusweb.scope.ApplicationScope
+import com.coeusweb.mvc.scope.ApplicationScope
 
 import config.WebModule
 

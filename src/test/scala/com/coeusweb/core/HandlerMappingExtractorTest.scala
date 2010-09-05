@@ -85,7 +85,7 @@ class HandlerMappingExtractorTest {
 
 object HandlerMappingExtractorTest {
   import javax.xml.bind.annotation.XmlAttribute
-  import com.coeusweb.annotation._
+  import com.coeusweb.mvc.annotation._
   
   class BlogController extends Controller {
     @Get def index(): View = null

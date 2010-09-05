@@ -9,7 +9,7 @@ package com.coeusweb.controller
 import com.coeusweb.Controller
 import com.coeusweb.bind.{ Binder, BindingResult, ErrorFormatter, Error }
 import com.coeusweb.core.convention.Conventions
-import com.coeusweb.scope.RequiredAttributeException
+import com.coeusweb.mvc.scope.RequiredAttributeException
 import com.coeusweb.validation.Validator
 import com.coeusweb.view.{ View, ViewName }
 

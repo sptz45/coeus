@@ -10,7 +10,7 @@ import org.junit.Test
 import org.junit.Assert._
 import com.coeusweb.WebRequest
 import com.coeusweb.bind.Binder
-import com.coeusweb.scope.RequiredAttributeException
+import com.coeusweb.mvc.scope.RequiredAttributeException
 import com.coeusweb.test.Assertions.assertThrows
 import com.coeusweb.test.servlet.MockHttpServletRequest
 

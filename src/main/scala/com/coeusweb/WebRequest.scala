@@ -16,8 +16,8 @@ import i18n.locale.LocaleResolver
 import i18n.msg.MessageBundle
 import http.HttpRequestHeaders
 import http.multipart.{ FormFile, MultipartHttpServletRequest }
-import scope._
-import param._
+import mvc.scope._
+import mvc.param._
 
 /**
  * A class that represents a web request.

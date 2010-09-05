@@ -40,7 +40,7 @@ class AnnotationProcessorTest {
 
 object AnnotationProcessorTest {
   import javax.xml.bind.annotation.XmlAttribute
-  import com.coeusweb.annotation._
+  import com.coeusweb.mvc.annotation._
   
   class AnnoationTest {
     @Get def get() { }

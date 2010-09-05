@@ -14,7 +14,7 @@ import i18n.locale.FixedLocaleResolver
 import test.Assertions._
 import test.servlet.{MockHttpServletRequest, MockServletContext}
 
-class WebRequestTest extends scope.AbstractScopedContainerTest {
+class WebRequestTest extends mvc.scope.AbstractScopedContainerTest {
 
   val mockContext = new MockServletContext
   val mock = new MockHttpServletRequest("GET", "/index")

@@ -9,7 +9,7 @@ package test
 
 import org.junit.Assert._
 import Assertions._
-import annotation._
+import mvc.annotation._
 import view._
 
 class BlogController extends Controller {

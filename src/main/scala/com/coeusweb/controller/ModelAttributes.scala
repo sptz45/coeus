@@ -9,7 +9,7 @@ package com.coeusweb.controller
 import com.coeusweb.WebRequest
 import com.coeusweb.bind.{ Binder, BindingResult }
 import com.coeusweb.core.convention.Conventions
-import com.coeusweb.scope.RequiredAttributeException
+import com.coeusweb.mvc.scope.RequiredAttributeException
 
 /**
  * Provides methods for handling any objects associated with the binding and
