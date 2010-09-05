@@ -4,7 +4,7 @@ import org.junit.Test
 import org.junit.Assert._
 import com.coeusweb._
 import test.servlet._
-import view.ViewFactory._
+import mvc.view.ViewFactory._
 import mvc.param.MissingParameterException
 
 class ExceptionHandlerTest {

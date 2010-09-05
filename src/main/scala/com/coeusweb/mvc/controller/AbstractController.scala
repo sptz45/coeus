@@ -6,8 +6,6 @@
  */
 package com.coeusweb.mvc.controller
 
-import com.coeusweb.Controller
-
 abstract class AbstractController extends Controller
                                      with FormProcessing
                                      with ResponseHelpers

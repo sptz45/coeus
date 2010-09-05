@@ -7,8 +7,8 @@
 package com.coeusweb.core
 
 import scala.xml.NodeSeq
-import com.coeusweb.view._
-import convention.Conventions.viewNameForRequest
+import com.coeusweb.mvc.view._
+import com.coeusweb.mvc.util.Conventions.viewNameForRequest
 import error.{ExceptionHandler, ErrorPageView}
 import factory.ControllerFactory
 import interception.Interceptor

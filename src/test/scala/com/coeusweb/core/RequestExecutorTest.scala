@@ -11,11 +11,12 @@ import org.junit.Test
 import org.junit.Assert._
 import org.mockito.Mockito._
 import org.mockito.Matchers._
-import com.coeusweb.{ Controller, WebRequest, WebResponse }
+import com.coeusweb.{ WebRequest, WebResponse }
+import com.coeusweb.mvc.controller.Controller
 import com.coeusweb.core.factory.SimpleControllerFactory
 import com.coeusweb.test.TestHelpers
 import com.coeusweb.test.servlet.MockHttpServletResponse
-import com.coeusweb.view._
+import com.coeusweb.mvc.view._
 import error.{ ExceptionHandler, ErrorPageView }
 import interception.Interceptor
 

@@ -9,7 +9,7 @@ package com.coeusweb.core.factory
 import org.junit.Test
 import org.junit.Assert._
 import com.google.inject.Guice
-import com.coeusweb.Controller
+import com.coeusweb.mvc.controller.Controller
 
 class GuiceControllerFactoryTest {
   

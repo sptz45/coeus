@@ -4,10 +4,10 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.mvc.controller
+package com.coeusweb.mvc
+package controller
 
-import com.coeusweb.Controller
-import com.coeusweb.view.View
+import view.View
 
 /**
  * Executes common logic <em>before</em> each handler method of a

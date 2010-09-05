@@ -6,7 +6,7 @@
  */
 package com.coeusweb.core.factory
 
-import com.coeusweb.Controller
+import com.coeusweb.mvc.controller.Controller
 
 /**
  * A controller factory that creates new controller instances by

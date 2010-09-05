@@ -8,7 +8,7 @@ package com.coeusweb.i18n.msg
 
 import java.util.Locale
 import com.coeusweb.FrameworkException
-import com.coeusweb.core.util.Strings.nullSafeToString
+import com.coeusweb.util.internal.Strings.nullSafeToString
 
 /**
  * Thrown when a message could get found in a <code>MessageBundle</code> using

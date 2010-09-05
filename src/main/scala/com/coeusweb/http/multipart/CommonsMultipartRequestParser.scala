@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest
 import scala.collection.mutable.ArrayBuffer
 import org.apache.commons.fileupload.disk.{ DiskFileItem, DiskFileItemFactory }
 import org.apache.commons.fileupload.servlet.{ FileCleanerCleanup, ServletFileUpload }
-import com.coeusweb.core.util.MultiMap
+import com.coeusweb.util.internal.MultiMap
 
 /**
  * An implementation of {@code MultipartRequestParser} that uses Apache Commons fileupload.

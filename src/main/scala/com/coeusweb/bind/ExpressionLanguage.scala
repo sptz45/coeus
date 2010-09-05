@@ -9,7 +9,7 @@ package com.coeusweb.bind
 import java.lang.reflect.Method
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
-import com.coeusweb.core.util.ReflectionHelper
+import com.coeusweb.util.internal.ReflectionHelper
 
 
 object ExpressionLanguage {

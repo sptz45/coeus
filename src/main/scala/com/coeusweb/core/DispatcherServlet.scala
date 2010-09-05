@@ -16,6 +16,7 @@ import com.coeusweb.{WebRequest, WebResponse}
 import com.coeusweb.http.MutableHttpServletRequest
 import com.coeusweb.http.multipart.MultipartRequestParser
 import com.coeusweb.mvc.scope.ApplicationScope
+import com.coeusweb.util.internal.Strings
 
 import config.WebModule
 
@@ -132,7 +133,7 @@ class DispatcherServlet extends HttpServlet {
   }
   
   private def removeContextFromPath(requestUri: String) = {
-    util.Strings.removePrefix(requestUri, getServletConfig.getServletContext.getContextPath)
+    Strings.removePrefix(requestUri, getServletConfig.getServletContext.getContextPath)
   }
   
   private def mustChangeMethod(req: HttpServletRequest): Boolean = {

@@ -8,7 +8,7 @@ package com.coeusweb
 
 package object mvc {
   
-  type Controller = com.coeusweb.Controller
+  type Controller = controller.Controller
   
   type Path = annotation.Path
   type Get = annotation.Get

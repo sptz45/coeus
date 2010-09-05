@@ -15,9 +15,9 @@ import com.coeusweb.http.multipart.{ MultipartRequestParser, NullMultipartReques
 import com.coeusweb.i18n.locale.{ LocaleResolver, AcceptHeaderLocaleResolver }
 import com.coeusweb.i18n.msg.{ MessageBundle, ServletMessageBundle }
 import com.coeusweb.validation.vspec.VSpecErrorFormatter
-import com.coeusweb.view.ViewResolver
-import com.coeusweb.view.helper.DefaultViewHelpers
-import com.coeusweb.view.scalate.{ ScalateViewResolver, ScalateConfig }
+import com.coeusweb.mvc.view.ViewResolver
+import com.coeusweb.mvc.view.helper.DefaultViewHelpers
+import com.coeusweb.mvc.view.scalate.{ ScalateViewResolver, ScalateConfig }
 
 import error.ExceptionHandler
 import factory.{ ControllerFactory, SimpleControllerFactory }

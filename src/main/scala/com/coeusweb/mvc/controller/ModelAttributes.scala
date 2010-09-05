@@ -4,12 +4,13 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.mvc.controller
+package com.coeusweb.mvc
+package controller
 
 import com.coeusweb.WebRequest
 import com.coeusweb.bind.{ Binder, BindingResult }
-import com.coeusweb.core.convention.Conventions
-import com.coeusweb.mvc.scope.RequiredAttributeException
+import util.Conventions
+import scope.RequiredAttributeException
 
 /**
  * Provides methods for handling any objects associated with the binding and

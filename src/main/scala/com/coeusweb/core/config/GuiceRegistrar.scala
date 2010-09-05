@@ -10,7 +10,7 @@ import java.lang.annotation.Annotation
 import scala.collection.JavaConversions._
 import com.google.inject.{Injector, Scope, Scopes, Binding}
 import com.google.inject.spi.BindingScopingVisitor
-import com.coeusweb.Controller
+import com.coeusweb.mvc.controller.Controller
 import com.coeusweb.FrameworkException
 
 /**

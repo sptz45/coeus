@@ -7,7 +7,7 @@
 package com.coeusweb.core
 
 import scala.collection.Map
-import com.coeusweb.Controller
+import com.coeusweb.mvc.controller.Controller
 
 /**
  * The result of finding a handler via a <code>RequestResolver</code>.

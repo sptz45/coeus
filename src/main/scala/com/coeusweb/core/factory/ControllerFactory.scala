@@ -6,7 +6,7 @@
  */
 package com.coeusweb.core.factory
 
-import com.coeusweb.Controller
+import com.coeusweb.mvc.controller.Controller
 
 /**
  * Creates the {@code Controller}'s instance in each request.

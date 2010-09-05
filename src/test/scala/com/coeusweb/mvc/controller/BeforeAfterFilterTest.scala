@@ -8,8 +8,7 @@ package com.coeusweb.mvc.controller
 
 import org.junit.Test
 import org.junit.Assert._
-import com.coeusweb.Controller
-import com.coeusweb.view.{ View, ViewName, NullView }
+import com.coeusweb.mvc.view.{ View, ViewName, NullView }
 import com.coeusweb.core.Handler
 import com.coeusweb.core.factory.SimpleControllerFactory
 

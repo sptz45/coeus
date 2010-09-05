@@ -8,7 +8,7 @@ package com.coeusweb.core
 
 import scala.util.control.ControlThrowable
 import scala.collection.mutable.ArrayBuffer
-import com.coeusweb.view.{ View, NullView }
+import com.coeusweb.mvc.view.NullView
 import interception.Interceptor
 import error.ExceptionHandler
 

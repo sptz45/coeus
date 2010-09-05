@@ -9,8 +9,8 @@ package com.coeusweb.core.config
 import org.junit.Test
 import org.junit.Assert._
 import com.google.inject.Guice
-import com.coeusweb.Controller
 import com.coeusweb.FrameworkException
+import com.coeusweb.mvc.controller.Controller
 import com.coeusweb.core.factory.GuiceControllerFactory
 
 class GuiceRegistrarTest {

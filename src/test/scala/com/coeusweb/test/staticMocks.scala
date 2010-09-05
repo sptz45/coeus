@@ -8,7 +8,7 @@ package com.coeusweb.test
 
 import com.coeusweb.core.RequestContext
 import com.coeusweb.core.interception.Interceptor
-import com.coeusweb.view.{View, ViewResolver}
+import com.coeusweb.mvc.view.{View, ViewResolver}
 
 
 class MockViewResolver(views: Map[String, View]) extends ViewResolver {

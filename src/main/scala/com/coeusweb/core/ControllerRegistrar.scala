@@ -6,9 +6,10 @@
  */
 package com.coeusweb.core
 
-import com.coeusweb.Controller
+import com.coeusweb.mvc.controller.Controller
+import com.coeusweb.util.internal.ReflectionHelper
 import config.DispatcherConfig
-import util.ReflectionHelper
+
 
 
 private class ControllerRegistrar(config: DispatcherConfig) {

@@ -4,14 +4,14 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.mvc.controller
+package com.coeusweb.mvc
+package controller
 
 import java.io.{ File, InputStream }
 import scala.xml.NodeSeq
-import com.coeusweb.Controller
 import com.coeusweb.http.HttpStatus
-import com.coeusweb.core.convention.Conventions
-import com.coeusweb.view._
+import util.Conventions
+import view._
 
 trait ResponseHelpers extends ViewFactory {
   

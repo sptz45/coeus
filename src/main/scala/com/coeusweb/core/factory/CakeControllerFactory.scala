@@ -7,7 +7,7 @@
 package com.coeusweb.core.factory
 
 import java.lang.reflect.Constructor
-import com.coeusweb.Controller
+import com.coeusweb.mvc.controller.Controller
 import com.coeusweb.FrameworkException
 
 /**

@@ -8,7 +8,7 @@ package com.coeusweb.http.security
 
 import javax.servlet.http.Cookie
 import scala.collection.mutable.ArrayBuffer
-import com.coeusweb.core.util.Base64
+import com.coeusweb.util.internal.Base64
 
 /**
  * Helper methods for signing and encrypting cookies.

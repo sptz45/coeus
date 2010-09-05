@@ -4,9 +4,10 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.mvc.scope
+package com.coeusweb.mvc
+package scope
 
-import com.coeusweb.core.convention.Conventions
+import util.Conventions
 
 /**
  * An interface for the various scopes that hold attributes.

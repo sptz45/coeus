@@ -9,6 +9,7 @@ package com.coeusweb.core
 import javax.servlet.http.HttpServletResponse
 import org.junit.{ Test, Before }
 import org.junit.Assert._
+import com.coeusweb.mvc.view.NoViewFoundException
 import com.coeusweb.test.servlet._
 import com.coeusweb.test._
 
@@ -86,7 +87,7 @@ class DispatcherServletTest {
     assertEquals("Hello World!", response.getContentAsString)
   }
   
-  @Test(expected=classOf[com.coeusweb.view.NoViewFoundException])
+  @Test(expected=classOf[NoViewFoundException])
   def exception_when_no_view_found() {
     servlet.service(req("GET", "/blog/noView"), response)
   }

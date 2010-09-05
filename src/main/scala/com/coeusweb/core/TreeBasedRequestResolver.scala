@@ -7,8 +7,8 @@
 package com.coeusweb.core
 
 import scala.collection.mutable.HashMap
-import com.coeusweb.Controller
-import util.Strings
+import com.coeusweb.mvc.controller.Controller
+import com.coeusweb.util.internal.Strings
 
 /**
  * A <code>RequestResolver</code> that holds the path/handler mappings

@@ -7,7 +7,7 @@
 package com.coeusweb.i18n.msg
 
 import java.util.{ Locale, ResourceBundle, PropertyResourceBundle }
-import com.coeusweb.core.util.Interpolator 
+import com.coeusweb.util.internal.Interpolator 
 
 /**
  * An abstract <code>MessageBundle</code> that provides common logic for loading

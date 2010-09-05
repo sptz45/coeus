@@ -4,14 +4,14 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.mvc.controller
+package com.coeusweb.mvc
+package controller
 
-import com.coeusweb.Controller
 import com.coeusweb.bind.{ Binder, BindingResult, ErrorFormatter, Error }
-import com.coeusweb.core.convention.Conventions
-import com.coeusweb.mvc.scope.RequiredAttributeException
 import com.coeusweb.validation.Validator
-import com.coeusweb.view.{ View, ViewName }
+import scope.RequiredAttributeException
+import view.{View, ViewName}
+import util.Conventions
 
 trait FormProcessing {
   

@@ -8,7 +8,7 @@ package com.coeusweb.core
 
 import org.junit.Test
 import org.junit.Assert._
-import com.coeusweb.Controller
+import com.coeusweb.mvc.controller.Controller
 
 class TreeBasedRequestResolverTest {
   

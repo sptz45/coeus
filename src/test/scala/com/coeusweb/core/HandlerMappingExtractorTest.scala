@@ -8,8 +8,8 @@ package com.coeusweb.core
 
 import org.junit.Test
 import org.junit.Assert._
-import com.coeusweb.{ WebRequest, WebResponse, Controller }
-import com.coeusweb.view.View
+import com.coeusweb.{ WebRequest, WebResponse }
+import com.coeusweb.mvc.controller.Controller
 import config._
 
 class HandlerMappingExtractorTest {  
@@ -88,8 +88,8 @@ object HandlerMappingExtractorTest {
   import com.coeusweb.mvc.annotation._
   
   class BlogController extends Controller {
-    @Get def index(): View = null
-    @Post def post(): View = null
+    @Get def index() = null
+    @Post def post() = null
     @XmlAttribute def xml() { }
   }
   
@@ -99,22 +99,22 @@ object HandlerMappingExtractorTest {
   }
   
   class SearchablePageController extends PageController {
-    @Get def search(): View = null
+    @Get def search() = null
   }
   
   trait CrudSupport {
-    @Put def create(): View = null
+    @Put def create() = null
   }
   
   class DirectoryController extends PageController with CrudSupport 
   
   class MoreThenOneAnnotationPerMethod extends Controller {
     @Get @Post
-    def method(): View = null
+    def method() = null
   }
   
   @Path("")
   class NoClassNameInPath extends Controller {
-    @Get def index(): View = null
+    @Get def index() = null
   }
 }

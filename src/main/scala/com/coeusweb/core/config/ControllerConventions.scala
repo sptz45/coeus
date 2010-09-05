@@ -7,7 +7,7 @@
 package com.coeusweb.core.config
 
 import java.lang.reflect.Method
-import com.coeusweb.core.util.Strings
+import com.coeusweb.util.internal.Strings
 
 /**
  * Translator functions for configuring the generation of paths from

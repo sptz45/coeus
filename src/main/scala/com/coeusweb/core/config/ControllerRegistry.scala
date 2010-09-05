@@ -7,7 +7,7 @@
 package com.coeusweb.core.config
 
 import scala.collection.mutable.{ Builder, ListBuffer }
-import com.coeusweb.Controller
+import com.coeusweb.mvc.controller.Controller
 
 /**
  * A trait to register <code>Controller</code> classes for a

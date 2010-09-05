@@ -7,9 +7,9 @@
 package com.coeusweb.core.factory
 
 import java.lang.reflect.Method
-import com.coeusweb.Controller
 import com.coeusweb.FrameworkException
-import com.coeusweb.core.convention.Conventions
+import com.coeusweb.mvc.controller.Controller
+import com.coeusweb.mvc.util.Conventions
 
 /**
  * Creates {@code Controller} instances by invoking methods on a "factory" object.

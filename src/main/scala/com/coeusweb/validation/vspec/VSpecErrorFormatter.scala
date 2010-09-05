@@ -9,7 +9,7 @@ package com.coeusweb.validation.vspec
 import java.util.Locale
 import com.coeusweb.bind.{ ConverterRegistry, Error, ErrorFormatter }
 import com.coeusweb.i18n.msg.MessageBundle
-import com.coeusweb.core.util.{ Strings, Interpolator }
+import com.coeusweb.util.internal.{ Strings, Interpolator }
 
 object VSpecErrorFormatter extends ErrorFormatter { 
   

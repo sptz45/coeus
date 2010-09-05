@@ -12,7 +12,7 @@ import org.junit.Assert._
 import com.coeusweb._
 import bind.ConverterRegistry.{defaultConverters => converters} 
 import i18n.msg.MessageBundle
-import view.ViewName
+import mvc.view.{ViewName, NullView}
 import test.servlet._
 
 
@@ -70,7 +70,7 @@ class AbstractControllerTest {
   def not_modified_sets_the_status_code() {
     controller.request = request()
     controller.response = new WebResponse(new MockHttpServletResponse)
-    assertEquals(view.NullView, controller.notModified)
+    assertEquals(NullView, controller.notModified)
     assertEquals(304, controller.response.status)
   }
 

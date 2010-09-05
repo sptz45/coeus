@@ -8,10 +8,9 @@ package com.coeusweb.core
 
 import java.lang.annotation.Annotation
 import java.lang.reflect.Method
-import com.coeusweb.Controller
+import com.coeusweb.mvc.controller.Controller
 import com.coeusweb.mvc.annotation.Path
-import com.coeusweb.core.convention._
-import com.coeusweb.view.View
+
 
 /**
  * Creates handler mappings from a controller class.

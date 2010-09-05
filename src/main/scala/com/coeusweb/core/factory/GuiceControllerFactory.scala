@@ -7,7 +7,7 @@
 package com.coeusweb.core.factory
 
 import com.google.inject.Injector
-import com.coeusweb.Controller
+import com.coeusweb.mvc.controller.Controller
 
 /**
  * Creates {@code Controller} instances from a Guice {@code Injector}.
