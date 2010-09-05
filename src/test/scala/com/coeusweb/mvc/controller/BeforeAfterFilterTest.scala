@@ -4,7 +4,7 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.controller
+package com.coeusweb.mvc.controller
 
 import org.junit.Test
 import org.junit.Assert._

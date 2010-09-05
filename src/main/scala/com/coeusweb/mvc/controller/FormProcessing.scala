@@ -4,7 +4,7 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.controller
+package com.coeusweb.mvc.controller
 
 import com.coeusweb.Controller
 import com.coeusweb.bind.{ Binder, BindingResult, ErrorFormatter, Error }

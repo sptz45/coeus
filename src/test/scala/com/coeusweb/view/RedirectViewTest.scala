@@ -9,7 +9,7 @@ package com.coeusweb.view
 import org.junit.Test
 import org.junit.Assert._
 import com.coeusweb.{ WebRequest, WebResponse }
-import com.coeusweb.controller.AbstractController
+import com.coeusweb.mvc.controller.AbstractController
 import com.coeusweb.test.servlet.{ MockHttpServletRequest, MockHttpServletResponse }
 import com.coeusweb.http.HttpStatus
 

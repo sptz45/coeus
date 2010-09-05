@@ -8,7 +8,7 @@ package com.coeusweb.core
 
 import java.lang.reflect.Method
 import java.lang.reflect.InvocationTargetException
-import com.coeusweb.controller.{ BeforeFilter, AfterFilter }
+import com.coeusweb.mvc.controller.{ BeforeFilter, AfterFilter }
 import com.coeusweb.{ WebRequest, WebResponse, Controller }
 import com.coeusweb.view.View
 import factory.ControllerFactory
