@@ -6,7 +6,7 @@
  */
 package com.coeusweb.core.util
 
-import com.coeusweb.core.FrameworkException
+import com.coeusweb.FrameworkException
 
 /**
  * Functions that perform variable interpolation in Strings.

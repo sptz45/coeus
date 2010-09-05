@@ -7,7 +7,7 @@
 package com.coeusweb.core.util
 
 import java.lang.reflect.{ Method, ParameterizedType, Modifier } 
-import com.coeusweb.core.FrameworkException
+import com.coeusweb.FrameworkException
 
 /**
  * Various utility methods for working with reflection APIs.

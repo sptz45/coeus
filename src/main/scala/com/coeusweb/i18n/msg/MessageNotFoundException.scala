@@ -7,7 +7,7 @@
 package com.coeusweb.i18n.msg
 
 import java.util.Locale
-import com.coeusweb.core.FrameworkException
+import com.coeusweb.FrameworkException
 import com.coeusweb.core.util.Strings.nullSafeToString
 
 /**

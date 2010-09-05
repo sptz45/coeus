@@ -8,7 +8,7 @@ package com.coeusweb.core.factory
 
 import java.lang.reflect.Method
 import com.coeusweb.Controller
-import com.coeusweb.core.FrameworkException
+import com.coeusweb.FrameworkException
 import com.coeusweb.core.convention.Conventions
 
 /**

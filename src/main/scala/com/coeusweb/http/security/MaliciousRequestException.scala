@@ -6,7 +6,7 @@
  */
 package com.coeusweb.http.security
 
-import com.coeusweb.core.HttpException
+import com.coeusweb.HttpException
 import com.coeusweb.http.HttpStatus
 
 /**

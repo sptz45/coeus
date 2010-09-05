@@ -6,7 +6,7 @@
  */
 package com.coeusweb.view
 
-import com.coeusweb.core.FrameworkException
+import com.coeusweb.FrameworkException
 
 /**
  * To be thrown from the framework when a {@code View} cannot get resolved using

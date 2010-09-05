@@ -11,7 +11,7 @@ import scala.collection.JavaConversions._
 import com.google.inject.{Injector, Scope, Scopes, Binding}
 import com.google.inject.spi.BindingScopingVisitor
 import com.coeusweb.Controller
-import com.coeusweb.core.FrameworkException
+import com.coeusweb.FrameworkException
 
 /**
  * Register all the {@code Controller} classes from the bindings in a Guice

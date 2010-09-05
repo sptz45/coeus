@@ -7,7 +7,7 @@
 package com.coeusweb.bind
 
 import scala.util.control.NoStackTrace
-import com.coeusweb.core.FrameworkException
+import com.coeusweb.FrameworkException
 
 /**
  * A root exception for all binding related exceptions.

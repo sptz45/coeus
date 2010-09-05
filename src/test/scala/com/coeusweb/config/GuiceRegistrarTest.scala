@@ -10,7 +10,7 @@ import org.junit.Test
 import org.junit.Assert._
 import com.google.inject.Guice
 import com.coeusweb.Controller
-import com.coeusweb.core._
+import com.coeusweb.FrameworkException
 import com.coeusweb.core.factory.GuiceControllerFactory
 
 class GuiceRegistrarTest {

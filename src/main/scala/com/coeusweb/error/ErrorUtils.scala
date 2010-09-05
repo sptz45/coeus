@@ -7,7 +7,7 @@
 package com.coeusweb.error
 
 import com.coeusweb.{ WebRequest, WebResponse }
-import com.coeusweb.core.HttpException
+import com.coeusweb.HttpException
 
 /**
  * Helper methods for constructing exception handlers.

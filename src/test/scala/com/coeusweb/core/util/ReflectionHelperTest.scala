@@ -8,7 +8,7 @@ package com.coeusweb.core.util
 
 import org.junit.{ Test, Ignore }
 import org.junit.Assert._
-import com.coeusweb.core.FrameworkException
+import com.coeusweb.FrameworkException
 
 class ReflectionHelperTest {
   import ReflectionHelper._

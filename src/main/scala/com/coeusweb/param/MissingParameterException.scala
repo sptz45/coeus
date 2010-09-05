@@ -6,7 +6,7 @@
  */
 package com.coeusweb.param
 
-import com.coeusweb.core.{ HttpException, FrameworkException }
+import com.coeusweb.{HttpException, FrameworkException}
 import com.coeusweb.http.HttpStatus
 
 /**

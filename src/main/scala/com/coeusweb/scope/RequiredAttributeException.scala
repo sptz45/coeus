@@ -6,8 +6,7 @@
  */
 package com.coeusweb.scope
 
-import com.coeusweb.core.{ HttpException, FrameworkException }
-import com.coeusweb.http.HttpStatus
+import com.coeusweb.{HttpException, FrameworkException}
 
 /**
  * An exception to be thrown when user tries to retrieve an attribute that

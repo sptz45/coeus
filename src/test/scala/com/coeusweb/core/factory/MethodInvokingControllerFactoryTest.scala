@@ -9,7 +9,7 @@ package com.coeusweb.core.factory
 import org.junit.{ Test, Ignore }
 import org.junit.Assert._
 import com.coeusweb.Controller
-import com.coeusweb.core.FrameworkException
+import com.coeusweb.FrameworkException
 
 
 class MethodInvokingControllerFactoryTest {

@@ -8,7 +8,7 @@ package com.coeusweb.core.factory
 
 import java.lang.reflect.Constructor
 import com.coeusweb.Controller
-import com.coeusweb.core.FrameworkException
+import com.coeusweb.FrameworkException
 
 /**
  * Creates controller instances by instantiating inner classes from a Cake
