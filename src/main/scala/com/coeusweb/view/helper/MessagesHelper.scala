@@ -7,6 +7,7 @@
 package com.coeusweb.view.helper
 
 import com.coeusweb.i18n.msg.MessageBundle
+import com.coeusweb.ScopeAccessor
 
 /**
  * A view helper to read i18n messages.

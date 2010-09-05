@@ -9,8 +9,7 @@ package scalate
 
 import scala.collection.JavaConversions._
 import org.fusesource.scalate._
-import com.coeusweb.{ WebRequest, WebResponse }
-import helper.ScopeAccessor
+import com.coeusweb.{ WebRequest, WebResponse, ScopeAccessor }
 
 class ScalateView(engine: CustomTemplateEngine, template: Template) extends View {
   
@@ -22,7 +21,7 @@ class ScalateView(engine: CustomTemplateEngine, template: Template) extends View
     addDefaultAttributes(context.attributes)
     addRequestAttributes(request, context.attributes)
     
-    context.attributes("scopes") = new ScopeAccessor(request, response)
+    context.attributes("scopes") = ScopeAccessor(request, response)
     processAttributes(context.attributes)
     
     ViewUtil.applyContentType(contentType, response)

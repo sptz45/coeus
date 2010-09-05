@@ -14,7 +14,7 @@ import org.fusesource.scalate.{Binding, TemplateEngine}
 import org.fusesource.scalate.layout.DefaultLayoutStrategy
 import org.fusesource.scalate.servlet.ServletResourceLoader
 import org.fusesource.scalate.util.ClassPathBuilder
-import com.coeusweb.view.helper.ScopeAccessor
+import com.coeusweb.ScopeAccessor
 
 
 class CustomTemplateEngine(servletContext: ServletContext) extends TemplateEngine {

@@ -7,7 +7,7 @@
 package com.coeusweb.view.helper
 
 import scala.xml.{ Elem, Text }
-import com.coeusweb.WebRequest
+import com.coeusweb.{WebRequest, ScopeAccessor}
 import com.coeusweb.bind.{ BindingResult, ErrorFormatter }
 import com.coeusweb.controller.ModelAttributes
 import com.coeusweb.i18n.msg.MessageBundle

@@ -101,7 +101,7 @@ trait ScopedContainer {
    * Add the specified value in the scope using a generated name for the
    * attribute name.
    * 
-   * @see Conventions#objectToAttributeName
+   * @see Conventions#classToAttributeName
    */
   def +=(value: AnyRef) {
     update(Conventions.classToAttributeName(value.getClass), value)

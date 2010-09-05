@@ -111,7 +111,9 @@ package com.coeusweb
  * @see {@link com.coeusweb.core.Handler#handle Handler.handle(..)}
  * @see {@link com.coeusweb.core.factory.ControllerFactory ControllerFactory}
  */
-abstract class Controller {
+abstract class Controller extends ScopeAccessor {
+  
+  implicit def thisScopeAccessor: ScopeAccessor = this
   
   /** The current web request. */
   var request: WebRequest = _

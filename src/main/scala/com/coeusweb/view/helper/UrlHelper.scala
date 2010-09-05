@@ -15,7 +15,7 @@ import javax.servlet.ServletContext
 trait UrlHelper {
 
   /** The {@code ServletContext} of the web application. */
-  val servletContext: ServletContext
+  def servletContext: ServletContext
   
   /**
    * Prepends the ContextPath to the specified path.

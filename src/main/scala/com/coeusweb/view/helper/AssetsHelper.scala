@@ -18,7 +18,7 @@ import scala.util.Random
 trait AssetsHelper {
   
   /** The {@code ServletContext} of the web application. */
-  val servletContext: ServletContext
+  def servletContext: ServletContext
   
   /**
    * The version string that gets appended to all asset paths to allow instant
