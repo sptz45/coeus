@@ -9,7 +9,6 @@ package com.coeusweb.mvc.param
 import java.util.Locale
 import scala.collection.mutable.Map
 import com.coeusweb.bind.ConverterRegistry
-import com.coeusweb.test.servlet.MockHttpServletRequest
 
 class PathParametersTest extends AbstractParametersTest {
 

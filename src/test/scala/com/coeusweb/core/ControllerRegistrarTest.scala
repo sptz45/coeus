@@ -9,7 +9,7 @@ package com.coeusweb.core
 import javax.servlet.ServletConfig
 import org.junit.Test
 import org.junit.Assert._
-import com.coeusweb.test.servlet.MockServletConfig
+import org.springframework.mock.web.MockServletConfig
 import com.coeusweb.mvc.controller.Controller
 import com.coeusweb.mvc.annotation.Get
 import config.DispatcherConfig

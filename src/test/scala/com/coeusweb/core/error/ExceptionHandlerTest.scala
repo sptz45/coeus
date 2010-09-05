@@ -2,8 +2,8 @@ package com.coeusweb.core.error
 
 import org.junit.Test
 import org.junit.Assert._
+import org.springframework.mock.web._
 import com.coeusweb._
-import test.servlet._
 import mvc.view.ViewFactory._
 import mvc.param.MissingParameterException
 

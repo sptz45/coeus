@@ -9,11 +9,11 @@ package com.coeusweb.mvc.controller
 import java.util.Locale
 import org.junit.{ Before, Test }
 import org.junit.Assert._
+import org.springframework.mock.web._
 import com.coeusweb._
 import bind.ConverterRegistry.{defaultConverters => converters} 
 import i18n.msg.MessageBundle
 import mvc.view.{ViewName, NullView}
-import test.servlet._
 
 
 class AbstractControllerTest {

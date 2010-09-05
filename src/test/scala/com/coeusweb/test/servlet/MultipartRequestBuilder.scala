@@ -6,6 +6,7 @@
  */
 package com.coeusweb.test.servlet
 
+import org.springframework.mock.web._
 import com.coeusweb.WebRequest
 
 class MultipartRequestBuilder {

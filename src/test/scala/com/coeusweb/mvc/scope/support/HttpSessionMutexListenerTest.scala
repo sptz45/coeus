@@ -9,7 +9,7 @@ package com.coeusweb.mvc.scope.support
 import javax.servlet.http.HttpSessionEvent
 import org.junit.Test
 import org.junit.Assert._
-import com.coeusweb.test.servlet.MockHttpSession
+import org.springframework.mock.web.MockHttpSession
 
 class HttpSessionMutexListenerTest {
 

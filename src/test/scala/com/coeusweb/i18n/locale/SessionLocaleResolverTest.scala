@@ -9,7 +9,7 @@ package com.coeusweb.i18n.locale
 import java.util.Locale
 import org.junit.Test
 import org.junit.Assert._
-import com.coeusweb.test.servlet.MockHttpServletRequest
+import org.springframework.mock.web.MockHttpServletRequest
 
 class SessionLocaleResolverTest {
 

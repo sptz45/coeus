@@ -12,7 +12,7 @@ import org.junit.Assert._
 import bind.ConverterRegistry
 import i18n.locale.FixedLocaleResolver
 import test.Assertions._
-import test.servlet.{MockHttpServletRequest, MockServletContext}
+import org.springframework.mock.web.{MockHttpServletRequest, MockServletContext}
 
 class WebRequestTest extends mvc.scope.AbstractScopedContainerTest {
 

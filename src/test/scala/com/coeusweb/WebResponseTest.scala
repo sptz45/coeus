@@ -8,7 +8,7 @@ package com.coeusweb
 
 import org.junit.Test
 import org.junit.Assert._
-import test.servlet.MockHttpServletResponse
+import org.springframework.mock.web.MockHttpServletResponse
 import test.Assertions.assertThrows
 import http.HttpStatus
 

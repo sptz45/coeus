@@ -7,7 +7,7 @@
 package com.coeusweb.mvc.scope
 
 import org.junit.{ Test, Before }
-import com.coeusweb.test.servlet.MockServletContext
+import org.springframework.mock.web.MockServletContext
 
 class ApplicationScopeTest extends AbstractScopedContainerTest with CheckAndActOperationsTest {
   

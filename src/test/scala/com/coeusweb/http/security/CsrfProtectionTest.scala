@@ -8,10 +8,10 @@ package com.coeusweb.http.security
 
 import org.junit.Test
 import org.junit.Assert._
+import org.springframework.mock.web.MockHttpServletRequest
 import com.coeusweb.WebRequest
 import com.coeusweb.i18n.locale.FixedLocaleResolver
 import com.coeusweb.mvc.scope.RequiredAttributeException
-import com.coeusweb.test.servlet.MockHttpServletRequest
 
 class CsrfProtectionTest {
   

@@ -8,7 +8,7 @@ package com.coeusweb.mvc.param
 
 import java.util.Locale
 import com.coeusweb.bind.ConverterRegistry
-import com.coeusweb.test.servlet.MockHttpServletRequest
+import org.springframework.mock.web.MockHttpServletRequest
 
 class RequestParametersTest extends AbstractParametersTest {
   

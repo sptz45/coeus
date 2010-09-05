@@ -11,9 +11,9 @@ import java.util.{ Date, Locale }
 import java.net.URI
 import org.junit.Test
 import org.junit.Assert._
+import org.springframework.mock.web.MockHttpServletRequest
 import com.coeusweb.bind.ConverterRegistry
 import com.coeusweb.i18n.locale.FixedLocaleResolver
-import test.servlet.MockHttpServletRequest
 import test.Assertions._
 
 class HttpRequestHeadersTest {

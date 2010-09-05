@@ -10,7 +10,7 @@ import java.util.Locale
 import javax.servlet.http.Cookie
 import org.junit.{Test, Before}
 import org.junit.Assert._
-import com.coeusweb.test.servlet._
+import org.springframework.mock.web._
 
 class CookieLocaleResolverTest {
 

@@ -8,8 +8,8 @@ package com.coeusweb.mvc.util
 
 import org.junit.Test
 import org.junit.Assert._
+import org.springframework.mock.web.MockHttpServletRequest
 import com.coeusweb.WebRequest
-import com.coeusweb.test.servlet.MockHttpServletRequest
 
 class ConventionsTest {
   import Conventions._

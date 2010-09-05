@@ -10,7 +10,7 @@ import org.junit.Test
 import org.junit.Assert._
 import com.coeusweb.{ WebRequest, WebResponse }
 import com.coeusweb.mvc.controller.AbstractController
-import com.coeusweb.test.servlet.{ MockHttpServletRequest, MockHttpServletResponse }
+import org.springframework.mock.web.{ MockHttpServletRequest, MockHttpServletResponse }
 import com.coeusweb.http.HttpStatus
 
 class RedirectViewTest {

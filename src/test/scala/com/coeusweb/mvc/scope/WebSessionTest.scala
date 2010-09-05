@@ -8,7 +8,7 @@ package com.coeusweb.mvc.scope
 
 import org.junit.Test
 import org.junit.Assert._
-import com.coeusweb.test.servlet.MockHttpSession
+import org.springframework.mock.web.MockHttpSession
 
 class WebSessionTest extends AbstractScopedContainerTest with CheckAndActOperationsTest {
 

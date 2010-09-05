@@ -9,9 +9,10 @@ package com.coeusweb.core
 import javax.servlet.http.HttpServletResponse
 import org.junit.{ Test, Before }
 import org.junit.Assert._
+import org.springframework.mock.web._
 import com.coeusweb.mvc.view.NoViewFoundException
-import com.coeusweb.test.servlet._
 import com.coeusweb.test._
+import servlet._
 
 class DispatcherServletTest {
   
