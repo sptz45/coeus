@@ -29,7 +29,7 @@ import param._
  * @param converters the default converters
  */
 class WebRequest(
-  val servletContext: ServletContext,
+  val application: ApplicationScope,
   val servletRequest: HttpServletRequest,
   pathContext: Map[String, String],
   localeResolver: LocaleResolver,
@@ -98,9 +98,6 @@ class WebRequest(
   
   /** Returns the flash scope. */
   lazy val flash = new FlashScope(session)
-  
-  /** Returns the application scope. */
-  lazy val application = new ApplicationScope(servletContext)
   
   /** Returns the request parameters. */
   lazy val params = new RequestParameters(servletRequest, locale, converters)

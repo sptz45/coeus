@@ -21,10 +21,6 @@ class AbstractControllerTest {
   import AbstractControllerTest._
 
   val controller = new PostController
-  
-  val messages: MessageBundle = null
-  val servletContext = new MockServletContext
-  
 
   @Test
   def validate_with_errors() {
@@ -81,14 +77,14 @@ class AbstractControllerTest {
     val mock = new MockHttpServletRequest("GET", "/post")
     for ((name, value) <- params) mock.setParameter(name, value)
     val resolver = new i18n.locale.FixedLocaleResolver(Locale.US)
-    new WebRequest(servletContext, mock, null, resolver, converters, messages)
+    new WebRequest(null, mock, null, resolver, converters, null)
   }
   
   def assertSuccess(view: Any) {
     def doAssert(name: String) = assertEquals("Should have returned the success view", SUCCESS_VIEW, name)
     view match {
       case ViewName(name) => doAssert(name)
-      case name: String => doAssert(name)
+      case name: String   => doAssert(name)
     }
   }
   
@@ -96,7 +92,7 @@ class AbstractControllerTest {
     def doAssert(name: String) = assertEquals("Should have returned the error view", ERROR_VIEW, name)
     view match {
       case ViewName(name) => doAssert(name)
-      case name: String => doAssert(name)
+      case name: String   => doAssert(name)
     }
   }
   
@@ -111,7 +107,7 @@ class AbstractControllerTest {
 object AbstractControllerTest {
   import validation.vspec.{ VSpec, Constraints }  
 
-  val ERROR_VIEW = "post-form"
+  val ERROR_VIEW   = "post-form"
   val SUCCESS_VIEW = "post"
 
   class Post {

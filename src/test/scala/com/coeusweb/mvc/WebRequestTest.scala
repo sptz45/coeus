@@ -4,23 +4,24 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb
-package mvc
+package com.coeusweb.mvc
 
 import java.util.Locale
 import org.junit.Test
 import org.junit.Assert._
-import bind.ConverterRegistry
-import i18n.locale.FixedLocaleResolver
-import test.Assertions._
-import org.springframework.mock.web.{MockHttpServletRequest, MockServletContext}
+import org.springframework.mock.web.{ MockHttpServletRequest, MockServletContext }
+import com.coeusweb.bind.ConverterRegistry
+import com.coeusweb.i18n.locale.FixedLocaleResolver
+import com.coeusweb.test.Assertions._
+import scope.{ ApplicationScope, AbstractScopedContainerTest }
 
-class WebRequestTest extends mvc.scope.AbstractScopedContainerTest {
+
+class WebRequestTest extends AbstractScopedContainerTest {
 
   val mockContext = new MockServletContext
   val mock = new MockHttpServletRequest("GET", "/index")
   
-  val request = new WebRequest(servletContext = mockContext,
+  val request = new WebRequest(application = new ApplicationScope(mockContext),
                                servletRequest = mock,
                                pathContext = null,
                                localeResolver = new FixedLocaleResolver(Locale.US),

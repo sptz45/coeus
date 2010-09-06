@@ -15,7 +15,7 @@ import scala.collection.JavaConversions.asIterator
  */
 trait HttpRequestHeaders {
 
-  def servletRequest: HttpServletRequest
+  val servletRequest: HttpServletRequest
   
   def header(name: String) = Option(servletRequest.getHeader(name))
   

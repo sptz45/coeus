@@ -7,7 +7,7 @@
 package com.coeusweb.core
 
 import javax.servlet.http._
-import javax.servlet.{ServletConfig, ServletException}
+import javax.servlet.{ ServletConfig, ServletException }
 import scala.collection.Map
 import com.coeusweb.bind.ConverterRegistry
 import com.coeusweb.i18n.locale.LocaleResolver
@@ -37,7 +37,9 @@ class DispatcherServlet extends HttpServlet {
   private[this] var requestEncoding: String = _
   private[this] var hideResources: Boolean = _
   private[this] var overrideHttpMethod: Boolean = _
-  private[this] var multipartParser: MultipartRequestParser = _ 
+  private[this] var multipartParser: MultipartRequestParser = _
+
+  private[this] var applicationScope: ApplicationScope = _
   
   
   /*
@@ -69,7 +71,8 @@ class DispatcherServlet extends HttpServlet {
                                    module.viewResolver,
                                    module.controllerFactory)
     
-    // setup the lock for ApplicationScope
+    // setup ApplicationScope
+    applicationScope = new ApplicationScope(servletConfig.getServletContext)
     ApplicationScope.setupMutex(servletConfig.getServletContext)
   }
   
@@ -127,7 +130,7 @@ class DispatcherServlet extends HttpServlet {
                       vars: Map[String, String]) {
     
     executor.execute(new RequestContext(
-      new WebRequest(getServletContext, req, vars, localeResolver, converters, messageBundle),
+      new WebRequest(applicationScope, req, vars, localeResolver, converters, messageBundle),
       new WebResponse(res),
       handler))
   }

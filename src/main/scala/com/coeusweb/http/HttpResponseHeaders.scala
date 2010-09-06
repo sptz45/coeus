@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse
  */
 trait HttpResponseHeaders {
   
-  def servletResponse: HttpServletResponse
+  val servletResponse: HttpServletResponse
   
   def header(name: String, value: String) {
     servletResponse.setHeader(name, value)
