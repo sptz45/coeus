@@ -9,7 +9,7 @@ package com.coeusweb.validation.bean
 import java.util.Locale
 import javax.validation.MessageInterpolator
 import MessageInterpolator.Context
-import com.coeusweb.i18n.locale.LocaleHolder
+import com.coeusweb.mvc.WebRequest
 
 /**
  * A {@code MessageInterpolator} implementation that delegates to another
@@ -30,10 +30,12 @@ import com.coeusweb.i18n.locale.LocaleHolder
 class LocaleAwareInterpolator(interpolator: MessageInterpolator) extends MessageInterpolator {
 
   def interpolate(messageTemplate: String, context: Context): String = {
-    interpolator.interpolate(messageTemplate, context, LocaleHolder.locale)
+    val locale = WebRequest.currentRequest.locale
+    interpolator.interpolate(messageTemplate, context, locale)
   }
 
   def interpolate(messageTemplate: String, context: Context, locale: Locale): String = {
-    interpolator.interpolate(messageTemplate, context, LocaleHolder.locale)
+    val locale = WebRequest.currentRequest.locale
+    interpolator.interpolate(messageTemplate, context, locale)
   }
 }
