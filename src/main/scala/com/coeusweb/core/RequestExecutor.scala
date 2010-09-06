@@ -36,7 +36,7 @@ private class RequestExecutor(
     
     pipeline.executeAfterRender(context)
     
-    if (shouldPropagateAnyException(context))
+    if (shouldPropagateException(context))
       throw error
   }
   
@@ -91,5 +91,5 @@ private class RequestExecutor(
     }
   }
   
-  private def shouldPropagateAnyException(context: RequestContext) = context.result == ErrorPageView
+  private def shouldPropagateException(context: RequestContext) = context.result == ErrorPageView
 }
