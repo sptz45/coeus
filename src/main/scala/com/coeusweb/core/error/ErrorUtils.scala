@@ -40,7 +40,7 @@ object ErrorUtils {
    * status to <em>500</em>.</p>
    * 
    * @param response the current web response
-   * @param error the exception that occurred during the request execution
+   * @param error    the exception that occurred during the request execution
    */
   def setResposeStatus(response: WebResponse, error: Throwable) {
     response.status = error match {

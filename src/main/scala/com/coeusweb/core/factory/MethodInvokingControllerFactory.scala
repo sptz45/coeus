@@ -22,6 +22,7 @@ import com.coeusweb.mvc.util.Conventions
  * {@code Controller}.</p> 
  * 
  * @param factory an object with methods for creating controllers
+ * 
  * @see Controller
  */
 class MethodInvokingControllerFactory(factory: AnyRef) extends ControllerFactory {

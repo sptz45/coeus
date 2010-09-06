@@ -16,8 +16,7 @@ import com.coeusweb.mvc.view.View
  * <p>This <code>View</code> is used to convey to the framework to propagate any
  * uncaught exceptions to the Servlet container.</p> 
  *
- * @see {@link com.coeusweb.core.ExceptionHandler ExceptionHandler}
- * @see {@link com.coeusweb.core.ErrorPageExceptionHandler ErrorPageExceptionHandler}
+ * @see ExceptionHandler
  */
 case object ErrorPageView extends View {
   

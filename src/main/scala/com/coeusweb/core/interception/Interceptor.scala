@@ -13,7 +13,7 @@ import com.coeusweb.core.RequestContext
  *
  * <p>Instances of this class must be thread-safe.</p>
  *
- * @see {@link com.coeusweb.config.InterceptorRegistry InterceptorRegistry}
+ * @see {@link com.coeusweb.core.config.InterceptorRegistry InterceptorRegistry}
  */
 trait Interceptor {
   

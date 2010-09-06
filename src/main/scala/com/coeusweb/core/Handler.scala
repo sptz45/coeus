@@ -22,7 +22,7 @@ import factory.ControllerFactory
  * @see Controller
  * @see BeforeFilter
  * @see AfterFilter
- * @see {@link com.coeusweb.interceptor.Interceptor Interceptor}
+ * @see {@link com.coeusweb.core.interception.Interceptor Interceptor}
  */
 class Handler[T <: Controller](val controllerClass: Class[T], val controllerMethod: Method) {
   

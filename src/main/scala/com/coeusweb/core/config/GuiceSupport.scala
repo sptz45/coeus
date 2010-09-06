@@ -18,7 +18,7 @@ import com.coeusweb.core.factory.GuiceControllerFactory
  * sets the module's <code>controllerFactory</code> to
  * <code>GuiceControllerFactory</code>. 
  *
- * @see Controller
+ * @see {@link com.coeusweb.core.factory.GuiceControllerFactory GuiceControllerFactory}
  * @see <a href="http://code.google.com/p/google-guice/">Guice</a>
  */
 trait GuiceSupport {

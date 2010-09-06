@@ -10,6 +10,6 @@ package core
 /**
  * Thrown when a <code>Controller<code> class has invalid structure.
  * 
- * @see {@link com.coeusweb.Controller Controller}
+ * @see {@link com.coeusweb.mvc.controller.Controller Controller}
  */
 class InvalidControllerClassException(message: String) extends FrameworkException(message)

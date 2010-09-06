@@ -87,7 +87,7 @@ object FlashScope {
    */
   def sweep(request: WebRequest) {
     for (session <- request.existingSession) {
-      if (session.getAttribute(FLASH_SCOPE_NAME) != null)
+      if (session.getAttribute[AnyRef](FLASH_SCOPE_NAME) ne null)
         request.flash.sweep()
     }
   }

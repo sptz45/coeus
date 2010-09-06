@@ -11,7 +11,7 @@ import com.coeusweb.mvc.annotation._
 
 /**
  * Utility methods for working with the annotations defined in the
- * <code>com.coeusweb.annotation</code> package.
+ * <code>com.coeusweb.mvc.annotation</code> package.
  */
 private object AnnotationProcessor {
   

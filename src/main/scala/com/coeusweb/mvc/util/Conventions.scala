@@ -32,8 +32,8 @@ object Conventions {
    * allow the user to omit specifying a view name from the controller method
    * and have the framework come up with an appropriate new name.</p>
    *
-   * @see {@link com.coeusweb.Controller Controller}
-   * @see {@link com.coeusweb.view.ViewResolver ViewResolver}
+   * @see {@link com.coeusweb.mvc.controller.Controller Controller}
+   * @see {@link com.coeusweb.mvc.view.ViewResolver ViewResolver}
    */
   def viewNameForRequest(request: WebRequest): String = {
     def dropSlashes(s: String) = {

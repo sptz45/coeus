@@ -111,7 +111,7 @@ import scope.ScopeAccessor
  * {@link com.coeusweb.core.convention.RequestToViewNameTranslator RequestToViewNameTranslator} is used to derive
  * a view name from the request.</p>
  * 
- * @see {@link com.coeusweb.controller.AbstractController AbstractController}
+ * @see AbstractController
  * @see {@link com.coeusweb.core.Handler#handle Handler.handle(..)}
  * @see {@link com.coeusweb.core.factory.ControllerFactory ControllerFactory}
  */

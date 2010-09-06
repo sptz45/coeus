@@ -34,7 +34,7 @@ object ReflectionHelper {
     collectionGetter.getGenericReturnType match {
       
       case paramType: ParameterizedType =>
-        paramType.getActualTypeArguments.collect({ case c: Class[_] => c })
+        paramType.getActualTypeArguments.collect { case c: Class[_] => c }
       
       case array: Class[_] if array.isArray =>
         Array(array.getComponentType)

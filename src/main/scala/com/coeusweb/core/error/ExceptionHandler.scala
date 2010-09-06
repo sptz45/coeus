@@ -64,7 +64,8 @@ object ExceptionHandler {
    * 
    * <p>If the exception that occurred is an instance of {@code HttpException}
    * then the returned handler also sets the HTTP status code of the response
-   * using the {@link HttpException#httpStatus} field of the exception.</p>
+   * using the {@link com.coeusweb.HttpException#httpStatus httpStatus} field
+   * of the exception.</p>
    */
   def forServlet(servletName: String)(errorViewMap: PartialFunction[Throwable, View]): ExceptionHandler = {
     val views: Throwable => View = errorViewMap orElse { case _ => ErrorPageView }

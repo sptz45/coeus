@@ -64,7 +64,7 @@ import com.coeusweb.core.factory.CakeControllerFactory
  * }
  * </pre>
  * 
- * @see CakeControllerFactory
+ * @see {@link com.coeusweb.core.factory.CakeControllerFactory CakeControllerFactory}
  */
 trait CakeSupport {
 

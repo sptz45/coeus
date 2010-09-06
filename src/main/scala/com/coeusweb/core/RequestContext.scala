@@ -10,9 +10,9 @@ package core
 /**
  * Holds information about the current request.
  * 
- * @param request the current request
+ * @param request  the current request
  * @param response the current response
- * @param handler the handler that handles the request
+ * @param handler  the handler that handles the request
  */
 final class RequestContext(val request: WebRequest, val response: WebResponse, val handler: Handler[_]) {
 
@@ -24,8 +24,8 @@ final class RequestContext(val request: WebRequest, val response: WebResponse, v
   /**
    * The result of handling the request.
    * 
-   * <p>It can be a <code>View</code> instance, a String that
-   * can be mapped to a view or a <code>NodeSeq</code>.</p>
+   * <p>It can be a <code>View</code> instance, a String that can be mapped to
+   *  a view, a <code>NodeSeq</code> or <code>null</code>.</p>
    */
   var result: Any = _
   

@@ -29,7 +29,7 @@ trait ResponseHelpers extends ViewFactory {
   /**
    * Returns the default {@link ViewName} for the current request.
 
-   * @see {@link com.coeusweb.view.ViewResolver ViewResolver}
+   * @see {@link com.coeusweb.mvc.view.ViewResolver ViewResolver}
    */
   def render = new ViewName(Conventions.viewNameForRequest(request)) 
 }

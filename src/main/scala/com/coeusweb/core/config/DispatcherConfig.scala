@@ -153,7 +153,7 @@ trait DispatcherConfig {
    * and formatting values. 
    * 
    * @see ConverterRegistry
-   * @see ConverterRegistry#newRegistryWithDefaults
+   * @see ConverterRegistry#defaultConverters 
    * @see {@link com.coeusweb.WebRequest WebRequest}
    */
   var converters: ConverterRegistry = ConverterRegistry.defaultConverters 
@@ -175,7 +175,6 @@ trait DispatcherConfig {
    * {@link #viewHelpers} object as a attribute to all {@code View} instances using the
    * name "c".</p>
    * 
-   * @see DispatcherConfig#taglib
    * @see ScalateViewResolver
    * @see ScalateConfig
    */

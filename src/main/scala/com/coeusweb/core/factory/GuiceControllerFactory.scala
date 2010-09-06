@@ -16,9 +16,6 @@ import com.coeusweb.mvc.controller.Controller
  * configured with <em>no scope</em> to enable this factory to create a new
  * controller instance in each request.</p>
  *
- * <p>Should be used in conjunction with
- * {@link com.coeusweb.config.GuiceRegistrar GuiceRegistrar}.</p>
- *
  * @param injector the {@code Injector} to use for creating the
  *        {@code Controller} instances
  * 

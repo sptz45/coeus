@@ -56,7 +56,7 @@ private class HandlerMappingExtractor(
     makeAbsolutePath(mapClassName(c)) + makeAbsolutePath(mapMethodName(m, a))
     
   private def mapClassName(c: Class[_]): String = {
-    for (ctrl <- c.getDeclaredAnnotations.collect{ case a: Path => a }) {
+    for (ctrl <- c.getDeclaredAnnotations.collect { case a: Path => a }) {
       return ctrl.value match {
         case "#" => classToPath(c)
         case path => path

@@ -14,7 +14,7 @@ import scope.RequiredAttributeException
 
 /**
  * Provides methods for handling any objects associated with the binding and
- * validation workflow of {@link com.coeusweb.Controller Controller}.
+ * validation workflow of {@link Controller}.
  * 
  * @param request the current web request
  */
