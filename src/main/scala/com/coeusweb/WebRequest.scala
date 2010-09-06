@@ -104,7 +104,7 @@ class WebRequest(
   lazy val params = new RequestParameters(servletRequest, locale, converters)
   
   /** Returns the path variables. */
-  lazy val path = new PathParameters(servletRequest, locale, converters, pathContext)
+  lazy val path = new PathParameters(locale, converters, pathContext)
   
   /** The user's locale as returned by the configured <code>LocaleResolver</code>. */
   def locale: Locale = localeResolver.resolve(servletRequest)

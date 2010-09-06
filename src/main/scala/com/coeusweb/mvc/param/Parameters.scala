@@ -32,9 +32,6 @@ trait Parameters extends Iterable[(String, String)] {
   /** The request's locale. */
   val locale: Locale
   
-  /** The current Servlet request. */
-  def servletRequest: HttpServletRequest
-  
   /**
    * Retrieve the parameter with the specified name.
    * 
