@@ -36,7 +36,7 @@ class MethodInvokingControllerFactory(factory: AnyRef) extends ControllerFactory
       cache = cache + (controllerClass -> factoryMethod)
     } catch {
       case e: Exception => throw new FrameworkException(
-        "To register the controller class: %s, the class: %s must have a method named: %s with no arguments and return type: %s"
+        "To register the controller class: %s, the class: %s must have a public method named: %s with no arguments and return type: %s"
           .format(controllerClass.getName,
                   factory.getClass.getName,
                   classToMethodName(controllerClass),

@@ -139,8 +139,8 @@ trait FormProcessing {
   /**
    * Return a <code>View</code> to be used when the validation fails in the {@link #ifValid} methods.
    * 
-   * <p>This method returns a view name by invoking the {@link Conventions#viewNameForRequest}.
-   * Subclasses can override this method to return a different view name.</p>
+   * <p>This method returns a {@code ViewName} by invoking the {@link Conventions#viewNameForRequest}.
+   * Subclasses can override this method to return a different view.</p>
    */
   def formView: View = new ViewName(Conventions.viewNameForRequest(request))
 
