@@ -8,7 +8,7 @@ package com.coeusweb
 
 import java.util.{ Date, Enumeration, Locale }
 import javax.servlet.ServletContext
-import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.{ HttpServletRequest, Cookie }
 import scala.collection.Map
 import scala.collection.JavaConversions.asIterator
 import bind.ConverterRegistry
@@ -54,7 +54,8 @@ class WebRequest(
   def getAttribute[T](attribute: String): T =
     servletRequest.getAttribute(attribute).asInstanceOf[T]
   
-  def attributeNames = servletRequest.getAttributeNames.asInstanceOf[Enumeration[String]]
+  def attributeNames =
+    asIterator(servletRequest.getAttributeNames.asInstanceOf[Enumeration[String]])
   
   def update(attribute: String, value: Any) {
     servletRequest.setAttribute(attribute, value)
@@ -104,7 +105,7 @@ class WebRequest(
   lazy val params = new RequestParameters(servletRequest, locale, converters)
   
   /** Returns the path variables. */
-  lazy val path = new PathParameters(locale, converters, pathContext)
+  lazy val path = new PathParameters(pathContext, locale, converters)
   
   /** The user's locale as returned by the configured <code>LocaleResolver</code>. */
   def locale: Locale = localeResolver.resolve(servletRequest)
@@ -134,7 +135,7 @@ class WebRequest(
   def cookies = servletRequest.getCookies
   
   /** Return the {@code Cookie} with the specified name. */
-  def cookie(name: String) = cookies find { _.getName == name }
+  def cookies(name: String): Option[Cookie] = cookies find { _.getName == name }
   
   /**
    * Tests whether this request originated from a {@code XMLHttpRequest} Javascript object.

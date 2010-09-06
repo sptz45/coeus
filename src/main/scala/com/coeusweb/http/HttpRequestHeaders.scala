@@ -6,9 +6,8 @@
  */
 package com.coeusweb.http
 
-import java.util.{Enumeration, Date}
-import javax.servlet.http.HttpServletRequest
-import scala.collection.JavaConversions._
+import java.util.{ Enumeration, Date }
+import scala.collection.JavaConversions.asIterator
 import com.coeusweb.WebRequest
 
 /**
@@ -17,23 +16,6 @@ import com.coeusweb.WebRequest
 trait HttpRequestHeaders {
 
   this: WebRequest =>
-  
-  def headerParse[T](name: String)(implicit m: Manifest[T]): Option[T] = {
-    val resultClass = m.erasure
-    val result = 
-      if (resultClass == classOf[String]) {
-        servletRequest.getHeader(name)
-      } else if (resultClass == classOf[Int]) {
-        val num = servletRequest.getIntHeader(name)
-        if (num == -1) null else num
-      } else if (resultClass == classOf[Date]) {
-        val millis = servletRequest.getDateHeader(name)
-        if (millis == -1) null else new Date(millis)
-      } else {
-        parseHeader(servletRequest.getHeader(name), m)
-      }
-    Option(result.asInstanceOf[T])
-  }
   
   def header(name: String) = Option(servletRequest.getHeader(name))
   
@@ -49,16 +31,21 @@ trait HttpRequestHeaders {
   
   def headerValues(name: String): Iterator[String] = {
     val headers = servletRequest.getHeaders(name)
-    if (headers eq null)
-      throw new SecurityException("The servlet container that you've deployed you application does not allow servlets to call the HttpServletRequest.getHeaders method.")
-    headers.asInstanceOf[Enumeration[String]]
+    assertWasAllowed(headers)
+    asIterator(headers.asInstanceOf[Enumeration[String]])
   }
   
   def headerNames: Iterator[String] = {
     val names = servletRequest.getHeaderNames
-    if (names eq null)
-      throw new SecurityException("The servlet container that you've deployed you application does not allow servlets to call the HttpServletRequest.getHeaderNames method.")
-    names.asInstanceOf[Enumeration[String]]
+    assertWasAllowed(names)
+    asIterator(names.asInstanceOf[Enumeration[String]])
+  }
+  
+  private def assertWasAllowed(ref: AnyRef) {
+    if (ref eq null) throw new SecurityException(
+      "The servlet container that you've deployed you application does not " +
+      "allow servlets to call the HttpServletRequest.getHeaderNames or " +
+      "HttpServletRequest.getHeaders method.")
   }
   
   private def parseHeader[T](value: String, m: Manifest[T]): T = {

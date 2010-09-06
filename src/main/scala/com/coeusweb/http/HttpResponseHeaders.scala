@@ -7,7 +7,6 @@
 package com.coeusweb.http
 
 import java.util.Date
-import javax.servlet.http.HttpServletResponse
 import com.coeusweb.WebResponse
 
 /**

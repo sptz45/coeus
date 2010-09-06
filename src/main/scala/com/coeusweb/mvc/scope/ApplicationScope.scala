@@ -34,7 +34,8 @@ class ApplicationScope(val servletContext: ServletContext) extends ScopedContain
     servletContext.removeAttribute(attribute)
   }
   
-  def attributeNames = servletContext.getAttributeNames.asInstanceOf[Enumeration[String]]
+  def attributeNames =
+    asIterator(servletContext.getAttributeNames.asInstanceOf[Enumeration[String]])
 }
 
 /**

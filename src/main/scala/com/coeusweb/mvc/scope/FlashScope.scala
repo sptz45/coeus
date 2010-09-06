@@ -31,7 +31,7 @@ class FlashScope(val session: WebSession) extends ScopedContainer {
   
   def getAttribute[T](attribute: String): T = {
     val entry = getFlashMap.get(attribute)
-    (if (entry == null) null else { marked += attribute; entry.value }).asInstanceOf[T]
+    (if (entry eq null) null else { marked += attribute; entry.value }).asInstanceOf[T]
   }
   
   def update(attribute: String, value: Any) {
@@ -42,16 +42,16 @@ class FlashScope(val session: WebSession) extends ScopedContainer {
     getFlashMap.remove(attribute)
   }
   
-  def attributeNames = getFlashMap.keys
+  def attributeNames = asIterator(getFlashMap.keys)
   
-  def notice = apply("notice")
-  def notice_=(message: String) = update("notice", message)
+  def notice = apply("flash-notice")
+  def notice_=(message: String) = update("flash-notice", message)
   
-  def warning = apply("warning")
-  def warning_=(message: String) = update("warning", message)
+  def warning = apply("flash-warning")
+  def warning_=(message: String) = update("flash-warning", message)
   
-  def error = apply("error")
-  def error_=(message: String) = update("error", message)
+  def error = apply("flash-error")
+  def error_=(message: String) = update("flash-error", message)
   
   /**
    * Removes from the scope any attribute that has been read or that has been

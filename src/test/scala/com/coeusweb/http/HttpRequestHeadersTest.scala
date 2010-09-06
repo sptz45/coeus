@@ -41,18 +41,10 @@ class HttpRequestHeadersTest {
   }
   
   @Test
-  def parse_header_value() {
-    val google = "http://google.com"
-    mock.addHeader("Location", google)
-    assertSome(new URI(google), request.headerParse[URI]("Location"))
-  }
-  
-  @Test
   def read_non_existing_header() {
     assertNone(request.headerInt("does not exist"))
     assertNone(request.header("does not exist"))
     assertNone(request.headerDate("does not exist"))
-    assertNone(request.headerParse[URI]("does not exist"))
   }
   
   @Test

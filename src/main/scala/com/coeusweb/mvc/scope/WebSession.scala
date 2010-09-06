@@ -32,7 +32,8 @@ class WebSession(val servletSession: HttpSession) extends ScopedContainer with C
   def getAttribute[T](attribute: String): T =
     servletSession.getAttribute(attribute).asInstanceOf[T]
   
-  def attributeNames = servletSession.getAttributeNames.asInstanceOf[Enumeration[String]]
+  def attributeNames =
+    asIterator(servletSession.getAttributeNames.asInstanceOf[Enumeration[String]])
   
   def update(attribute: String, value: Any) {
     servletSession.setAttribute(attribute, value)

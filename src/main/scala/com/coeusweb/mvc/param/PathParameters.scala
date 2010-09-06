@@ -22,9 +22,9 @@ import com.coeusweb.bind.ConverterRegistry
  * @param context a map that takes the parameter's name and return the parameter's value
  */
 class PathParameters(
+  context: Map[String, String],
   val locale: Locale,
-  val converters: ConverterRegistry,
-  context: Map[String, String]) extends Parameters {
+  val converters: ConverterRegistry) extends Parameters {
   
   def getParameter(name: String) = {
     try {

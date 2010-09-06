@@ -13,7 +13,7 @@ import com.coeusweb.bind.ConverterRegistry
 class PathParametersTest extends AbstractParametersTest {
 
   val pathVariables = Map[String, String]()
-  val params = new PathParameters(Locale.US, ConverterRegistry.defaultConverters , pathVariables)
+  val params = new PathParameters(pathVariables, Locale.US, ConverterRegistry.defaultConverters)
   
   def setParameter(name: String, value: String) {
     pathVariables += (name -> value)
