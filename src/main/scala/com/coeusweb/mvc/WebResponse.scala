@@ -5,6 +5,7 @@
  * Author: Spiros Tzavellas
  */
 package com.coeusweb
+package mvc
 
 import javax.servlet.http.{ HttpServletResponse, Cookie }
 import http.{ HttpStatus, HttpResponseHeaders }

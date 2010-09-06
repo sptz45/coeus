@@ -5,6 +5,7 @@
  * Author: Spiros Tzavellas
  */
 package com.coeusweb
+package mvc
 
 import java.util.{ Date, Enumeration, Locale }
 import javax.servlet.ServletContext
@@ -16,8 +17,8 @@ import i18n.locale.LocaleResolver
 import i18n.msg.MessageBundle
 import http.HttpRequestHeaders
 import http.multipart.{ FormFile, MultipartHttpServletRequest }
-import mvc.scope._
-import mvc.param._
+import scope._
+import param._
 
 /**
  * A class that represents a web request.

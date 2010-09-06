@@ -4,9 +4,8 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.mvc.view
-
-import com.coeusweb.{ WebRequest, WebResponse }
+package com.coeusweb.mvc
+package view
 
 /**
  * A <i>null-object</i> implementation for {@code View}.

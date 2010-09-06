@@ -5,6 +5,7 @@
  * Author: Spiros Tzavellas
  */
 package com.coeusweb
+package mvc
 
 import org.junit.Test
 import org.junit.Assert._

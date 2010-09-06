@@ -6,7 +6,7 @@
  */
 package com.coeusweb.core.error
 
-import com.coeusweb.{ WebRequest, WebResponse }
+import com.coeusweb.mvc.{ WebRequest, WebResponse }
 import com.coeusweb.mvc.view.View
 
 /**

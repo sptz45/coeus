@@ -4,12 +4,12 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb
-package http
+package com.coeusweb.http
 
 import org.junit.Test
 import org.junit.Assert._
 import org.springframework.mock.web.MockHttpServletResponse
+import com.coeusweb.mvc.WebResponse
 
 class HttpResponseHeadersTest {
   

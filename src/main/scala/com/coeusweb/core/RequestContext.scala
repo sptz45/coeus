@@ -4,8 +4,9 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb
-package core
+package com.coeusweb.core
+
+import com.coeusweb.mvc.{ WebRequest, WebResponse }
 
 /**
  * Holds information about the current request.

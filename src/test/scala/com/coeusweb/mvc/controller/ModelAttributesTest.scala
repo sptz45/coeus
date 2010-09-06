@@ -9,8 +9,8 @@ package com.coeusweb.mvc.controller
 import org.junit.Test
 import org.junit.Assert._
 import org.springframework.mock.web.MockHttpServletRequest
-import com.coeusweb.WebRequest
 import com.coeusweb.bind.Binder
+import com.coeusweb.mvc.WebRequest
 import com.coeusweb.mvc.scope.RequiredAttributeException
 import com.coeusweb.test.Assertions.assertThrows
 

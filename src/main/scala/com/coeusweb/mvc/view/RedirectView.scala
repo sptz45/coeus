@@ -4,9 +4,9 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.mvc.view
+package com.coeusweb.mvc
+package view
 
-import com.coeusweb.{ WebRequest, WebResponse }
 import com.coeusweb.http.HttpStatus
 
 /**

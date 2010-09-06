@@ -8,7 +8,7 @@ package com.coeusweb.core
 package interception
 
 import org.junit.Test
-import com.coeusweb.WebRequest
+import com.coeusweb.mvc.WebRequest
 import com.coeusweb.test.MockInterceptor
 
 class RequestFilterTest {

@@ -12,9 +12,9 @@ import scala.collection.Map
 import com.coeusweb.bind.ConverterRegistry
 import com.coeusweb.i18n.locale.LocaleResolver
 import com.coeusweb.i18n.msg.MessageBundle
-import com.coeusweb.{WebRequest, WebResponse}
 import com.coeusweb.http.MutableHttpServletRequest
 import com.coeusweb.http.multipart.MultipartRequestParser
+import com.coeusweb.mvc.{ WebRequest, WebResponse }
 import com.coeusweb.mvc.scope.ApplicationScope
 import com.coeusweb.util.internal.Strings
 

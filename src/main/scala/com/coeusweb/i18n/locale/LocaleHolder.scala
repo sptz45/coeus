@@ -6,7 +6,7 @@
  */
 package com.coeusweb.i18n.locale
 
-import com.coeusweb.WebRequest
+import com.coeusweb.mvc.WebRequest
 
 /**
  * Holds the locale of the current web request.

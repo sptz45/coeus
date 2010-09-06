@@ -3,16 +3,17 @@ package com.coeusweb.core.error
 import org.junit.Test
 import org.junit.Assert._
 import org.springframework.mock.web._
-import com.coeusweb._
-import mvc.view.ViewFactory._
-import mvc.param.MissingParameterException
+import com.coeusweb.core.RequestContext
+import com.coeusweb.mvc.{ WebRequest, WebResponse }
+import com.coeusweb.mvc.view.ViewFactory._
+import com.coeusweb.mvc.param.MissingParameterException
 
 class ExceptionHandlerTest {
   
   val context = {
     val req = new WebRequest(null, new MockHttpServletRequest, Map(), null, null, null)
     val res = new WebResponse(new MockHttpServletResponse)
-    new core.RequestContext(req, res, null)
+    new RequestContext(req, res, null)
   }
   
   val missingParamView = render("client-error")

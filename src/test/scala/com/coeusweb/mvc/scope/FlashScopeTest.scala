@@ -8,7 +8,7 @@ package com.coeusweb.mvc.scope
 
 import org.junit.Test
 import org.junit.Assert._
-import com.coeusweb.WebRequest
+import com.coeusweb.mvc.WebRequest
 import org.springframework.mock.web.{ MockHttpSession, MockHttpServletRequest }
 
 class FlashScopeTest extends AbstractScopedContainerTest {

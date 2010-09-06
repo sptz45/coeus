@@ -7,7 +7,6 @@
 package com.coeusweb.mvc
 package controller
 
-import com.coeusweb.WebRequest
 import com.coeusweb.bind.{ Binder, BindingResult }
 import util.Conventions
 import scope.RequiredAttributeException

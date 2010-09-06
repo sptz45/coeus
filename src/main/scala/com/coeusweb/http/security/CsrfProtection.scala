@@ -7,7 +7,7 @@
 package com.coeusweb.http.security
 
 import java.util.UUID
-import com.coeusweb.WebRequest
+import com.coeusweb.mvc.WebRequest
 import com.coeusweb.mvc.scope.WebSession
 
 /**

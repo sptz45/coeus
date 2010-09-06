@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap
 import scala.collection.mutable.HashSet
 import scala.collection.JavaConversions.asIterator
 import scala.collection.JavaConversions.{ JConcurrentMapWrapper => MapWrapper }
-import com.coeusweb.WebRequest
+import com.coeusweb.mvc.WebRequest
 
 /**
  * A <code>ScopedContainer</code> for storing attributes that get read

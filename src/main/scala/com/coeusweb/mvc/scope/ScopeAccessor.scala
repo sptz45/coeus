@@ -8,7 +8,6 @@ package com.coeusweb.mvc
 package scope
 
 import param._
-import com.coeusweb.{ WebRequest, WebResponse }
 
 /**
  * Provides access to request related objects.

@@ -15,5 +15,6 @@ import com.coeusweb.http.HttpStatus
  */
 class MaliciousRequestException(message: String) extends HttpException(message) {
 
+  /** Set to 400 (Bad Request). */
   def httpStatus = HttpStatus.BAD_REQUEST
 }

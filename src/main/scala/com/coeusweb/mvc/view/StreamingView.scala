@@ -4,10 +4,10 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.mvc.view
+package com.coeusweb.mvc
+package view
 
 import java.io.{ InputStream, File, FileInputStream }
-import com.coeusweb.{ WebRequest, WebResponse }
 
 /**
  * Streams the specified <code>InputStream</code> to the client.

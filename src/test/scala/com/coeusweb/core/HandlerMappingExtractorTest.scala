@@ -8,7 +8,7 @@ package com.coeusweb.core
 
 import org.junit.Test
 import org.junit.Assert._
-import com.coeusweb.{ WebRequest, WebResponse }
+import com.coeusweb.mvc.{ WebRequest, WebResponse }
 import com.coeusweb.mvc.controller.Controller
 import config._
 

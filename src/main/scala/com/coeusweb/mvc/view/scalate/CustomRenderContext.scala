@@ -8,7 +8,7 @@ package com.coeusweb.mvc.view.scalate
 
 import java.io.PrintWriter
 import org.fusesource.scalate._
-import com.coeusweb.{ WebRequest, WebResponse }
+import com.coeusweb.mvc.WebRequest
 
 
 class CustomRenderContext(engine: TemplateEngine, request: WebRequest, writer: PrintWriter)

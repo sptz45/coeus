@@ -8,7 +8,7 @@ package com.coeusweb.mvc.view
 
 import org.junit.Test
 import org.junit.Assert._
-import com.coeusweb.{ WebRequest, WebResponse }
+import com.coeusweb.mvc.{ WebRequest, WebResponse }
 import com.coeusweb.mvc.controller.AbstractController
 import org.springframework.mock.web.{ MockHttpServletRequest, MockHttpServletResponse }
 import com.coeusweb.http.HttpStatus

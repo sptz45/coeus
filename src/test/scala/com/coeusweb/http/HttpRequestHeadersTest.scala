@@ -4,8 +4,7 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb
-package http
+package com.coeusweb.http
 
 import java.util.{ Date, Locale }
 import java.net.URI
@@ -14,12 +13,15 @@ import org.junit.Assert._
 import org.springframework.mock.web.MockHttpServletRequest
 import com.coeusweb.bind.ConverterRegistry
 import com.coeusweb.i18n.locale.FixedLocaleResolver
-import test.Assertions._
+import com.coeusweb.mvc.WebRequest
+import com.coeusweb.test.Assertions._
 
 class HttpRequestHeadersTest {
 
   val mock = new MockHttpServletRequest
-  val request = new WebRequest(null, mock, null, new FixedLocaleResolver(Locale.US), ConverterRegistry.defaultConverters, null)
+  val request = new WebRequest(null, mock, null,
+                               new FixedLocaleResolver(Locale.US),
+                               ConverterRegistry.defaultConverters, null)
   
   @Test
   def read_string_headers_does_not_require_type_argument() {

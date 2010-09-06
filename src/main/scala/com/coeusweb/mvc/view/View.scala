@@ -4,9 +4,8 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.mvc.view
-
-import com.coeusweb.{ WebRequest, WebResponse }
+package com.coeusweb.mvc
+package view
 
 /**
  * Renders the model into a {@code WebResponse}.

@@ -5,6 +5,7 @@
  * Author: Spiros Tzavellas
  */
 package com.coeusweb
+package mvc
 
 import java.util.Locale
 import org.junit.Test

@@ -7,7 +7,7 @@
 package com.coeusweb.mvc.view
 
 import scala.xml.NodeSeq
-import com.coeusweb.{WebRequest, WebResponse}
+import com.coeusweb.mvc.{ WebRequest, WebResponse }
 
 /**
  * Renders the specified XML.

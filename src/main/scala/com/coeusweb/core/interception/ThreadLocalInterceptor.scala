@@ -6,7 +6,7 @@
  */
 package com.coeusweb.core.interception
 
-import com.coeusweb.WebRequest
+import com.coeusweb.mvc.WebRequest
 import com.coeusweb.core.RequestContext
 
 /**

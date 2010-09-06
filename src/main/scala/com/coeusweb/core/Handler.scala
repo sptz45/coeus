@@ -6,10 +6,9 @@
  */
 package com.coeusweb.core
 
-import java.lang.reflect.Method
-import java.lang.reflect.InvocationTargetException
+import java.lang.reflect.{ Method, InvocationTargetException }
+import com.coeusweb.mvc.{ WebRequest, WebResponse }
 import com.coeusweb.mvc.controller.{ BeforeFilter, AfterFilter, Controller }
-import com.coeusweb.{ WebRequest, WebResponse }
 import factory.ControllerFactory
 
 

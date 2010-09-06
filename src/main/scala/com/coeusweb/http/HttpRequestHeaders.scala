@@ -7,15 +7,15 @@
 package com.coeusweb.http
 
 import java.util.{ Enumeration, Date }
+import javax.servlet.http.HttpServletRequest
 import scala.collection.JavaConversions.asIterator
-import com.coeusweb.WebRequest
 
 /**
  * Methods to access HTTP headers from a WebRequest. 
  */
 trait HttpRequestHeaders {
 
-  this: WebRequest =>
+  def servletRequest: HttpServletRequest
   
   def header(name: String) = Option(servletRequest.getHeader(name))
   
@@ -46,12 +46,6 @@ trait HttpRequestHeaders {
       "The servlet container that you've deployed you application does not " +
       "allow servlets to call the HttpServletRequest.getHeaderNames or " +
       "HttpServletRequest.getHeaders method.")
-  }
-  
-  private def parseHeader[T](value: String, m: Manifest[T]): T = {
-    if(value eq null) return null.asInstanceOf[T]
-    val parser = converters.converter(m.erasure)
-    parser.parse(value, locale).asInstanceOf[T]
   }
 }
 

@@ -13,7 +13,8 @@ import org.springframework.mock.web._
 import com.coeusweb._
 import bind.ConverterRegistry.{defaultConverters => converters} 
 import i18n.msg.MessageBundle
-import mvc.view.{ViewName, NullView}
+import mvc.{ WebRequest, WebResponse }
+import mvc.view.{ ViewName, NullView }
 
 
 class AbstractControllerTest {

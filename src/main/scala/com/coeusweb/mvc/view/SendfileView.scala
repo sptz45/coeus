@@ -4,9 +4,8 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.mvc.view
-
-import com.coeusweb.{ WebRequest, WebResponse }
+package com.coeusweb.mvc
+package view
 
 /**
  * A <code>View</code> that when rendered will set the <em>X-Sendfile</em> HTTP header

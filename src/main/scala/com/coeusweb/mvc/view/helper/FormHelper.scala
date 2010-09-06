@@ -7,7 +7,7 @@
 package com.coeusweb.mvc.view.helper
 
 import scala.xml.{ Elem, Text }
-import com.coeusweb.WebRequest
+import com.coeusweb.mvc.WebRequest
 import com.coeusweb.mvc.scope.ScopeAccessor
 import com.coeusweb.mvc.controller.ModelAttributes
 import com.coeusweb.http.security.CsrfProtection

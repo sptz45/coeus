@@ -6,7 +6,7 @@
  */
 package com.coeusweb.mvc.util
 
-import com.coeusweb.WebRequest
+import com.coeusweb.mvc.WebRequest
 import com.coeusweb.util.internal.Strings
 
 /**

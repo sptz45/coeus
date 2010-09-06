@@ -9,7 +9,7 @@ package scalate
 
 import scala.collection.JavaConversions._
 import org.fusesource.scalate._
-import com.coeusweb.{ WebRequest, WebResponse }
+import com.coeusweb.mvc.{ WebRequest, WebResponse }
 import com.coeusweb.mvc.scope.ScopeAccessor
 
 class ScalateView(engine: CustomTemplateEngine, template: Template) extends View {

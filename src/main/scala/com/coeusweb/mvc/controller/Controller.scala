@@ -7,7 +7,6 @@
 package com.coeusweb.mvc
 package controller
 
-import com.coeusweb.{WebRequest, WebResponse}
 import scope.ScopeAccessor
 
 /**

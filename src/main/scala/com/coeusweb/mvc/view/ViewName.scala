@@ -4,9 +4,9 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.mvc.view
+package com.coeusweb.mvc
+package view
 
-import com.coeusweb.{ WebRequest, WebResponse }
 
 /**
  * A <code>View</code> that holds a <em>view name</em> that can be used to

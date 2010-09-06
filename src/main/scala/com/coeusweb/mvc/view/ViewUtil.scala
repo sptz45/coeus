@@ -6,7 +6,7 @@
  */
 package com.coeusweb.mvc.view
 
-import com.coeusweb.WebResponse
+import com.coeusweb.mvc.WebResponse
 
 /**
  * Helper methods for creating {@code View} implementations.
