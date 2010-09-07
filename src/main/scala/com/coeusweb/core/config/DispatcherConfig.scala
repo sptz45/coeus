@@ -10,6 +10,7 @@ package config
 import java.lang.reflect.Method
 import java.util.Locale
 import javax.servlet.ServletConfig
+import com.coeusweb.Stage
 import com.coeusweb.bind.ConverterRegistry
 import com.coeusweb.http.multipart.{ MultipartRequestParser, NullMultipartRequestParser }
 import com.coeusweb.i18n.locale.{ LocaleResolver, AcceptHeaderLocaleResolver }
@@ -25,18 +26,26 @@ import factory.{ ControllerFactory, SimpleControllerFactory }
 
 /**
  * Holds the configuration for <code>DispatcherServlet</code>.
- *
- * <p>The instances of this class are immutable, users are expected to
- * subclass and override any vals that they want to change.</p>
- * 
- * @param servletConfig the <code>ServletConfig</code> of the Servlet
- *                      that this instance holds the configuration for.
  * 
  * @see {@link com.coeusweb.core.DispatcherServlet DispatcherServlet}
  */
 trait DispatcherConfig {
 
-  val servletConfig: ServletConfig 
+  /** The {@code ServletConfig} of the {@code DispatcherServlet}. */
+  val servletConfig: ServletConfig
+  
+  /** The name of the {@code DispatcherServlet}. */
+  def servletName = servletConfig.getServletName
+  
+  /** The {@code ServletContext} of the web application. */
+  def servletContext = servletConfig.getServletContext
+  
+  /**
+   * Get the deployment stage of the web application ("production" or "development").
+   * 
+   * @see Stage#of(ServletContext)
+   */
+  def stage = Stage.of(servletContext)
   
   /**
    * The factory that creates the controller's instance in each request.
@@ -82,7 +91,7 @@ trait DispatcherConfig {
    * 
    * <p>By default the exception gets propagated to the Servlet container.</p>
    */
-  var exceptionHandler: ExceptionHandler = ExceptionHandler.defaultHandler(servletConfig.getServletName)
+  var exceptionHandler: ExceptionHandler = ExceptionHandler.defaultHandler(servletName)
   
   /**
    * Tells the <code>DispatcherServlet</code> to set the encoding of the Servlet
@@ -146,7 +155,7 @@ trait DispatcherConfig {
    * @see {@link com.coeusweb.i18n.msg.ClasspathMessageBundle ClasspathMessageBundle}
    * @see {@link java.util.ResourceBundle ResourceBundle}
    */
-  var messageBundle: MessageBundle = new ServletMessageBundle(servletConfig.getServletContext, 1000)
+  var messageBundle: MessageBundle = new ServletMessageBundle(servletContext, 1000)
   
   /**
    * A collection with pre-configured converters to be used by default when binding
@@ -181,7 +190,7 @@ trait DispatcherConfig {
   var viewResolver: ViewResolver = {
     val config = new ScalateConfig
     config.bind[DefaultViewHelpers]
-          .to(new DefaultViewHelpers(servletConfig.getServletContext))
+          .to(new DefaultViewHelpers(servletContext))
           .using(name="c", importMembers=false, isImplicit=false)
     new ScalateViewResolver(servletConfig.getServletContext, config)
   }
