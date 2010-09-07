@@ -50,8 +50,8 @@ object Stage {
    * 
    * @param stage can be "production" or "stage"
    * 
-   * @return {@code Production} if the input string in "production" else
-   *         returns {@code Development}.
+   * @return {@code Production} if the input string starts with "pro" (ignoring
+   *         case) else {@code Development}.
    */
   def of(stage: String): Stage = {
     if (stage eq null)
