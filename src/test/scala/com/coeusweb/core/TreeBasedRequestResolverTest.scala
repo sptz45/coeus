@@ -191,6 +191,17 @@ class TreeBasedRequestResolverTest {
     assertNotSame(catchAll, resolution.handler)
   }
   
+  @Test
+  def capturing_wildcard_matches_even_if_other_wildcard_present() {
+    val catchAll = new Handler[Controller](null, null)
+    resolver.register("/books/*", 'GET, catchAll)
+    resolver.register("/books/{bookId}/edit", 'GET, handler)
+    
+    val resolution = resolveSuccessfully("/books/12/edit", 'GET)
+    assertSame(handler, resolution.handler)
+    assertNotSame(catchAll, resolution.handler)
+  }
+  
   
   def assertHandlerFound(path: String, m: Symbol = 'GET) {
     resolver.resolve(path, m) match {
