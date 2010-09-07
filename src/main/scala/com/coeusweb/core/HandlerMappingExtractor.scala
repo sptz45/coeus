@@ -29,28 +29,28 @@ private class HandlerMappingExtractor(
   def extract[C <: Controller](controllerClass: Class[C]): Array[HandlerMapping] = {
     val mappings =
       for (method <- controllerClass.getMethods if isHandler(method))
-      yield makeMapping(controllerClass, method)
-    
+      yield makeMappingForMethod(controllerClass, method)
     assertThat(!mappings.isEmpty, "No handler annotations were found in controller class: " + controllerClass)
     mappings
   }
   
-  private def isHandler(m: Method) =
-    m.getAnnotations.exists(AnnotationProcessor.toHttpMethod.isDefinedAt(_))
-  
-  private def makeMapping(c: Class[_], m: Method) = {
+  private def makeMappingForMethod(c: Class[_], m: Method) = {
     assertMethodSignature(m)
     val a = getAnnotation(m)
     new HandlerMapping(makePath(c, m, a), getHttpMethod(a), m)
   }
   
-  private def getAnnotation(m: Method) = {
-    val annotations = m.getAnnotations.filter(AnnotationProcessor.toHttpMethod.isDefinedAt(_))
-    assertThat(annotations.size == 1, "Found more that one HTTP annoations on method: ["+m+"]")
-    annotations.head
+  private def isHandler(m: Method) = m.getAnnotations.exists(isHandlerAnnotation(_))
+  
+  private def getAnnotation(m: Method) = { 
+    val anns = m.getAnnotations.filter(isHandlerAnnotation(_))
+    assertThat(anns.size == 1, "Found more that one HTTP annoations on method: ["+m+"]")
+    anns.head
   }
+  
+  private def isHandlerAnnotation(a: Annotation) = AnnotationProcessor.toHttpMethod.isDefinedAt(a)
 
-  private def getHttpMethod(a: Annotation): Symbol = AnnotationProcessor.toHttpMethod(a)
+  private def getHttpMethod(a: Annotation) = AnnotationProcessor.toHttpMethod(a)
   
   private def makePath(c: Class[_], m: Method, a: Annotation) =
     makeAbsolutePath(mapClassName(c)) + makeAbsolutePath(mapMethodName(m, a))
