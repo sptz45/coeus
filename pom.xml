@@ -4,7 +4,7 @@
 	<groupId>com.coeusweb</groupId>
 	<artifactId>coeus</artifactId>
 	<name>Coeus Web Framework</name>
-	<version>0.7.2-SNAPSHOT</version>
+	<version>0.5-SNAPSHOT</version>
 	<description>A simple and effective Scala MVC web framework</description>
 	<url>http://www.coeusweb.com</url>
 	<inceptionYear>2009</inceptionYear>
