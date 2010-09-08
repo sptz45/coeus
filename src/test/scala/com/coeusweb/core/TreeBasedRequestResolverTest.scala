@@ -192,6 +192,17 @@ class TreeBasedRequestResolverTest {
   }
   
   @Test
+  def longest_match_when_two_wildcards_present_at_the_same_posistion() {
+    val catchAll = new Handler[Controller](null, null)
+    resolver.register("/books/*/edit", 'GET, handler)
+    resolver.register("/books/*", 'GET, catchAll)
+    
+    val resolution = resolveSuccessfully("/books/*/edit", 'GET)
+    assertSame(handler, resolution.handler)
+    assertNotSame(catchAll, resolution.handler)
+  }
+  
+  @Test
   def capturing_wildcard_matches_even_if_other_wildcard_present() {
     val catchAll = new Handler[Controller](null, null)
     resolver.register("/books/*", 'GET, catchAll)
