@@ -79,8 +79,7 @@ private class RequestExecutor(
     }
     
     try {
-      val view = findView()
-      view.render(request, response)
+      findView().render(request, response)
     } catch {
       case t =>
         error = t

@@ -45,10 +45,10 @@ object ScopeAccessor {
    * Create a {@code ScopeAccessor} for the specified request and response
    * objects.
    */
-  def apply(request: WebRequest, response: WebResponse): ScopeAccessor =
+  def apply(req: WebRequest, res: WebResponse): ScopeAccessor =
     new ScopeAccessor {
-      def request     = request
-      def response    = response
+      def request     = req
+      def response    = res
       def flash       = request.flash
       def session     = request.session
       def application = request.application
