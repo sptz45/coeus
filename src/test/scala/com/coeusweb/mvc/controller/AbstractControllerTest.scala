@@ -14,6 +14,7 @@ import com.coeusweb._
 import bind.ConverterRegistry.{defaultConverters => converters} 
 import i18n.msg.MessageBundle
 import mvc.{ WebRequest, WebResponse }
+import mvc.scope.MutableScopes
 import mvc.view.{ ViewName, NullView }
 
 
@@ -120,7 +121,7 @@ object AbstractControllerTest {
     ensure("content", hasText)
   }
 
-  class PostController extends AbstractController {
+  class PostController extends AbstractController with MutableScopes {
     
     override def storeModelInSession = true
     override def formView = render(ERROR_VIEW)

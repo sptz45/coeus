@@ -61,8 +61,6 @@ class Handler[T <: Controller](val controllerClass: Class[T], val controllerMeth
   def handle(factory: ControllerFactory, request: WebRequest, response: WebResponse): Any = {
     
     val controller = factory.createController(controllerClass)
-    controller.request = request
-    controller.response = response
     
     var throwable: Throwable = null
     

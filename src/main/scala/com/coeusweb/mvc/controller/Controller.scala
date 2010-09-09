@@ -119,10 +119,10 @@ abstract class Controller extends ScopeAccessor {
   implicit def thisScopeAccessor: ScopeAccessor = this
   
   /** The current web request. */
-  var request: WebRequest = _
+  def request: WebRequest = WebRequest.currentRequest
   
   /** The current web response. */
-  var response: WebResponse = _
+  def response: WebResponse = WebResponse.currentResponse
   
   /** The flash scope. */
   def flash = request.flash

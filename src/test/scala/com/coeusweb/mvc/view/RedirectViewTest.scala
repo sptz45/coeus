@@ -6,6 +6,7 @@
  */
 package com.coeusweb.mvc.view
 
+import com.coeusweb.mvc.scope.MutableScopes
 import org.junit.Test
 import org.junit.Assert._
 import com.coeusweb.mvc.{ WebRequest, WebResponse }
@@ -19,7 +20,7 @@ class RedirectViewTest {
   val mock = new MockHttpServletResponse
   val request = new WebRequest(null, mockRequest, null, null, null, null)
   val response = new WebResponse(mock)
-  val controller = new AbstractController { }
+  val controller = new AbstractController with MutableScopes { }
   controller.response = response
   
   @Test
