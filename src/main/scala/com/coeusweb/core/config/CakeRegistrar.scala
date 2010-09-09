@@ -21,7 +21,7 @@ private object CakeRegistrar {
    * specified class that extend the {@code Controller} abstract class.
    * 
    * @param registry   where to register the controller classes.
-   * @param components the class of a Cake "component registry".
+   * @param components the Cake "component registry".
    */
   def registerControllers(registry: ControllerRegistry, components: AnyRef) {
     components.getClass.getInterfaces
