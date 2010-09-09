@@ -7,8 +7,6 @@
 package com.coeusweb.mvc
 package controller
 
-import java.io.{ File, InputStream }
-import scala.xml.NodeSeq
 import com.coeusweb.http.HttpStatus
 import util.Conventions
 import view._
