@@ -17,7 +17,8 @@ import scope.RequiredAttributeException
  * 
  * @param request the current web request
  */
-class ModelAttributes(binder: Binder, request: WebRequest, storeInSession: Boolean) {
+class ModelAttributes(binder: Binder, storeInSession: Boolean) {
+  
   import ModelAttributes._
 
   /**
@@ -112,6 +113,8 @@ class ModelAttributes(binder: Binder, request: WebRequest, storeInSession: Boole
     	request.session(name) = result.target
     }
   }
+  
+  private def request = WebRequest.currentRequest
 }
 
 object ModelAttributes {

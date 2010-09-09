@@ -7,7 +7,7 @@
 package com.coeusweb.mvc.controller
 
 import java.util.Locale
-import org.junit.{ Before, Test }
+import org.junit.{ Before, After, Test }
 import org.junit.Assert._
 import org.springframework.mock.web._
 import com.coeusweb._
@@ -19,34 +19,42 @@ import mvc.view.{ ViewName, NullView }
 
 
 class AbstractControllerTest {
+  
   import AbstractControllerTest._
+  import WebRequest.currentRequest
 
   val controller = new PostController
+  
+  @After
+  def cleanupWebRequest() {
+    WebRequest.currentRequest = null
+    WebResponse.currentResponse = null
+  }
 
   @Test
   def validate_with_errors() {
-    controller.request = request()
+    currentRequest = request()
     assertErrors(controller.handleUsingValidate())
     assertBinding(controller.request)
   }
   
   @Test
   def validate_successful() {
-    controller.request = request("title" -> "title", "content" -> "content")
+    currentRequest = request("title" -> "title", "content" -> "content")
     assertSuccess(controller.handleUsingValidate())
     assertBinding(controller.request)
   }
   
   @Test
   def ifValid_with_errors() {
-    controller.request = request()
+    currentRequest = request()
     assertErrors(controller.handleUsingIfValid())
     assertBinding(controller.request)
   }
   
   @Test
   def ifValid_successful() {
-    controller.request = request("title" -> "title", "content" -> "content")
+    currentRequest = request("title" -> "title", "content" -> "content")
     assertSuccess(controller.handleUsingIfValid())
     assertBinding(controller.request)
   }
@@ -55,7 +63,7 @@ class AbstractControllerTest {
   def ifValid_session_successful() {
     // Simulates two web requests by reusing the same WebRequest and Controller
     // objects. Dirty but OK for this test.
-    controller.request = request("title" -> "title", "content" -> "content")
+    currentRequest = request("title" -> "title", "content" -> "content")
     controller.showSessionForm()
     assertNotNull(controller.request.session.getAttribute("post"))
     
@@ -66,8 +74,8 @@ class AbstractControllerTest {
 
   @Test
   def not_modified_sets_the_status_code() {
-    controller.request = request()
-    controller.response = new WebResponse(new MockHttpServletResponse)
+    currentRequest = request()
+    WebResponse.currentResponse = new WebResponse(new MockHttpServletResponse)
     assertEquals(NullView, controller.notModified)
     assertEquals(304, controller.response.status)
   }
@@ -121,7 +129,7 @@ object AbstractControllerTest {
     ensure("content", hasText)
   }
 
-  class PostController extends AbstractController with MutableScopes {
+  class PostController extends AbstractController {
     
     override def storeModelInSession = true
     override def formView = render(ERROR_VIEW)

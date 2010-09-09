@@ -25,7 +25,7 @@ trait FormProcessing {
   def storeModelInSession = false
   
   /** The model attributes. */
-  lazy val model = new ModelAttributes(binder, request, storeModelInSession)
+  lazy val model = new ModelAttributes(binder, storeModelInSession)
   
   /**
    * The <code>Binder</code> to use when binding request parameters to

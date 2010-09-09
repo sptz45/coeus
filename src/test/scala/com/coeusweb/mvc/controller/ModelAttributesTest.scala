@@ -6,7 +6,7 @@
  */
 package com.coeusweb.mvc.controller
 
-import org.junit.Test
+import org.junit.{Test, Before, After }
 import org.junit.Assert._
 import org.springframework.mock.web.MockHttpServletRequest
 import com.coeusweb.bind.Binder
@@ -17,7 +17,14 @@ import com.coeusweb.test.Assertions.assertThrows
 class ModelAttributesTest {
   
   val request = new WebRequest(null, new MockHttpServletRequest, null, null, null, null)
-  val model = new ModelAttributes(new Binder(null), request, storeInSession=true)
+  val model = new ModelAttributes(new Binder(null), storeInSession=true)
+  
+  @Before
+  def setupWebRequest() { WebRequest.currentRequest = request }
+  
+  @After
+  def cleanupWebRequest() { WebRequest.currentRequest = null }
+  
   
   @Test
   def add_a_model_attribute() {
@@ -66,7 +73,7 @@ class ModelAttributesTest {
   
   @Test
   def do_not_store_attribute_in_session() {
-  	val notInSession = new ModelAttributes(new Binder(null), request, storeInSession=false)
+  	val notInSession = new ModelAttributes(new Binder(null), storeInSession=false)
   	notInSession += spiros
   	assertThrows[RequiredAttributeException] { request.session[User]("user") }
   }
