@@ -145,3 +145,19 @@ class WebResponse(val servletResponse: HttpServletResponse) extends HttpResponse
     header("Cache-Control", "no-cache, no-store")
   }
 }
+
+object WebResponse {
+  
+  private[this] val response = new ThreadLocal[WebResponse]
+  
+  /** Get the current web response. */
+  def currentResponse = response.get
+  
+  /** Set the current web response. */
+  def currentResponse_=(r: WebResponse) {
+    if (r eq null)
+      response.remove()
+    else
+      response.set(r)
+  }
+}
