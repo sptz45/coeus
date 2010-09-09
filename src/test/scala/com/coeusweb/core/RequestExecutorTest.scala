@@ -12,7 +12,6 @@ import org.junit.Assert._
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 import org.springframework.mock.web.MockHttpServletResponse
-import com.coeusweb.core.factory.SimpleControllerFactory
 import com.coeusweb.test.TestHelpers
 import com.coeusweb.mvc.{ WebRequest, WebResponse }
 import com.coeusweb.mvc.controller.Controller
@@ -24,14 +23,14 @@ class RequestExecutorTest extends TestHelpers {
   
   val views = mock[ViewResolver]
   val exceptionHandler = mock[ExceptionHandler]
-  val handler = mock[Handler[Controller]]
+  val handler = mock[Handler]
   val interceptor = mock[Interceptor]
   val error = new RuntimeException
   
   
   @Test
   def call_handler_with_no_interceptors() {
-    when(handler.handle(any(), any(), any())).thenReturn(NullView, Array[Object](): _*)
+    when(handler.handle(any(), any())).thenReturn(NullView, Array[Object](): _*)
 
     execute()
     
@@ -40,7 +39,7 @@ class RequestExecutorTest extends TestHelpers {
   
   @Test
   def exception_in_handler_calls_exception_handler() {
-    when(handler.handle(any(), any(), any())).thenThrow(error)
+    when(handler.handle(any(), any())).thenThrow(error)
     when(exceptionHandler.handle(any())).thenReturn(NullView)
     
     execute()
@@ -50,7 +49,7 @@ class RequestExecutorTest extends TestHelpers {
   
   @Test
   def propagate_exception_to_servlet_container() {
-    when(handler.handle(any(), any(), any())).thenThrow(error)
+    when(handler.handle(any(), any())).thenThrow(error)
     when(exceptionHandler.handle(any())).thenReturn(ErrorPageView)
     
     assertThrows[RuntimeException] {
@@ -62,7 +61,7 @@ class RequestExecutorTest extends TestHelpers {
   
   @Test
   def no_view_found_throws_exception() {
-    when(handler.handle(any(), any(), any())).thenReturn("does not exist", Array[Object](): _*)
+    when(handler.handle(any(), any())).thenReturn("does not exist", Array[Object](): _*)
     when(exceptionHandler.handle(any())).thenReturn(ErrorPageView)
     
     assertThrows[NoViewFoundException] {
@@ -74,7 +73,7 @@ class RequestExecutorTest extends TestHelpers {
   
   @Test
   def interceptor_gets_called_around_handler() {
-    when(handler.handle(any(), any(), any())).thenReturn(NullView, Array[Object](): _*)
+    when(handler.handle(any(), any())).thenReturn(NullView, Array[Object](): _*)
     when(interceptor.preHandle(any())).thenReturn(true)
     
     execute(interceptor)
@@ -96,7 +95,7 @@ class RequestExecutorTest extends TestHelpers {
   @Test
   def interceptor_gets_called_despite_handler_exception() {
     when(exceptionHandler.handle(any())).thenReturn(NullView)
-    when(handler.handle(any(), any(), any())).thenThrow(error)
+    when(handler.handle(any(), any())).thenThrow(error)
     when(interceptor.preHandle(any())).thenReturn(true)
     
     execute(interceptor)
@@ -133,7 +132,7 @@ class RequestExecutorTest extends TestHelpers {
     execute(interceptor, interceptor_2)
 
     verifyInterceptors(interceptor, interceptor_2)
-    verify(handler).handle(any(), any(), any())
+    verify(handler).handle(any(), any())
     verify(exceptionHandler).handle(argThat(hasError(error)))
   }
   
@@ -163,7 +162,7 @@ class RequestExecutorTest extends TestHelpers {
     when(view.render(any(), any())).thenThrow(error)
     when(views.resolve(any())).thenReturn(view)
     when(exceptionHandler.handle(any())).thenReturn(NullView)
-    when(handler.handle(any(), any(), any())).thenReturn("view-name", Array[Object](): _*)
+    when(handler.handle(any(), any())).thenReturn("view-name", Array[Object](): _*)
     
     execute()
     
@@ -174,9 +173,10 @@ class RequestExecutorTest extends TestHelpers {
   def exception_when_controller_method_has_invalid_return_type() {
     when(exceptionHandler.handle(any())).thenReturn(ErrorPageView)
     
-    val executor = new RequestExecutor(Nil, exceptionHandler, null, new SimpleControllerFactory)
-    val cc = classOf[RequestExecutorTest.SampleController]
-    val handler = new Handler(cc, cc.getMethod("invalidReturnType"))
+    val executor = new RequestExecutor(Nil, exceptionHandler, null)
+    val controller = new RequestExecutorTest.SampleController
+    val cc = controller.getClass
+    val handler = new Handler(controller, cc.getMethod("invalidReturnType"))
     
     assertThrows[InvalidControllerClassException] {
       executor.execute(makeRequestContext(handler))
@@ -213,13 +213,13 @@ class RequestExecutorTest extends TestHelpers {
   private def verifyInterceptorAndHandler() {
     val order = inOrder(interceptor, handler)
     order.verify(interceptor).preHandle(any())
-    order.verify(handler).handle(any(), any(), any())
+    order.verify(handler).handle(any(), any())
     order.verify(interceptor).postHandle(any())
     order.verify(interceptor).afterRender(any())
   }
   
   private def execute(ris: Interceptor*) {
-    val executor = new RequestExecutor(aggregateInterceptors(ris: _*), exceptionHandler, views, new SimpleControllerFactory)
+    val executor = new RequestExecutor(aggregateInterceptors(ris: _*), exceptionHandler, views)
     executor.execute(makeRequestContext(handler))
   }
   
@@ -229,7 +229,7 @@ class RequestExecutorTest extends TestHelpers {
     builder.result
   }
   
-  private def makeRequestContext(handler: Handler[_]) = {
+  private def makeRequestContext(handler: Handler) = {
     val response = new WebResponse(new MockHttpServletResponse)
     val request = new WebRequest(null, null, null, null, null, null) {
       override def locale = java.util.Locale.ENGLISH

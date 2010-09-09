@@ -7,47 +7,33 @@
 package com.coeusweb.core
 
 import com.coeusweb.mvc.controller.Controller
-import com.coeusweb.util.internal.ReflectionHelper
 import config.DispatcherConfig
-
-
 
 private class ControllerRegistrar(config: DispatcherConfig) {
   
-  private val extractor = new HandlerMappingExtractor(config.classNameTranslator, config.methodNameTranslator)
+  private val extractor =
+    new HandlerMappingExtractor(config.classNameTranslator,
+                                config.methodNameTranslator)
+  
+  private def requestResolver = config.requestResolver
 
   /**
-   * Register the specified controller classes.
-   * 
-   * @param controllerClasses the controller classes to register
+   * Register the specified controllers.
    */
-  def registerAll(controllerClasses: Seq[Class[_ <: Controller]]) {
-    controllerClasses foreach { registerController(_) }
+  def registerAll(controllers: Seq[Controller]) {
+    controllers foreach { registerController(_) }
   }
 
-  /**
-   * Extracts any handler mappings from the specified controller class
-   * and registers those mapping in the request resolver.
-   * 
-   * <p>If the specified class is abstract this method does nothing.</p>
-   * 
-   * @throws InvalidControllerClassException if the controller class has invalid structure
-   *         or if it doesn't have handler annotations.
-   */
-  private def registerController(controllerClass: Class[_ <: Controller]) {
-    if (ReflectionHelper.isAbstract(controllerClass)) return
-    
+  private def registerController(controller: Controller) {
     // extract any handler mappings from the annotated methods
-    val mappings = extractor.extract(controllerClass)
+    val mappings = extractor.extract(controller.getClass)
     
     // register the mappings in request resolver
     for (mapping <- mappings) {
-      config.requestResolver.register(
+      requestResolver.register(
         mapping.path,
         mapping.httpMethod,
-        new Handler(controllerClass, mapping.controllerMethod))
+        new Handler(controller, mapping.controllerMethod))
     }
-    // tell the controller factory about the new controller
-    config.controllerFactory.controllerRegistered(controllerClass)
   }
 }

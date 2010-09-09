@@ -7,34 +7,34 @@
 package com.coeusweb.core
 
 import scala.collection.Map
-import com.coeusweb.mvc.controller.Controller
 
 /**
- * The result of finding a handler via a <code>RequestResolver</code>.
+ * The result of finding a handler via a {@code RequestResolver}.
  * 
  * @see RequestResolver
  */
 sealed trait Resolution
 
 /**
- * Returned by <code>RequestResolver</code> when a handler could not get
- * found for a given path.
+ * Returned by {@code RequestResolver} when a handler could not get found for
+ * a given path.
  */
 object HandlerNotFound extends Resolution
 
 /**
- * Returned by <code>RequestResolver</code> when the handler found for
- * the given path does not support the request's HTTP method.
+ * Returned by {@code RequestResolver} when the handler found for the given path
+ * does not support the request's HTTP method.
  */
 object MethodNotAllowed extends Resolution
 
 /**
- * Returned by <code>RequestResolver</code> when a handler is found for
- * a given request.
+ * Returned by {@code RequestResolver} when a handler is found for a given
+ * request.
  * 
- * @param handler the handler to handle the request
- * @param pathVariables a map with any variables that were extracted from the request URI
+ * @param handler       the handler to handle the request.
+ * @param pathVariables a map with any variables that were extracted from the
+ *                      request URI.
  */
 final case class SuccessfulResolution(
-  handler: Handler[_ <: Controller],
+  handler: Handler,
   pathVariables: Map[String, String]) extends Resolution

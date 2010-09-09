@@ -13,7 +13,7 @@ import com.coeusweb.mvc.controller.Controller
 class TreeBasedRequestResolverParserTest {
   import TreeBasedRequestResolver._
   
-  val handler = new Handler[Controller](null, null)
+  val handler = new Handler(null, null)
   
   @Test
   def no_template_to_parse() {

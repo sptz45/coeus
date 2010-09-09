@@ -8,9 +8,9 @@ package com.coeusweb.core.config
 
 import org.junit.Test
 import org.junit.Assert._
+import com.coeusweb.FrameworkException
 import com.coeusweb.mvc.controller.Controller
 import com.coeusweb.core._
-import factory.CakeControllerFactory
 
 
 class CakeRegistrarTest {
@@ -21,10 +21,19 @@ class CakeRegistrarTest {
   
   @Test
   def registers_all_inner_controller_classes_of_the_interfaces_of_the_specified_class() {
-    CakeRegistrar.registerControllers(registry, components.getClass)
+    CakeRegistrar.registerControllers(registry, components)
     val controllers = registry.controllers.result
-    assertTrue(controllers.contains(classOf[BlogComponent#BlogController]))
-    assertTrue(controllers.contains(classOf[PostComponent#PostController]))
+    assertTrue(controllers.exists(_.getClass == classOf[BlogComponent#BlogController]))
+  }
+  
+  @Test(expected=classOf[FrameworkException])
+  def exception_when_no_public_constructor() {
+    CakeRegistrar.registerControllers(registry, ErrorPrivateComponentRegistry)
+  }
+  
+  @Test(expected=classOf[FrameworkException])
+  def exception_when_constuctor_takes_parameters() {
+    CakeRegistrar.registerControllers(registry, ErrorsArgsComponentRegistry)
   }
 }
 
@@ -34,9 +43,17 @@ object CakeRegistrarTest{
     class BlogController extends Controller
   }
   
-  trait PostComponent {
-    class PostController extends Controller
+  object ComponentRegistry extends BlogComponent
+  
+  trait ErrorPrivateComponent {
+    class PrivateConstructorController private () extends Controller
   }
   
-  object ComponentRegistry extends BlogComponent with PostComponent
+  object ErrorPrivateComponentRegistry extends ErrorPrivateComponent
+  
+  trait ErrorsArgsComponent {
+    class ConstructorWithArgsController(arg: Int) extends Controller
+  }
+  
+  object ErrorsArgsComponentRegistry extends ErrorsArgsComponent  
 }

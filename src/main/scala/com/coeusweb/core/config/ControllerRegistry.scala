@@ -10,13 +10,11 @@ import scala.collection.mutable.{ Builder, ArrayBuffer }
 import com.coeusweb.mvc.controller.Controller
 
 /**
- * A trait to register <code>Controller</code> classes for a
+ * A trait to register the {@code Controller} instances for a
  * {@code DispatcherServlet}.
  */
-trait ControllerRegistry {
-  
-  type ControllerClass = Class[_ <: Controller] 
+trait ControllerRegistry { 
   
   /** Holds all the registered Controller classes. */
-  val controllers: Builder[ControllerClass, Seq[ControllerClass]] = new ArrayBuffer(50)
+  val controllers: Builder[Controller, Seq[Controller]] = new ArrayBuffer(50)
 }

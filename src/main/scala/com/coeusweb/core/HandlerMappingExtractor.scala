@@ -6,11 +6,10 @@
  */
 package com.coeusweb.core
 
-import java.lang.annotation.Annotation
 import java.lang.reflect.Method
-import com.coeusweb.mvc.controller.Controller
+import java.lang.annotation.Annotation
 import com.coeusweb.mvc.annotation.Path
-
+import com.coeusweb.mvc.controller.Controller
 
 /**
  * Creates handler mappings from a controller class.
@@ -26,7 +25,7 @@ private class HandlerMappingExtractor(
    * @throws InvalidControllerClassException if the controller class has invalid
    *         structure or if it doesn't have handler annotations.
    */
-  def extract[C <: Controller](controllerClass: Class[C]): Array[HandlerMapping] = {
+  def extract(controllerClass: Class[_]): Array[HandlerMapping] = {
     val mappings =
       for (method <- controllerClass.getMethods if isHandler(method))
       yield makeMappingForMethod(controllerClass, method)

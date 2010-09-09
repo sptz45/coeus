@@ -12,7 +12,7 @@ import com.coeusweb.mvc.controller.Controller
 
 class TreeBasedRequestResolverTest {
   
-  val handler = new Handler[Controller](null, null)
+  val handler = new Handler(null, null)
   val resolver = new TreeBasedRequestResolver
   
   @Test
@@ -58,7 +58,7 @@ class TreeBasedRequestResolverTest {
     assertHandlerFound("/books")
     assertEquals(2, resolver.nodes)
 
-    val newHandler = new Handler[Controller](null, null)
+    val newHandler = new Handler(null, null)
     resolver.register("/books", 'GET, newHandler)
     assertEquals(newHandler, resolveSuccessfully("/books", 'GET).handler)
     assertEquals(2, resolver.nodes)
@@ -171,7 +171,7 @@ class TreeBasedRequestResolverTest {
   
   @Test
   def resolve_to_handler_with_the_longerst_path2() {
-    val handleB = new Handler[Controller](null, null)
+    val handleB = new Handler(null, null)
     resolver.register("/b", 'GET, handleB)
     resolver.register("/books", 'GET, handler)
     
@@ -182,7 +182,7 @@ class TreeBasedRequestResolverTest {
   
   @Test
   def wildcard_has_lower_priority_in_matches() {
-    val catchAll = new Handler[Controller](null, null)
+    val catchAll = new Handler(null, null)
     resolver.register("/*", 'GET, catchAll)
     resolver.register("/books", 'GET, handler)
     
@@ -193,7 +193,7 @@ class TreeBasedRequestResolverTest {
   
   @Test
   def longest_match_when_two_wildcards_present_at_the_same_posistion() {
-    val catchAll = new Handler[Controller](null, null)
+    val catchAll = new Handler(null, null)
     resolver.register("/books/*/edit", 'GET, handler)
     resolver.register("/books/*", 'GET, catchAll)
     
@@ -204,7 +204,7 @@ class TreeBasedRequestResolverTest {
   
   @Test
   def capturing_wildcard_matches_even_if_other_wildcard_present() {
-    val catchAll = new Handler[Controller](null, null)
+    val catchAll = new Handler(null, null)
     resolver.register("/books/*", 'GET, catchAll)
     resolver.register("/books/{bookId}/edit", 'GET, handler)
     

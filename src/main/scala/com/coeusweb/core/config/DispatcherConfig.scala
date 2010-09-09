@@ -21,7 +21,6 @@ import com.coeusweb.mvc.view.helper.DefaultViewHelpers
 import com.coeusweb.mvc.view.scalate.{ ScalateViewResolver, ScalateConfig }
 
 import error.ExceptionHandler
-import factory.{ ControllerFactory, SimpleControllerFactory }
 
 
 /**
@@ -46,11 +45,6 @@ trait DispatcherConfig {
    * @see Stage#of(ServletContext)
    */
   def stage = Stage.of(servletContext)
-  
-  /**
-   * The factory that creates the controller's instance in each request.
-   */
-  var controllerFactory: ControllerFactory = new SimpleControllerFactory
   
   /**
    * Translates the controller's class into a base path.

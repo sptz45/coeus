@@ -10,20 +10,16 @@ import org.junit.Test
 import org.junit.Assert._
 import com.coeusweb.mvc.view.{ View, ViewName, NullView }
 import com.coeusweb.core.Handler
-import com.coeusweb.core.factory.SimpleControllerFactory
 
 class BeforeAfterFilterTest {
   import BeforeAfterFilterTest._
-  
-  private val factory = new SimpleControllerFactory
+
+  private var handler: Handler = _
   
   @Test
   def controller_interception() {
-    val controllerClass = classOf[InterceptedController]
-    val handlerMethod = controllerClass.getMethod("index")
-    val handler = new Handler(controllerClass, handlerMethod)
-    
-    handler.handle(factory, null, null) match {
+    setupHandler(new InterceptedController, "index")
+    handler.handle(null, null) match {
       case ViewName(name) => assertEquals("set-from-interceptor", name)
       case r => fail("result must be a view name but was: '"+r+"'")
     }
@@ -31,11 +27,8 @@ class BeforeAfterFilterTest {
   
   @Test
   def interceptor_prevented_execution_of_hander_method() {
-    val controllerClass = classOf[NoHandlerExecutionController]
-    val handlerMethod = controllerClass.getMethod("index")
-    val handler = new Handler(controllerClass, handlerMethod)
-    
-    handler.handle(factory, null, null) match {
+    setupHandler(new NoHandlerExecutionController, "index")
+    handler.handle(null, null) match {
       case ViewName(name) => assertEquals("intercepted", name)
       case r => fail("result must be a view name but was: '"+r+"'")
     }
@@ -43,26 +36,26 @@ class BeforeAfterFilterTest {
   
   @Test(expected=classOf[IllegalArgumentException])
   def after_gets_called_even_when_before_returns_a_view() {
-    val controllerClass = classOf[EnsureAfterCalledController]
-    val handlerMethod = controllerClass.getMethod("index")
-    val handler = new Handler(controllerClass, handlerMethod)
-    handler.handle(factory, null, null)
+    setupHandler(new EnsureAfterCalledController, "index")
+    handler.handle(null, null)
   }
   
   @Test(expected=classOf[IllegalArgumentException])
   def after_gets_called_with_an_occurred_exception() {
-    val controllerClass = classOf[ErroneousController]
-    val handlerMethod = controllerClass.getMethod("throwException")
-    val handler = new Handler(controllerClass, handlerMethod)
-    handler.handle(factory, null, null)
+    setupHandler(new ErroneousController, "throwException")
+    handler.handle(null, null)
   }
   
   @Test
   def handle_returns_the_view_of_after_filter() {
-    val controllerClass = classOf[ControllerWithExceptionHandler]
-    val handlerMethod = controllerClass.getMethod("raiseError")
-    val handler = new Handler(controllerClass, handlerMethod)
-    assertEquals(NullView, handler.handle(factory, null, null))
+    setupHandler(new ControllerWithExceptionHandler, "raiseError")
+    assertEquals(NullView, handler.handle(null, null))
+  }
+  
+  def setupHandler(c: Controller, method: String) = {
+    val controllerClass = c.getClass
+    val handlerMethod = controllerClass.getMethod(method)
+    handler = new Handler(c, handlerMethod)
   }
 }
 

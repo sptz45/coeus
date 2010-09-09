@@ -12,27 +12,32 @@ import scope.ScopeAccessor
 /**
  * Handles the user's request.
  * 
- * <p>A {@code Controller} class consists of a collection of <em>handler methods</em> whose
- * responsibility is to receive the current request, interact with collaborating and model
- * objects to handle the request and return the View that will be used for rendering the
- * response.</p>
+ * <p>A {@code Controller} class consists of a collection of <em>handler
+ * methods</em> whose responsibility is to receive the current request,
+ * interact with collaborating and model objects to handle the request and
+ * return the {@code View} that will be used for rendering the response.</p>
  * 
- * <p>To find which handler method will be executed for a particular request the hander methods
- * of all registered controllers are matched against the request using a configured HTTP method
- * and URL pattern. If a handler method cannot be found for a particular URL then the framework
- * sets the HTTP status code of the response to <em>404</em> (Not-Found) and lets the Servlet
- * container render any configured error page in <em>web.xml</em>. If a handler method exists but not for
- * the particular HTTP method then the HTTP status code is set to <em>405</em> (Method-Not-Allowed).</p>
+ * <p>To find which handler method will be executed for a particular request
+ * the hander methods of all registered controllers are matched against the
+ * request using a configured HTTP method and URL pattern. If a handler method
+ * cannot be found for a particular URL then the framework sets the HTTP status
+ * code of the response to <em>404 Not Found</em> and lets the Servlet
+ * container render any configured error page in <em>web.xml</em>. If a handler
+ * method exists but not for the particular HTTP method then the HTTP status
+ * code is set to <em>405 Method Not Allowed</em>.</p>
  *
- * <p>The binding between a handler method and a pair of HTTP method and URL pattern is configured
- * using annotations with the help of convention-over-configuration mechanisms.</p>
+ * <p>The binding between a handler method and a pair of HTTP method and URL
+ * pattern is configured using annotations with the help of "convention over
+ * configuration" mechanisms.</p>
  * 
  * <h4>Handler Mappings</h4>
  *
- * <p>Handler methods are annotated with HTTP method annotations found in the {@code com.coeusweb.annotation}
- * package. That package defines the Get, Post, Put and Delete annotations that correspond to the most
- * frequently used HTTP methods and the HttpMethod annotation that can be used to map arbitrary HTTP
- * methods to handler methods.</p>
+ * <p>Handler methods are annotated with HTTP method annotations found in the
+ * {@code com.coeusweb.annotation} package. That package defines the
+ * {@code Get}, {@code Post}, {@code Put} and {@code Delete} annotations that
+ * correspond to the most frequently used HTTP methods and the
+ * {@code HttpMethod} annotation that can be used to map arbitrary HTTP methods
+ * to handler methods.</p>
  * 
  * <pre>
  * class PagesController extends Controller {
@@ -48,20 +53,25 @@ import scope.ScopeAccessor
  * }
  * </pre>
  *
- * <p>In the above Controller the list() method is mapped to a GET request, the create() method is mapped
- * to a POST and the showOptions() to an OPTIONS request.</p>
+ * <p>In the above {@code Controller} the {@code list()} method is mapped to a
+ * GET request, the {@code create()} method is mapped to a POST and the
+ * {@code showOptions()} to an OPTIONS request.</p>
  * 
- * The URL pattern for a particular handler method is by default derived from the name of the controller's
- * class and the name of the method using the configured ControllerClassNameTranslator and
- * ControllerMethodNameTranslator. Using the default configuration, in the above controller the list() method
- * is mapped to a GET request at /<context-path>/pages/list, where <context-path> is the context path of the
- * deployed web application.</p>
+ * The URL pattern for a particular handler method is by default derived from
+ * the name of the controller's class and the name of the method using the
+ * configured translator functions of {@code DispatcherConfig} and. By default
+ * in the above controller the {@code list()} method gets mapped to a GET
+ * request at <em>/[context-path]/pages/list</em>, where <em>[context-path]</em>
+ * is the context path of the deployed web application.</p>
  * 
- * <p>To override the URL pattern for a specific controller you can use the value attribute of the HTTP method
- * annotations, the path attribute of the HttpMethod annotation and the value attribute of the Path annotation.
- * The Path annotation is used to override the how the class name gets transformed into a base path for the URL.
- * To prevent the class name or the method name from appearing in the URL pattern you can use the empty "" as
- * the values for any of the aforementioned annotation attributes.</p>
+ * <p>To override the URL pattern for a specific controller you can use the
+ * {@code value} attribute of the HTTP method annotations, the {@code path}
+ * attribute of the {@code HttpMethod} annotation and the {@code value}
+ * attribute of the {@code Path} annotation. The {@code Path} annotation is used
+ * to override the how the class name gets transformed into a base path for the
+ * URL. To prevent the class name or the method name from appearing in the URL
+ * pattern you can use the empty string as the value for any of the
+ * aforementioned annotation attributes.</p>
  * 
  * <pre>
  *{@literal @Path("post")}
@@ -75,53 +85,71 @@ import scope.ScopeAccessor
  * }
  * </pre>
  *
- * Assuming the context path of the application is "/", in the AuthoringController above, the edit() method is
- * mapped to a GET request at "/post/edit". The "/post" part is derived from the value of the value attribute
- * of the Path annotation that overrode the name that would have been generated by default via the configured
- * ControllerClassNameTranslator. The "/edit" derives from the name of the handler method and the configured
- * ControllerMethodNameTranslator since the Get annotation on the edit() method does not set the value of the
- * value attribute. On the other hand the save() method is mapped to a POST request at "/post" since the value
- * attribute of the Post annotation is the empty String "" which tells the framework not to use the method name
- * when generating the mapping for the handler method.</p>
+ * Assuming the context path of the application is "/", in the
+ * {@code AuthoringController} above, the {@code edit()} method gets mapped to
+ * a GET request at "/post/edit". The "/post" part is derived from the value of
+ * the {code value} attribute of the {@code Path} annotation that overrode the
+ * name that would have been generated by default via the configured translator
+ * function of {@code DispatcherConfig}. The "/edit" derives from the name of
+ * the handler method and the configured translator function since the
+ * {@code Get} annotation on the {@code edit()} method does not set the value
+ * of the {@code value} attribute. On the other hand the {@code save()} method
+ * is mapped to a POST request at "/post" since the {@code value} attribute of
+ * the {@code Post} annotation is the empty string which tells the framework
+ * not to use the method name when generating the mapping for the handler
+ * method.</p>
  * 
  * <h4>Controller Lifecycle</h4>
  * 
- * <p>For each request the Controller class of the matched handler method is found and a new instance of the
- * Controller is created via the configured ControllerFactory implementation. This controller instance is
- * used to invoke the handler method and it is disposed after the handling of the request. Since Controller
- * instances are created for each request it is thread-safe to update the controller's vars during request
- * execution because controller are thread confined.</p>
+ * <p>{@code Controller} instances must be <strong>thread-safe</strong>. A
+ * single {@code Controller} instance gets instantiated during the
+ * application initialization and is used to handle all the incoming
+ * requests that target the controller's handler methods.</p>
  * 
- * <p>Before the execution of the handler method the current WebRequest and WebResponse are injected into the
- * request and response vars of the Controller.</p>
+ * <p>The {@code Controller} instance retrieves the current {@code WebRequest}
+ * and {@code WebResponse} from the {@code WebRequest.currentRequest} and
+ * {@code WebResponse.currentResponse} thread local variables.</p>
  * 
  * <h4>Views</h4>
  * 
- * <p>Handler methods may return the View that will be used to render the response. For the programmer's
- * convenience the return type of the hander method is not restricted to {@code View} subclasses. A handler
- * method may return one of the following a {@code View} instance, a {@code String}, a {@code NodeSeq} or
- * nothing ({@code Unit}).</p>
+ * <p>Handler methods may return the <em>view</em> that will be used to render
+ * the response. For the programmer's convenience the return type of the hander
+ * method is not restricted to {@code View} subclasses. A handler method may
+ * return one of the following: a {@code View} instance, a {@code String}, a
+ * {@code NodeSeq} or nothing ({@code Unit}).</p>
  * 
- * <p>In the case of the {@code View} instance, the instance returned is used to render the response via an
- * invocation of the {@link View#render()} method. If a {@code String} is returned instead then the {@code String}
- * is used to lookup a {@code View} from the configured {@code ViewResolver} and that {@code View} is used to
- * render the request. If a hander method returns {@code NodeSeq} then the returned {@code NodeSeq} is wrapped
- * into an {@code XHtmlView} that is used to render the response. Last if the method returns {@code Unit} then
- * {@link com.coeusweb.core.convention.RequestToViewNameTranslator RequestToViewNameTranslator} is used to derive
- * a view name from the request.</p>
+ * <p>In the case of the {@code View} instance, the instance returned is used
+ * to render the response via an invocation of the {@link View#render()} method.
+ * If a {@code String} is returned instead then the {@code String} is used to
+ * lookup a {@code View} from the configured {@code ViewResolver} and that
+ * {@code View} is used to render the request. If a hander method returns
+ * {@code NodeSeq} then the returned {@code NodeSeq} is wrapped into an
+ * {@code XHtmlView} that is used to render the response. Last if the method
+ * returns {@code Unit} or {@code null} then {@code Conventions.requestToViewName}
+ * is used to derive a view name from the current request.</p>
  * 
  * @see AbstractController
  * @see {@link com.coeusweb.core.Handler#handle Handler.handle(..)}
- * @see {@link com.coeusweb.core.factory.ControllerFactory ControllerFactory}
+ * @see {@link com.coeusweb.mvc.util.Conventions#viewNameForRequest Conventions}
  */
 abstract class Controller extends ScopeAccessor {
   
   implicit def thisScopeAccessor: ScopeAccessor = this
   
-  /** The current web request. */
+  /**
+   * The current web request.
+   * 
+   * <p>This method retrieves the current web request from the
+   * {@code WebRequest.currentRequest} thread local variable.</p>
+   */
   def request: WebRequest = WebRequest.currentRequest
   
-  /** The current web response. */
+  /**
+   * The current web response.
+   * 
+   * <p>This method retrieves the current web response from the
+   * {@code WebResponse.currentResponse} thread local variable.</p>
+   */
   def response: WebResponse = WebResponse.currentResponse
   
   /** The flash scope. */

@@ -9,16 +9,14 @@ package com.coeusweb.core
 import scala.xml.NodeSeq
 import com.coeusweb.mvc.view._
 import com.coeusweb.mvc.util.Conventions.viewNameForRequest
-import error.{ExceptionHandler, ErrorPageView}
-import factory.ControllerFactory
+import error.{ ExceptionHandler, ErrorPageView }
 import interception.Interceptor
 
 
 private class RequestExecutor(
   interceptors: Iterable[Interceptor],
   exceptionHandler: ExceptionHandler,
-  viewResolver: ViewResolver,
-  controllerFactory: ControllerFactory) {
+  viewResolver: ViewResolver) {
   
   def execute(context: RequestContext) {
     import context._
@@ -45,7 +43,7 @@ private class RequestExecutor(
     import context._
     
     try {
-      val result = handler.handle(controllerFactory, request, response)
+      val result = handler.handle(request, response)
       context.result = result
     
     } catch {

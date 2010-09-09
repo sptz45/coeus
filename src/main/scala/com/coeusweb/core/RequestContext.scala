@@ -15,7 +15,7 @@ import com.coeusweb.mvc.{ WebRequest, WebResponse }
  * @param response the current response
  * @param handler  the handler that handles the request
  */
-final class RequestContext(val request: WebRequest, val response: WebResponse, val handler: Handler[_]) {
+final class RequestContext(val request: WebRequest, val response: WebResponse, val handler: Handler) {
 
   /**
    * The exception that occurred during the handling of the request.  

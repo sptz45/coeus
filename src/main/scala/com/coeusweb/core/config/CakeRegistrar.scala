@@ -6,25 +6,46 @@
  */
 package com.coeusweb.core.config
 
+import com.coeusweb.FrameworkException
+import java.lang.reflect.Constructor
 import com.coeusweb.mvc.controller.Controller
 
 /**
- * Register all the {@code Controller} classes found in a Cake component
- * registry.
+ * Instantiate and register all the {@code Controller} classes found in a Cake
+ * component registry.
  */
 private object CakeRegistrar {
   
   /**
-   * Register all the inner classes of the implemented interfaces of the specified
-   * class that extend the {@code Controller} abstract class.
+   * Register all the inner classes of the implemented interfaces of the
+   * specified class that extend the {@code Controller} abstract class.
    * 
-   * @param registry where to register the controller classes
-   * @param containerClass the class of a Cake component registry
+   * @param registry   where to register the controller classes.
+   * @param components the class of a Cake "component registry".
    */
-  def registerControllers(registry: ControllerRegistry, containerClass: Class[_]) {
-    containerClass.getInterfaces
-                  .flatMap(_.getDeclaredClasses)
-                  .collect({ case c if classOf[Controller].isAssignableFrom(c) => c.asInstanceOf[Class[Controller]]})
-                  .foreach(c => registry.controllers += c)
+  def registerControllers(registry: ControllerRegistry, components: AnyRef) {
+    components.getClass.getInterfaces
+      .flatMap(_.getDeclaredClasses)
+      .collect({
+        case c if classOf[Controller].isAssignableFrom(c) => 
+          c.asInstanceOf[Class[Controller]]
+       })
+      .foreach(c => registry.controllers += createController(c, components))
+  }
+  
+  
+  private def createController(cc: Class[Controller], registry: AnyRef) = {
+    try {
+      /* Constructors of inner classes take the outer class as the first
+       * parameter. For that reason we retrieve the constructor that takes
+       * one parameter instead of zero. */
+      val constructor = cc.getConstructors.apply(0)
+      constructor.newInstance(registry).asInstanceOf[Controller]
+    } catch {
+      case cause: Exception => throw new FrameworkException(
+        ("Failed to register controller with class: %s. The the class must " +
+        "be an inner class with a public no-arg constructor.")
+          .format(cc.getName), cause)
+    }
   }
 }

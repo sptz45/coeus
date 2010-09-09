@@ -11,7 +11,6 @@ import org.junit.Assert._
 import com.google.inject.Guice
 import com.coeusweb.FrameworkException
 import com.coeusweb.mvc.controller.Controller
-import com.coeusweb.core.factory.GuiceControllerFactory
 
 class GuiceRegistrarTest {
   
@@ -23,7 +22,8 @@ class GuiceRegistrarTest {
   def registers_controllers_from_guice_injector() {
     val injector = Guice.createInjector(new WebModule)
     GuiceRegistrar.registerControllers(registry, injector)
-    assertTrue(registry.controllers.result.contains(classOf[ExampleController]))
+    val controllers = registry.controllers.result
+    assertTrue(controllers.exists(_.getClass == classOf[ExampleController]))
   }
   
   @Test(expected=classOf[FrameworkException])
@@ -38,13 +38,13 @@ object GuiceRegistrarTest {
   
   class WebModule extends AbstractModule {
     def configure() {
-      bind(classOf[ExampleController])
+      bind(classOf[ExampleController]).asEagerSingleton()
     }
   }
   
   class ErroneousWebModule extends AbstractModule {
     def configure() {
-      bind(classOf[ExampleController]).asEagerSingleton()
+      bind(classOf[ExampleController])
     }
   }
   

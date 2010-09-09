@@ -16,8 +16,8 @@ class ExampleWebModule(sc: ServletConfig) extends WebModule(sc) {
   viewResolver    = GlogalState.viewResolver
   multipartParser = new CommonsMultipartRequestParser(sizeThreshold = 1 /* byte */)
   
-  controllers += classOf[BlogController]
-  controllers += classOf[UploadController]
+  controllers += new BlogController
+  controllers += new UploadController
   
   interceptors += GlogalState.interceptor  
 }

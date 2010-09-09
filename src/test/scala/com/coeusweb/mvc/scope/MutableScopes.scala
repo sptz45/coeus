@@ -17,11 +17,4 @@ trait MutableScopes extends ScopeAccessor {
   
   def request_=(r: WebRequest) { _req = r }
   def response_=(r: WebResponse) { _res = r }
-  
-  override def flash       = request.flash
-  override def session     = request.session
-  override def application = request.application
-  override def params      = request.params
-  override def path        = request.path
-
 }

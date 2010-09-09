@@ -11,7 +11,7 @@ import javax.servlet.http.{ HttpServletResponse, Cookie }
 import http.{ HttpStatus, HttpResponseHeaders }
 
 /**
- * A class that represents a web response.
+ * The web response.
  * 
  * @param servletResponse the current {@link HttpServletResponse}
  */

@@ -12,10 +12,8 @@ import util.Conventions
 import scope.RequiredAttributeException
 
 /**
- * Provides methods for handling any objects associated with the binding and
- * validation workflow of {@link Controller}.
- * 
- * @param request the current web request
+ * Provides methods for handling the objects associated with the binding and
+ * validation workflow of a {@link Controller}.
  */
 class ModelAttributes(binder: Binder, storeInSession: Boolean) {
   
@@ -47,12 +45,12 @@ class ModelAttributes(binder: Binder, storeInSession: Boolean) {
    * Add a model attribute using the specified name and object.
    * 
    * <p>This method adds three request attributes: 1) the specified
-   * object under the specified name, 2) a corresponding <code>BindingResult</code>
+   * object under the specified name, 2) a corresponding {@code BindingResult}
    * and 3) sets the "modelAttribute" request attribute to the specified
-   * <code>modelName</code>.</p> 
+   * {@code modelName}.</p> 
    * 
-   * @param modelName the name of the attribute
-   * @param target the object to add as a model attribute  
+   * @param modelName the name of the attribute.
+   * @param target    the object to add as a model attribute.  
    */
   def update(modelName: String, target: AnyRef) {
     addBindingResult(modelName, binder.bind(Nil, target, null))
@@ -61,10 +59,11 @@ class ModelAttributes(binder: Binder, storeInSession: Boolean) {
   /**
    * Add a model attribute using the specified object.
    * 
-   * <p>The name of the attribute is the simple name of the class
-   * of the specified object with the first letter converted to lower case.</p>
+   * <p>The name of the attribute is the simple name of the class of the
+   * specified object with the first letter converted to lower case.</p>
    * 
-   * @param target the object to add as a model attribute
+   * @param target the object to add as a model attribute.
+   * 
    * @see {@link #update(modelName, target}
    */
   def +=(target: AnyRef) {
@@ -74,9 +73,9 @@ class ModelAttributes(binder: Binder, storeInSession: Boolean) {
   /**
    * Remove the model attribute with the specified name.
    * 
-   * <p>This method removes the attribute with the specified name from
-   * the request scope, the session scope and also removes the
-   * corresponding <code>BindingResult</code> from the request scope.</p>
+   * <p>This method removes the attribute with the specified name from the
+   * request scope, the session scope and also removes the corresponding
+   * {@code BindingResult} from the request scope.</p>
    * 
    * @param modelName the name of the attribute to remove
    */
@@ -98,11 +97,11 @@ class ModelAttributes(binder: Binder, storeInSession: Boolean) {
   }
   
   /**
-   * Add the target object of the specified <code>BindingResult</code>
-   * as a model attribute using the specified name.
+   * Add the target object of the specified {@code BindingResult} as a model
+   * attribute using the specified name.
    * 
-   * @param modelName the attribute name of <code>null</code> to use a generated name
-   * @param result a <code>BindingResult</code> containing the value of the attribute
+   * @param modelName the attribute name or {@code null} to use a generated name
+   * @param result    contains the value of the attribute
    */
   def addBindingResult(modelName: String, result: BindingResult[AnyRef]) {
     val name = if (modelName != null) modelName else getModelNameFromTarget(result.target) 

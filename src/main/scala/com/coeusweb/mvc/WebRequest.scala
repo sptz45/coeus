@@ -21,7 +21,7 @@ import scope._
 import param._
 
 /**
- * A class that represents a web request.
+ * The web request.
  * 
  * @param servletRequest the actual Servlet request
  * @param pathContext the path variables

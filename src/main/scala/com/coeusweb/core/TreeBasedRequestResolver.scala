@@ -7,7 +7,6 @@
 package com.coeusweb.core
 
 import scala.collection.mutable.HashMap
-import com.coeusweb.mvc.controller.Controller
 import com.coeusweb.util.internal.Strings
 
 /**
@@ -22,7 +21,7 @@ class TreeBasedRequestResolver extends RequestResolver {
   /* The root node of the tree */
   private val root = new Node(Label("/"))
   
-  def register(path: String, method: Symbol, handler: Handler[_ <: Controller]) {
+  def register(path: String, method: Symbol, handler: Handler) {
     require(isAbsolutePath(path), "All patterns must begin with /")
     if (path == "/") {
       root.putHandler(method, handler)
@@ -55,7 +54,7 @@ private object TreeBasedRequestResolver {
   /**
    * A class that represents a node in the tree structure. 
    */
-  class Node(val label: Label, method: Symbol, handler: Handler[_ <: Controller]) {
+  class Node(val label: Label, method: Symbol, handler: Handler) {
   
     val children = new NodeList
 
@@ -75,7 +74,7 @@ private object TreeBasedRequestResolver {
       this(label, null, null)
     }
   
-    def putHandler(httpMethod: Symbol, h: Handler[_ <: Controller]) {
+    def putHandler(httpMethod: Symbol, h: Handler) {
       handlers.put(httpMethod, h)
     }
 
@@ -172,7 +171,7 @@ private object TreeBasedRequestResolver {
   }
 
 
-  class WildcardNode(method: Symbol, handler: Handler[_ <: Controller]) extends Node(WildcardLabel, method, handler) {
+  class WildcardNode(method: Symbol, handler: Handler) extends Node(WildcardLabel, method, handler) {
 
     def this() { this(null, null) } 
 
@@ -209,7 +208,7 @@ private object TreeBasedRequestResolver {
     def processSkippedPrefix(input: Array[Char], to: Int, variables: HashMap[String, String]) { }
   }
 
-  class CapturingWildcardNode(var variable: String, method: Symbol, handler: Handler[_ <: Controller]) extends WildcardNode(method, handler) {
+  class CapturingWildcardNode(var variable: String, method: Symbol, handler: Handler) extends WildcardNode(method, handler) {
     override def processSkippedPrefix(input: Array[Char], to: Int, variables: HashMap[String, String]) {
       variables(variable) = input.slice(0, to).mkString
     }
@@ -250,7 +249,7 @@ private object TreeBasedRequestResolver {
    */
   object UriTemplateParser {
   
-    def parse(pattern: String, method: Symbol, handler: Handler[_ <: Controller]): Option[Node] = {
+    def parse(pattern: String, method: Symbol, handler: Handler): Option[Node] = {
       val iterator = new UriTemplateIterator(pattern, method, handler)
       if (! iterator.hasMoreNodes) return None
       val root = iterator.nextNode
@@ -263,7 +262,7 @@ private object TreeBasedRequestResolver {
       Some(root)
     }
   
-    class UriTemplateIterator(pattern: String, method: Symbol, handler: Handler[_ <: Controller]) {
+    class UriTemplateIterator(pattern: String, method: Symbol, handler: Handler) {
       private var pos = 0
 
       def hasMoreNodes = pos < pattern.length
@@ -382,13 +381,13 @@ private object TreeBasedRequestResolver {
   class HandlerMap {
     
     @volatile
-    private var handlers = Map[Symbol, Handler[_ <: Controller]]()
+    private var handlers = Map[Symbol, Handler]()
 
     def hasHandlers = !handlers.isEmpty
 
     def get(method: Symbol) = handlers.get(method)
 
-    def put(method: Symbol, handler: Handler[_ <: Controller]) {
+    def put(method: Symbol, handler: Handler) {
       handlers = handlers + (method -> handler)
     }
 

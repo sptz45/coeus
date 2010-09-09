@@ -68,8 +68,7 @@ class DispatcherServlet extends HttpServlet {
     // create the request executor
     executor = new RequestExecutor(module.interceptors.result,
                                    module.exceptionHandler,
-                                   module.viewResolver,
-                                   module.controllerFactory)
+                                   module.viewResolver)
     
     // setup ApplicationScope
     applicationScope = new ApplicationScope(servletConfig.getServletContext)
@@ -126,7 +125,7 @@ class DispatcherServlet extends HttpServlet {
   
   private def execute(req: HttpServletRequest,
                       res: HttpServletResponse,
-                      handler: Handler[_],
+                      handler: Handler,
                       vars: Map[String, String]) {
     
     executor.execute(new RequestContext(
