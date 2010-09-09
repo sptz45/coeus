@@ -10,21 +10,32 @@ import javax.servlet.ServletConfig
 import org.junit.Test
 import org.junit.Assert._
 import org.springframework.mock.web.MockServletConfig
-import com.coeusweb.mvc.controller.Controller
 import com.coeusweb.mvc.annotation.Get
+import com.coeusweb.mvc.controller.Controller
+import com.coeusweb.mvc.scope.ApplicationScope
 import config.DispatcherConfig
 
 class ControllerRegistrarTest {
   
   import ControllerRegistrarTest._
 
-  private val config = new CustomConfig
-  private val registrar = new ControllerRegistrar(config)
+  val config = new CustomConfig
+  val application = new ApplicationScope(null)
+  private val registrar = new ControllerRegistrar(config, application)
   
   @Test
   def register_a_controller() {
     register(new ProjectController)
     assertHandlerFound("/project/list")
+  }
+  
+  @Test
+  def a_registered_controller_gets_injected() {
+    val controller = new ProjectController 
+    register(controller)
+    assertEquals(application, controller.application)
+    assertEquals(config.messageBundle, controller.messageBundle)
+    assertEquals(config.converters, controller.converters)
   }
   
   def register(c: Controller) {
@@ -37,10 +48,6 @@ class ControllerRegistrarTest {
       case MethodNotAllowed => fail("Method %s not allowed for path %s".format(m.toString, path))
       case _                => ()
     }
-  }
-
-  def assertNoHanderFound(path: String) {
-    assertEquals(HandlerNotFound, config.requestResolver.resolve(path, 'GET)) 
   }
 }
 

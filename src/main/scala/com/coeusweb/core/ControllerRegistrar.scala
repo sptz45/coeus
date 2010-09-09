@@ -7,9 +7,10 @@
 package com.coeusweb.core
 
 import com.coeusweb.mvc.controller.Controller
+import com.coeusweb.mvc.scope.ApplicationScope
 import config.DispatcherConfig
 
-private class ControllerRegistrar(config: DispatcherConfig) {
+private class ControllerRegistrar(config: DispatcherConfig, app: ApplicationScope) {
   
   private val extractor =
     new HandlerMappingExtractor(config.classNameTranslator,
@@ -25,6 +26,10 @@ private class ControllerRegistrar(config: DispatcherConfig) {
   }
 
   private def registerController(controller: Controller) {
+    controller.application = app
+    controller.messageBundle = config.messageBundle
+    controller.converters = config.converters 
+    
     // extract any handler mappings from the annotated methods
     val mappings = extractor.extract(controller.getClass)
     

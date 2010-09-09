@@ -61,18 +61,19 @@ class DispatcherServlet extends HttpServlet {
     
     multipartParser = module.multipartParser
     multipartParser.init(servletConfig.getServletContext)
+    
+    // setup ApplicationScope
+    applicationScope = new ApplicationScope(servletConfig.getServletContext)
+    ApplicationScope.setupMutex(servletConfig.getServletContext)
 
     // register the configured controller classes
-    new ControllerRegistrar(module).registerAll(module.controllers.result)
+    val registrar = new ControllerRegistrar(module, applicationScope)
+    registrar.registerAll(module.controllers.result)
 
     // create the request executor
     executor = new RequestExecutor(module.interceptors.result,
                                    module.exceptionHandler,
                                    module.viewResolver)
-    
-    // setup ApplicationScope
-    applicationScope = new ApplicationScope(servletConfig.getServletContext)
-    ApplicationScope.setupMutex(servletConfig.getServletContext)
   }
   
   override final def destroy() {

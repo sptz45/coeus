@@ -7,7 +7,9 @@
 package com.coeusweb.mvc
 package controller
 
-import scope.ScopeAccessor
+import com.coeusweb.bind.ConverterRegistry
+import com.coeusweb.i18n.msg.MessageBundle
+import scope.{ ApplicationScope, ScopeAccessor }
 
 /**
  * Handles the user's request.
@@ -152,14 +154,20 @@ abstract class Controller extends ScopeAccessor {
    */
   def response: WebResponse = WebResponse.currentResponse
   
+  private[this] var _appplication: ApplicationScope = _
+  
+  /** The application scope. */
+  def application = _appplication
+  
+  def application_=(app: ApplicationScope) {
+    _appplication = app
+  }
+  
   /** The flash scope. */
   def flash = request.flash
   
   /** The web session. */
   def session = request.session
-  
-  /** The application scope. */
-  def application = request.application
 
   /** The request parameters. */
   def params = request.params
@@ -168,7 +176,10 @@ abstract class Controller extends ScopeAccessor {
   def path = request.path
   
   /** The default converters as configured in {@code WebModule}. */
-  def converters = request.converters
+  var converters: ConverterRegistry = _
+  
+  /** Contains the i18n messages. */
+  var messageBundle: MessageBundle = _
   
   /**
    * Get an i18n message for the specified code and arguments, using the locale
@@ -181,5 +192,5 @@ abstract class Controller extends ScopeAccessor {
    * @throws MessageNotFoundException if a message does not exist for the
    *         specified code and Locale.
    */
-  def messages(code: String, args: Any*) = request.messages(request.locale, code, args)
+  def msg(code: String, args: Any*) = request.messages(request.locale, code, args)
 }

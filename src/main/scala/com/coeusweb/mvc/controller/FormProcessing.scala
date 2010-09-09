@@ -10,7 +10,7 @@ package controller
 import com.coeusweb.bind.{ Binder, BindingResult, ErrorFormatter, Error }
 import com.coeusweb.validation.Validator
 import scope.RequiredAttributeException
-import view.{View, ViewName}
+import view.{ View, ViewName }
 import util.Conventions
 
 trait FormProcessing {
@@ -24,9 +24,6 @@ trait FormProcessing {
    */
   def storeModelInSession = false
   
-  /** The model attributes. */
-  lazy val model = new ModelAttributes(binder, storeModelInSession)
-  
   /**
    * The <code>Binder</code> to use when binding request parameters to
    * target objects.
@@ -37,8 +34,10 @@ trait FormProcessing {
    * 
    * @see Binder
    */
-  lazy val binder = new Binder(request.converters)
+  lazy val binder = new Binder(converters)
   
+  /** The model attributes. */
+  lazy val model = new ModelAttributes(binder, storeModelInSession)
 
   /**
    * Bind and validate the specified target object.

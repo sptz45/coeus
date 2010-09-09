@@ -24,6 +24,7 @@ class AbstractControllerTest {
   import WebRequest.currentRequest
 
   val controller = new PostController
+  controller.converters = converters
   
   @After
   def cleanupWebRequest() {
