@@ -57,7 +57,7 @@ class BindingResult[+T <: AnyRef](converters: ConverterRegistry, val target: T) 
   def error(expr: String): Option[Error] = errorMap.get(expr)
   
   def formatError(expr: String, locale: Locale, messages: MessageBundle) =
-    errorMap.get(expr).map(errorFormatter.format(_, locale, null, converters))
+    errorMap.get(expr).map(errorFormatter.format(_, locale, messages, converters))
   
   def fieldValue(expr: String): Any = ExpressionLanguage.eval(target, expr)
   
