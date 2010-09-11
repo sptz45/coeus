@@ -25,7 +25,7 @@ trait RequestFilter extends Interceptor {
   
   abstract override def preHandle(context: RequestContext): Boolean = {
     if (accept(context.request)) super.preHandle(context)
-    else continue
+    else true
   }
   
   abstract override def postHandle(context: RequestContext) {

@@ -11,7 +11,7 @@ import com.coeusweb.core.RequestContext
 /**
  * Intercepts the execution of requests.
  *
- * <p>Instances of this class must be thread-safe.</p>
+ * <p>Instances of this class must be <em>thread-safe</em>.</p>
  *
  * @see {@link com.coeusweb.core.config.InterceptorRegistry InterceptorRegistry}
  */
@@ -21,8 +21,9 @@ trait Interceptor {
    * Called before the request's Handler.
    * 
    * @param context the context of the current request
-   * @return true to denote that the request handling should continue,
-   *         else false to denote that the request has been handled
+   * 
+   * @return <em>true</em> to denote that the request handling should continue,
+   *         else <em>false</em> to denote that the request has been handled
    */
   def preHandle(context: RequestContext): Boolean
  
@@ -39,16 +40,4 @@ trait Interceptor {
    * @param context the context of the current request
    */
   def afterRender(context: RequestContext)
-  
-  /**
-   * When returned from the {@link Interceptor#preHandle(context)} method
-   * tells the framework to continue with the handling of the request.
-   */
-  protected def continue = true
-  
-  /**
-   * When returned from the {@link Interceptor#preHandle(context)} method
-   * tells the framework that the request has been handled.
-   */
-  protected def stop = false
 }

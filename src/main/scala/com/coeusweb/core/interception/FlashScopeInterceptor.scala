@@ -4,11 +4,10 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb.mvc.scope
-package support
+package com.coeusweb.core.interception
 
 import com.coeusweb.core.RequestContext
-import com.coeusweb.core.interception.Interceptor
+import com.coeusweb.mvc.scope.FlashScope
 
 /**
  * An interceptor that removes stale attributes from <code>FlashScope</code>
@@ -19,7 +18,7 @@ import com.coeusweb.core.interception.Interceptor
  */
 class FlashScopeInterceptor extends Interceptor {
   
-  def preHandle(context: RequestContext) = continue
+  def preHandle(context: RequestContext) = true
   
   def postHandle(context: RequestContext) { }
   

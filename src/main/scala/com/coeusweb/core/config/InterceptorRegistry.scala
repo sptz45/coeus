@@ -8,7 +8,6 @@ package com.coeusweb.core.config
 
 import scala.collection.mutable.{ Builder, ListBuffer }
 import com.coeusweb.core.interception._
-import com.coeusweb.mvc.scope.support.FlashScopeInterceptor
 
 /**
  * A trait to register <code>Interceptor</code> instances for a
