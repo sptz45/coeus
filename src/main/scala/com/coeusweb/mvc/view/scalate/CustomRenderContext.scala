@@ -20,7 +20,7 @@ class CustomRenderContext(engine: TemplateEngine, request: WebRequest, writer: P
   
   override val attributes = new AttributeMap[String, Any] {
     
-	def get(key: String): Option[Any] = Option(apply(key))
+	  def get(key: String): Option[Any] = Option(apply(key))
 
     def apply(key: String): Any = {
       if ("context" == key) CustomRenderContext.this

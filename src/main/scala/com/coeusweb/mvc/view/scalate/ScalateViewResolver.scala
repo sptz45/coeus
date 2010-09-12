@@ -7,7 +7,6 @@
 package com.coeusweb.mvc.view
 package scalate
 
-import java.util.Locale
 import javax.servlet.ServletContext
 import org.fusesource.scalate._
 
