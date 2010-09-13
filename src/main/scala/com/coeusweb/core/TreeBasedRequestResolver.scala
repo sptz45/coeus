@@ -90,12 +90,12 @@ private object TreeBasedRequestResolver {
     def findHandlers(input: Array[Char], variables: HashMap[String, String]): HandlerMap = {
       if (! label.equalsWithPrefixOf(input)) return null
       if (input.length == label.length) return handlers
-      if (! children.isEmpty) {
-        for (child <- children) {
-          val childHandlers = child.findHandlers(input.slice(label.length, input.length), variables)
-          if (childHandlers ne null)
-            return childHandlers
-        }
+      val remainingInput = input.slice(label.length, input.length)
+      
+      for (child <- children) {
+        val childHandlers = child.findHandlers(remainingInput, variables)
+        if (childHandlers ne null)
+          return childHandlers
       }
       null
     }
@@ -181,19 +181,21 @@ private object TreeBasedRequestResolver {
       
       def findHandlersForChild(child: Node): HandlerMap = {
         val range = child.label.matchIgnoringPrefix(input)
-        if (range.isEmpty)
+        if (range eq null)
           return null          
         
-          processSkippedPrefix(input, range.head - 1, variables)
+        processSkippedPrefix(input, range.head - 1, variables)
             
         if (child.children.isEmpty)
-              return child.handlers
-            
+          return child.handlers
+
+        val remainingInput = input.slice(range.head, range.last)
         for (grandchild <- child.children) {
-          val grandchildHandlers = grandchild.findHandlers(input.slice(range.head, range.last), variables)
+          val grandchildHandlers = grandchild.findHandlers(remainingInput, variables)
           if (grandchildHandlers ne null)
              return grandchildHandlers
         }
+
         null
       }
       
@@ -240,8 +242,10 @@ private object TreeBasedRequestResolver {
     }
   
     def +=(node: Node) {
-      if (nodes.contains(node)) { nodes = nodes - node }
-      else { nodes = nodes + node }
+      if (nodes.contains(node)) {
+        nodes = nodes - node
+      }
+      nodes = nodes + node
     }
   
     def ++=(it: Iterable[Node]) {
@@ -357,7 +361,7 @@ private object TreeBasedRequestResolver {
           return (i + 1) to input.length
           i += 1
       }
-      return 0 until 0
+      return null
     }
 
     def sublabel(from: Int, until: Int) = Label(chars.slice(from, until).mkString)

@@ -146,13 +146,15 @@ class TreeBasedRequestResolverTest {
   @Test
   def extract_variables() {
     registerGet("/books/{bookId}/edit", "/books/{bookId}/authors/{authorId}/profile", "/bookmarks/{userId}")
+
     assertEquals("250", resolve('GET, "/books/250/edit")._2("bookId"))
+    assertEquals("sptz45", resolve('GET, "/bookmarks/sptz45")._2("userId"))
+    assertNoHandlerFound("/books/25/delete")
+
     var (handler, variables) = resolve('GET, "/books/15/authors/12/profile") 
     assertEquals(handler, handler)
     assertEquals("15", variables("bookId"))
     assertEquals("12", variables("authorId"))
-    assertNoHandlerFound("/books/25/delete")
-    assertEquals("sptz45", resolve('GET, "/bookmarks/sptz45")._2("userId"))
   }
   
   @Test
