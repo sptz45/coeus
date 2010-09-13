@@ -119,7 +119,7 @@ trait DispatcherConfig {
    * 
    * <p>The default value is {@code false}.</p>
    */
-  var hideResources = false
+  var hideResources: Boolean = false
   
   /**
    * Resolves the user's locale for a given request.

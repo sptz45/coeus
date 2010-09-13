@@ -42,12 +42,12 @@ class ControllerRegistrarTest {
     registrar.registerAll(List(c))
   }
   
-  def assertHandlerFound(path: String, m: Symbol = 'GET) {
-    config.requestResolver.resolve(path, m) match {
-      case HandlerNotFound  => fail("No handler found for path %s".format(path))
-      case MethodNotAllowed => fail("Method %s not allowed for path %s".format(m.toString, path))
-      case _                => ()
-    }
+  def assertHandlerFound(path: String, method: Symbol = 'GET) {
+    val (handlers, _) = config.requestResolver.resolve(path)
+    assert(!handlers.isEmpty,
+           "No handler found for path %s".format(path))
+    assert(handlers.isMethodAllowed(method),
+           "Method %s not allowed for path %s".format(method.toString, path))
   }
 }
 

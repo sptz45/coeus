@@ -6,6 +6,7 @@
  */
 package com.coeusweb.core
 
+import scala.collection.Map
 import scala.collection.mutable.HashMap
 import com.coeusweb.util.internal.Strings
 
@@ -21,7 +22,7 @@ class TreeBasedRequestResolver extends RequestResolver {
   /* The root node of the tree */
   private val root = new Node(Label("/"))
   
-  def register(path: String, method: Symbol, handler: Handler) {
+  def register(method: Symbol, path: String, handler: Handler) {
     require(isAbsolutePath(path), "All patterns must begin with /")
     if (path == "/") {
       root.putHandler(method, handler)
@@ -33,24 +34,13 @@ class TreeBasedRequestResolver extends RequestResolver {
     }
   }
   
-  def resolve(path: String, method: Symbol): Resolution = {
+  def resolve(path: String): (HandlerMap, Map[String, String]) = {
     val variables = new HashMap[String, String]
-    val handlers = root.findHandlers(sanitizePath(path), variables)
-    
-    if ((handlers eq null) || handlers.isEmpty)
-      return HandlerNotFound
-    
-    val handler = handlers.get(method)
-    if (handler == None)
-      return MethodNotAllowed
-    
-    SuccessfulResolution(handler.get, variables)
-  }
-  
-  def options(path: String) = {
-    val variables = new HashMap[String, String]
-    val handlers = root.findHandlers(sanitizePath(path), variables)
-    handlers.supportedMethods
+    var handlers = root.findHandlers(sanitizePath(path), variables)
+    if (handlers eq null) {
+      handlers = HandlerMap.empty
+    }
+    (handlers, variables)
   }
   
   private def sanitizePath(path: String) = {
@@ -77,14 +67,14 @@ private object TreeBasedRequestResolver {
   
     val children = new NodeList
 
-    lazy val handlers = new HandlerMap
+    lazy val handlers = new MutableHandlerMap
 
     if (handler ne null) {
       require(method ne null)
       handlers.put(method, handler)
     }
 
-    def this(label: Label, map: HandlerMap) {
+    def this(label: Label, map: MutableHandlerMap) {
       this(label, null, null)
       handlers.putAll(map)
     }
@@ -388,37 +378,5 @@ private object TreeBasedRequestResolver {
 
   private object Label {
     def apply(label: String) = new Label(label)
-  }
-
-  /**
-   * A map from HTTP method to the corresponding Handler.
-   */
-  class HandlerMap {
-    
-    @volatile
-    private var handlers = Map[Symbol, Handler]()
-
-    def hasHandlers = !handlers.isEmpty
-    
-    def isEmpty = handlers.isEmpty
-
-    def get(method: Symbol) = handlers.get(method)
-
-    def put(method: Symbol, handler: Handler) {
-      handlers = handlers + (method -> handler)
-    }
-
-    def putAll(source: HandlerMap) {
-      handlers = handlers ++ source.handlers
-    }
-  
-    def addMissingHandlers(source: HandlerMap) {
-      for (handler <- source.handlers if ! handlers.contains(handler._1))
-        handlers = handlers + handler
-    }
-    
-    def supportedMethods = handlers.keySet
-    
-    override def toString = handlers.toString
   }
 }

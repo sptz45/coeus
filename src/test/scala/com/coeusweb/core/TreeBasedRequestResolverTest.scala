@@ -59,8 +59,8 @@ class TreeBasedRequestResolverTest {
     assertNumberOfNodes(2)
 
     val newHandler = new Handler(null, null)
-    resolver.register("/books", 'GET, newHandler)
-    assertEquals(newHandler, resolveSuccessfully("/books", 'GET).handler)
+    resolver.register('GET, "/books", newHandler)
+    assertEquals(newHandler, handlerOf('GET, "/books"))
     assertNumberOfNodes(2)
   }
   
@@ -125,8 +125,8 @@ class TreeBasedRequestResolverTest {
     assertNoHandlerFound("/")
     assertNoHandlerFound("")
     assertHandlerFound("/book")
-    assertNoHandlerFound("/book/price")
     assertHandlerFound("/book/author")
+    assertNoHandlerFound("/book/price")
   }
   
   @Test
@@ -146,25 +146,27 @@ class TreeBasedRequestResolverTest {
   @Test
   def extract_variables() {
     registerGet("/books/{bookId}/edit", "/books/{bookId}/authors/{authorId}/profile", "/bookmarks/{userId}")
-    assertEquals("250", resolveSuccessfully("/books/250/edit", 'GET).pathVariables("bookId"))
-    var resolution = resolveSuccessfully("/books/15/authors/12/profile", 'GET) 
-    assertEquals(handler, resolution.handler)
-    assertEquals("15", resolution.pathVariables("bookId"))
-    assertEquals("12", resolution.pathVariables("authorId"))
+    assertEquals("250", resolve('GET, "/books/250/edit")._2("bookId"))
+    var (handler, variables) = resolve('GET, "/books/15/authors/12/profile") 
+    assertEquals(handler, handler)
+    assertEquals("15", variables("bookId"))
+    assertEquals("12", variables("authorId"))
     assertNoHandlerFound("/books/25/delete")
-    assertEquals("sptz45", resolveSuccessfully("/bookmarks/sptz45", 'GET).pathVariables("userId"))
+    assertEquals("sptz45", resolve('GET, "/bookmarks/sptz45")._2("userId"))
   }
   
   @Test
   def method_not_allowed_path() {
     registerGet("/books")
-    assertEquals(MethodNotAllowed, resolver.resolve("/books", 'DELETE))
+    val (handlers, _) = resolver.resolve("/books")
+    assert(  handlers.isMethodAllowed('GET))
+    assert(! handlers.isMethodAllowed('DELETE))
   }
   
   @Test
   def multiple_mehtods_for_path() {
     registerGet("/books")
-    resolver.register("/books", 'POST, new Handler(null, null))
+    resolver.register('POST, "/books", new Handler(null, null))
     assertHandlerFound("/books", 'GET)
     assertHandlerFound("/books", 'POST)
   }
@@ -172,79 +174,75 @@ class TreeBasedRequestResolverTest {
   @Test
   def resolve_to_handler_with_the_longerst_path2() {
     val handleB = new Handler(null, null)
-    resolver.register("/b", 'GET, handleB)
-    resolver.register("/books", 'GET, handler)
+    resolver.register('GET, "/b", handleB)
+    resolver.register('GET, "/books", handler)
     
-    val resolution = resolveSuccessfully("/books", 'GET)
-    assertSame(handler, resolution.handler)
-    assertNotSame(handleB, resolution.handler)
+    val resolved = handlerOf('GET, "/books")
+    assertSame(handler, resolved)
+    assertNotSame(handleB, resolved)
   }
   
   @Test
   def wildcard_has_lower_priority_in_matches() {
     val catchAll = new Handler(null, null)
-    resolver.register("/*", 'GET, catchAll)
-    resolver.register("/books", 'GET, handler)
+    resolver.register('GET, "/*", catchAll)
+    resolver.register('GET, "/books", handler)
     
-    val resolution = resolveSuccessfully("/books", 'GET)
-    assertSame(handler, resolution.handler)
-    assertNotSame(catchAll, resolution.handler)
+    val resolved = handlerOf('GET, "/books")
+    assertSame(handler, resolved)
+    assertNotSame(catchAll, resolved)
   }
   
   @Test
   def longest_match_when_two_wildcards_present_at_the_same_posistion() {
     val catchAll = new Handler(null, null)
-    resolver.register("/books/*/edit", 'GET, handler)
-    resolver.register("/books/*", 'GET, catchAll)
+    resolver.register('GET, "/books/*/edit", handler)
+    resolver.register('GET, "/books/*", catchAll)
     
-    val resolution = resolveSuccessfully("/books/12/edit", 'GET)
-    assertSame(handler, resolution.handler)
-    assertNotSame(catchAll, resolution.handler)
+    val resolved = handlerOf('GET, "/books/12/edit")
+    assertSame(handler, resolved)
+    assertNotSame(catchAll, resolved)
   }
   
   @Test
   def capturing_wildcard_matches_even_if_other_wildcard_present() {
     val catchAll = new Handler(null, null)
-    resolver.register("/books/*", 'GET, catchAll)
-    resolver.register("/books/{bookId}/edit", 'GET, handler)
+    resolver.register('GET, "/books/*", catchAll)
+    resolver.register('GET, "/books/{bookId}/edit", handler)
     
-    val resolution = resolveSuccessfully("/books/12/edit", 'GET)
-    assertSame(handler, resolution.handler)
-    assertNotSame(catchAll, resolution.handler)
+    val h = handlerOf('GET, "/books/12/edit")
+    assertSame(handler, h)
+    assertNotSame(catchAll, h)
   }
   
   def assertNumberOfNodes(expected: Int) {
     assertEquals(expected, resolver.nodes)
   }
   
-  def assertHandlerFound(path: String, m: Symbol = 'GET) {
-    resolver.resolve(path, m) match {
-      case HandlerNotFound  =>
-        fail("No handler found for path %s".format(path))
-      
-      case MethodNotAllowed =>
-        fail("Method %s not allowed for path %s".format(m.toString, path))
-      
-      case _ => ()
-    }
+  def assertHandlerFound(path: String, method: Symbol = 'GET) {
+    val (handlers, _) = resolver.resolve(path)
+    assert(!handlers.isEmpty,
+    		   "No handler found for path %s".format(path))
+    
+    assert(handlers.isMethodAllowed(method),
+    		   "Method %s not allowed for path %s".format(method.toString, path))
   }
   
   def assertNoHandlerFound(path: String, method: Symbol = 'GET) {
-    resolver.resolve(path, method) match {
-      case HandlerNotFound => ()
-      case resolution      =>
-        fail("Found handler for path %s and method %s".format(path, method.name))
-    }
+    val (handlers, _) = resolver.resolve(path)
+    val notFound = !handlers.isMethodAllowed(method)
+    assert(notFound, "Found handler for path %s and method %s".format(path, method.name))
   }
   
-  def resolveSuccessfully(path: String, method: Symbol): SuccessfulResolution = {
-    resolver.resolve(path, method) match {
-      case success: SuccessfulResolution => success
-      case _ => Predef.error("expected sucessful request resolution")
-    }
+  def handlerOf(method: Symbol, path: String) = resolve(method, path)._1
+  
+  def resolve(method: Symbol, path: String)  = {
+    val (handlers, variables) = resolver.resolve(path)
+    assert(handlers.isMethodAllowed(method), "expected sucessful request resolution")
+    (handlers(method), variables)
   }
   
   def registerGet(paths: String*) {
-    for (path <- paths) resolver.register(path, 'GET, handler)
+    paths foreach { resolver.register('GET, _, handler) }
   }
 }

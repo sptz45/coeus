@@ -95,32 +95,35 @@ class DispatcherServlet extends HttpServlet {
     val path = removeContextFromPath(request.getRequestURI)
     val method = getHttpMethod(request)
     
-    resolver.resolve(path, Symbol(method)) match {
-
-      case HandlerNotFound =>
+    val (handlers, pathVariables) = resolver.resolve(path)
+    
+    if (handlers.isEmpty) {
+      response.sendError(HttpServletResponse.SC_NOT_FOUND)
+      return
+    }
+    
+    if (! handlers.isMethodAllowed(method)) {
+      if (hideResources) {
         response.sendError(HttpServletResponse.SC_NOT_FOUND)
-
-      case MethodNotAllowed =>
-        if (hideResources) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND)
-        } else {
-          response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED)
-        }
-
-      case SuccessfulResolution(handler, pathVariables) =>
-        if (WebRequest.isMultipart(request)) {
-          val multipartRequest = multipartParser.parse(request)
-          if (mustChangeMethod(request))
-            multipartRequest.setMethod(method)
-          execute(multipartRequest, response, handler, pathVariables)
-          multipartParser.cleanupFiles(multipartRequest)
-        } else {
-          var wrappedReq = request 
-          if (mustChangeMethod(request)) {
-            wrappedReq = new MutableHttpServletRequest(request, method)
-          }
-          execute(wrappedReq, response, handler, pathVariables)
-        }
+      } else {
+        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED)
+      }
+      return
+    }
+    
+    val handler = handlers(method)
+    if (WebRequest.isMultipart(request)) {
+      val multipartRequest = multipartParser.parse(request)
+      if (mustChangeMethod(request))
+        multipartRequest.setMethod(method.name)
+        execute(multipartRequest, response, handler, pathVariables)
+        multipartParser.cleanupFiles(multipartRequest)
+    } else {
+      var wrappedReq = request 
+      if (mustChangeMethod(request)) {
+        wrappedReq = new MutableHttpServletRequest(request, method.name)
+      }
+      execute(wrappedReq, response, handler, pathVariables)
     }
   }
   
@@ -145,9 +148,9 @@ class DispatcherServlet extends HttpServlet {
     if (_method ne null) req.getMethod != _method.toUpperCase else false
   }
   
-  private def getHttpMethod(req: HttpServletRequest): String = {
-    if (!overrideHttpMethod) return req.getMethod
+  private def getHttpMethod(req: HttpServletRequest): Symbol = {
+    if (!overrideHttpMethod) return Symbol(req.getMethod)
     val _method = req.getParameter("_method")
-    if (_method eq null) req.getMethod else _method.toUpperCase
+    Symbol(if (_method eq null) req.getMethod else _method.toUpperCase)
   }
 }

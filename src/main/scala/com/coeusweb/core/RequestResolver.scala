@@ -6,7 +6,7 @@
  */
 package com.coeusweb.core
 
-import com.coeusweb.mvc.controller.Controller
+import scala.collection.Map
 
 /**
  * Finds the {@code Handler} to handle a given request.
@@ -17,27 +17,22 @@ trait RequestResolver {
    * Register the given {@code Hander} to handle requests for the specified
    * path and HTTP method.
    * 
-   * @param path    the path (requestUri) of the request
    * @param method  the HTTP method of the request
+   * @param path    the path (requestUri) of the request
    * @param handler the {@code Handler} to register
    */
-  def register(path: String, method: Symbol, handler: Handler)
+  def register(method: Symbol, path: String, handler: Handler)
   
   /**
-   * Finds the {@code Handler} to handle the request for the specified path
-   * and method.
+   * Finds the {@code Handler}s that can handle a request for the specified
+   * path.
    * 
-   * @param path   the path (requestUri) of the request
-   * @param method the HTTP method of the request
+   * @param path the path (requestUri) of the request
    * 
-   * @return {@code HandlerNotFound} if a {@code Handler} does not exist for
-   *         the specified path, {@code MethodNotAllowed} if a {@code Handler}
-   *         exists but not for the specified method, else a
-   *         {@code SuccessfulResolution}.
+   * @return a pair that contains the {@code HandlerMap} with the handlers for
+   *         the specified path and a map with any path variables.
    */
-  def resolve(path: String, method: Symbol): Resolution
-  
-  def options(path: String): Traversable[Symbol]
+  def resolve(path: String): (HandlerMap, Map[String, String])
 }
 
 

@@ -36,8 +36,8 @@ private class ControllerRegistrar(config: DispatcherConfig, app: ApplicationScop
     // register the mappings in request resolver
     for (mapping <- mappings) {
       requestResolver.register(
-        mapping.path,
         mapping.httpMethod,
+        mapping.path,
         new Handler(controller, mapping.controllerMethod))
     }
   }
