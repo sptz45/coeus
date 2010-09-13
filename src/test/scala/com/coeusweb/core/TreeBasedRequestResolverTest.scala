@@ -17,60 +17,60 @@ class TreeBasedRequestResolverTest {
   
   @Test
   def adding_the_same_path_produces_one_node() {
-    registerGet("/books");  assertEquals(1, resolver.nodes)
-    registerGet("/books");  assertEquals(1, resolver.nodes)
+    registerGet("/books");  assertNumberOfNodes(1)
+    registerGet("/books");  assertNumberOfNodes(1)
   }
   
   @Test
   def test_tree_creation_by_adding_paths() {
-    registerGet("/books");        assertEquals(1, resolver.nodes)
-    registerGet("/books/search"); assertEquals(2, resolver.nodes)
-    registerGet("/book-search");  assertEquals(4, resolver.nodes)
-    registerGet("/bank");         assertEquals(6, resolver.nodes)
-    registerGet("/author");       assertEquals(7, resolver.nodes)
+    registerGet("/books");        assertNumberOfNodes(1)
+    registerGet("/books/search"); assertNumberOfNodes(2)
+    registerGet("/book-search");  assertNumberOfNodes(4)
+    registerGet("/bank");         assertNumberOfNodes(6)
+    registerGet("/author");       assertNumberOfNodes(7)
   }
   
   @Test
   def adding_shorter_uri() {
-    registerGet("/books");  assertEquals(1, resolver.nodes)
-    registerGet("/book");   assertEquals(2, resolver.nodes)
+    registerGet("/books");  assertNumberOfNodes(1)
+    registerGet("/book");   assertNumberOfNodes(2)
   }
   
   @Test
   def adding_paths_with_wildcards() {
-    registerGet("/books");               assertEquals(1, resolver.nodes)
-    registerGet("/books/*");             assertEquals(3, resolver.nodes)
-    registerGet("/books/author");        assertEquals(4, resolver.nodes)
-    registerGet("/books/author/*.html"); assertEquals(7, resolver.nodes)
-    registerGet("/books/author/*.xtml"); assertEquals(9, resolver.nodes)
-    registerGet("/books/author/*.css");  assertEquals(10, resolver.nodes)
+    registerGet("/books");               assertNumberOfNodes(1)
+    registerGet("/books/*");             assertNumberOfNodes(3)
+    registerGet("/books/author");        assertNumberOfNodes(4)
+    registerGet("/books/author/*.html"); assertNumberOfNodes(7)
+    registerGet("/books/author/*.xtml"); assertNumberOfNodes(9)
+    registerGet("/books/author/*.css");  assertNumberOfNodes(10)
   }
   
   @Test
   def do_not_replace_existing_node() {
-    registerGet("/static/*.html"); assertEquals(3, resolver.nodes)
-    registerGet("/static/*.css");  assertEquals(5, resolver.nodes)
+    registerGet("/static/*.html"); assertNumberOfNodes(3)
+    registerGet("/static/*.css");  assertNumberOfNodes(5)
   }
   
   @Test
   def replace_handler() {
     registerGet("/books", "/books-search.html")
     assertHandlerFound("/books")
-    assertEquals(2, resolver.nodes)
+    assertNumberOfNodes(2)
 
     val newHandler = new Handler(null, null)
     resolver.register("/books", 'GET, newHandler)
     assertEquals(newHandler, resolveSuccessfully("/books", 'GET).handler)
-    assertEquals(2, resolver.nodes)
+    assertNumberOfNodes(2)
   }
   
   @Test
   def adding_the_same_wildcard() {
-    registerGet("/index/*");  assertEquals(2, resolver.nodes)
-    registerGet("/index/*");  assertEquals(2, resolver.nodes)
+    registerGet("/index/*");  assertNumberOfNodes(2)
+    registerGet("/index/*");  assertNumberOfNodes(2)
     
-    registerGet("/*");  assertEquals(3, resolver.nodes)
-    registerGet("/*");  assertEquals(3, resolver.nodes)
+    registerGet("/*");  assertNumberOfNodes(3)
+    registerGet("/*");  assertNumberOfNodes(3)
   }
   
   @Test
@@ -91,6 +91,7 @@ class TreeBasedRequestResolverTest {
   def add_handler_to_root() {
     registerGet("/")
     assertHandlerFound("/")
+    assertNoHandlerFound("/index")
   }
   
   @Test
@@ -104,7 +105,6 @@ class TreeBasedRequestResolverTest {
   def ending_slashes_get_removed_when_registered() {
     registerGet("/book////")
     assertHandlerFound("/book")
-    assertHandlerFound("/book/")
   }
   
   
@@ -197,7 +197,7 @@ class TreeBasedRequestResolverTest {
     resolver.register("/books/*/edit", 'GET, handler)
     resolver.register("/books/*", 'GET, catchAll)
     
-    val resolution = resolveSuccessfully("/books/*/edit", 'GET)
+    val resolution = resolveSuccessfully("/books/12/edit", 'GET)
     assertSame(handler, resolution.handler)
     assertNotSame(catchAll, resolution.handler)
   }
@@ -213,26 +213,34 @@ class TreeBasedRequestResolverTest {
     assertNotSame(catchAll, resolution.handler)
   }
   
+  def assertNumberOfNodes(expected: Int) {
+    assertEquals(expected, resolver.nodes)
+  }
   
   def assertHandlerFound(path: String, m: Symbol = 'GET) {
     resolver.resolve(path, m) match {
-      case HandlerNotFound => fail("No handler found for path %s".format(path))
-      case MethodNotAllowed => fail("Method %s not allowed for path %s".format(m.toString, path))
+      case HandlerNotFound  =>
+        fail("No handler found for path %s".format(path))
+      
+      case MethodNotAllowed =>
+        fail("Method %s not allowed for path %s".format(m.toString, path))
+      
       case _ => ()
     }
   }
   
-  def assertNoHandlerFound(path: String, m: Symbol = 'GET) {
-    resolver.resolve(path, m) match {
+  def assertNoHandlerFound(path: String, method: Symbol = 'GET) {
+    resolver.resolve(path, method) match {
       case HandlerNotFound => ()
-      case _ => fail("Found handler for path %s".format(path))
+      case resolution      =>
+        fail("Found handler for path %s and method %s".format(path, method.name))
     }
   }
   
   def resolveSuccessfully(path: String, method: Symbol): SuccessfulResolution = {
     resolver.resolve(path, method) match {
       case success: SuccessfulResolution => success
-      case _ => Predef.error("excpected sucessful request resolution")
+      case _ => Predef.error("expected sucessful request resolution")
     }
   }
   

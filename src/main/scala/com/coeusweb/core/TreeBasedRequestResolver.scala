@@ -34,8 +34,27 @@ class TreeBasedRequestResolver extends RequestResolver {
   }
   
   def resolve(path: String, method: Symbol): Resolution = {
-    val p = if (path.length == 1) path else Strings.stripEndChars(path, '/') 
-    root.matches(p.toCharArray, method, new HashMap)
+    val variables = new HashMap[String, String]
+    val handlers = root.findHandlers(sanitizePath(path), variables)
+    
+    if ((handlers eq null) || handlers.isEmpty)
+      return HandlerNotFound
+    
+    val handler = handlers.get(method)
+    if (handler == None)
+      return MethodNotAllowed
+    
+    SuccessfulResolution(handler.get, variables)
+  }
+  
+  def options(path: String) = {
+    val variables = new HashMap[String, String]
+    val handlers = root.findHandlers(sanitizePath(path), variables)
+    handlers.supportedMethods
+  }
+  
+  private def sanitizePath(path: String) = {
+    (if (path.length == 1) path else Strings.stripEndChars(path, '/')).toCharArray
   }
   
   private[core] def nodes = root.nodes - 1 // we don't count the root node
@@ -77,25 +96,18 @@ private object TreeBasedRequestResolver {
     def putHandler(httpMethod: Symbol, h: Handler) {
       handlers.put(httpMethod, h)
     }
-
-    def matches(input: Array[Char], httpMethod: Symbol, variables: HashMap[String, String]): Resolution = {
-      if (! label.equalsWithPrefixOf(input)) return HandlerNotFound
-      if (input.length == label.length) return resolution(httpMethod, variables)
+    
+    def findHandlers(input: Array[Char], variables: HashMap[String, String]): HandlerMap = {
+      if (! label.equalsWithPrefixOf(input)) return null
+      if (input.length == label.length) return handlers
       if (! children.isEmpty) {
-        for (child <- children)
-          child.matches(input.slice(label.length, input.length), httpMethod, variables) match {
-          case HandlerNotFound => ()
-          case r: Resolution => return r
+        for (child <- children) {
+          val childHandlers = child.findHandlers(input.slice(label.length, input.length), variables)
+          if (childHandlers ne null)
+            return childHandlers
         }
-        return HandlerNotFound
       }
-      HandlerNotFound
-    }
-
-    def resolution(httpMethod: Symbol, vars: HashMap[String, String]) = handlers.get(httpMethod) match {
-      case None if handlers.hasHandlers => MethodNotAllowed
-      case None => HandlerNotFound
-      case Some(h) => SuccessfulResolution(h, vars)
+      null
     }
 
     def canBeAddedAsChild(n: Node) = label.startsWith(n.label.chars(0))
@@ -174,41 +186,44 @@ private object TreeBasedRequestResolver {
   class WildcardNode(method: Symbol, handler: Handler) extends Node(WildcardLabel, method, handler) {
 
     def this() { this(null, null) } 
-
-    override def matches(input: Array[Char], httpMethod: Symbol, variables: HashMap[String, String]): Resolution = {
+    
+    override def findHandlers(input: Array[Char], variables: HashMap[String, String]): HandlerMap = {
       
-      def matchChild(child: Node): Resolution = {
-        child.label.matchIgnoringPrefix(input) match {
-          case None => HandlerNotFound
-
-          case Some(range) if (child.children.isEmpty) =>
-            processSkippedPrefix(input, range.head - 1, variables)
-            child.resolution(httpMethod, variables)
-
-          case Some(range) => {
-            processSkippedPrefix(input, range.head - 1, variables)
-            for (grandchild <- child.children)
-              grandchild.matches(input.slice(range.head, range.last), httpMethod, variables) match {
-                case HandlerNotFound => ()
-                case r: Resolution => return r
-              }
-              HandlerNotFound
-            }
-          }
+      def findHandlersForChild(child: Node): HandlerMap = {
+        val range = child.label.matchIgnoringPrefix(input)
+        if (range.isEmpty)
+          return null          
+        
+          processSkippedPrefix(input, range.head - 1, variables)
+            
+        if (child.children.isEmpty)
+              return child.handlers
+            
+        for (grandchild <- child.children) {
+          val grandchildHandlers = grandchild.findHandlers(input.slice(range.head, range.last), variables)
+          if (grandchildHandlers ne null)
+             return grandchildHandlers
         }
-      
-      for (child <- children) matchChild(child) match {
-        case HandlerNotFound => ()
-        case r: Resolution => return r
+        null
       }
+      
+      for (child <- children) {
+        val childHandlers = findHandlersForChild(child)
+        if (childHandlers ne null)
+          return childHandlers
+      }
+
       processSkippedPrefix(input, input.length, variables)
-      resolution(httpMethod, variables)
+      handlers
     }
 
     def processSkippedPrefix(input: Array[Char], to: Int, variables: HashMap[String, String]) { }
   }
 
-  class CapturingWildcardNode(var variable: String, method: Symbol, handler: Handler) extends WildcardNode(method, handler) {
+  
+  class CapturingWildcardNode(var variable: String, method: Symbol, handler: Handler)
+    extends WildcardNode(method, handler) {
+    
     override def processSkippedPrefix(input: Array[Char], to: Int, variables: HashMap[String, String]) {
       variables(variable) = input.slice(0, to).mkString
     }
@@ -345,14 +360,14 @@ private object TreeBasedRequestResolver {
       return i
     }
 
-    def matchIgnoringPrefix(input: Array[Char]): Option[Range] = {
+    def matchIgnoringPrefix(input: Array[Char]): Range = {
       var i = 0
       while (i < input.length) {
         if (chars(0) == input(i) && equalsWithPrefixOf(input.slice(i, input.length)))
-          return Some((i + 1) to input.length)
+          return (i + 1) to input.length
           i += 1
       }
-      return None
+      return 0 until 0
     }
 
     def sublabel(from: Int, until: Int) = Label(chars.slice(from, until).mkString)
@@ -384,6 +399,8 @@ private object TreeBasedRequestResolver {
     private var handlers = Map[Symbol, Handler]()
 
     def hasHandlers = !handlers.isEmpty
+    
+    def isEmpty = handlers.isEmpty
 
     def get(method: Symbol) = handlers.get(method)
 
@@ -399,6 +416,8 @@ private object TreeBasedRequestResolver {
       for (handler <- source.handlers if ! handlers.contains(handler._1))
         handlers = handlers + handler
     }
+    
+    def supportedMethods = handlers.keySet
     
     override def toString = handlers.toString
   }

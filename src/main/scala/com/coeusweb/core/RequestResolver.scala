@@ -36,6 +36,8 @@ trait RequestResolver {
    *         {@code SuccessfulResolution}.
    */
   def resolve(path: String, method: Symbol): Resolution
+  
+  def options(path: String): Traversable[Symbol]
 }
 
 
