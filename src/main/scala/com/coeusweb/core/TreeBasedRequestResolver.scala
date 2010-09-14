@@ -189,7 +189,7 @@ private object TreeBasedRequestResolver {
 
   class WildcardNode(method: Symbol, handler: Handler) extends Node(WildcardLabel, method, handler) {
 
-    def this() { this(null, null) } 
+    def this() { this(null, null) }
     
     override def findHandlers(input: Array[Char], variables: HashMap[String, String]): HandlerMap = {
       
@@ -245,27 +245,24 @@ private object TreeBasedRequestResolver {
      - n1.label.chars.mkString.compareTo(n2.label.chars.mkString)
   }
 
-  class NodeList extends Iterable[Node] {
+  class NodeList extends Traversable[Node] {
     import scala.collection.SortedSet
  
     @volatile
     private[this] var nodes = SortedSet.empty[Node]
   
-    def iterator = nodes.iterator
+    def foreach[U](f: Node => U) = nodes.foreach(f)
   
     def -=(node: Node) {
       nodes = nodes - node
     }
   
     def +=(node: Node) {
-      if (nodes.contains(node)) {
-        nodes = nodes - node
-      }
       nodes = nodes + node
     }
   
-    def ++=(it: Iterable[Node]) {
-      for (node <- it) this += node
+    def ++=(nodeList: NodeList) {
+      for (node <- nodeList) this += node
     }
   }
 

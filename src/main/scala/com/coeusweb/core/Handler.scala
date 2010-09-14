@@ -82,5 +82,5 @@ class Handler(val controller: Controller, val controllerMethod: Method) {
     result
   }
 
-  override def toString = controller.getClass.getName+"#"+controllerMethod.getName
+  //override def toString = controller.getClass.getName+"#"+controllerMethod.getName
 }
