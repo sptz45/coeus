@@ -37,6 +37,8 @@ class DispatcherServlet extends HttpServlet {
   private[this] var requestEncoding: String = _
   private[this] var hideResources: Boolean = _
   private[this] var overrideHttpMethod: Boolean = _
+  private[this] var allowHttpHead: Boolean = _
+  private[this] var allowHttpOptions: Boolean = _
   private[this] var multipartParser: MultipartRequestParser = _
 
   private[this] var applicationScope: ApplicationScope = _
@@ -58,6 +60,8 @@ class DispatcherServlet extends HttpServlet {
     requestEncoding    = module.requestEncoding
     hideResources      = module.hideResources
     overrideHttpMethod = module.overrideHttpMethod
+    allowHttpHead      = module.allowHttpHead
+    allowHttpOptions   = module.allowHttpOptions
     
     multipartParser = module.multipartParser
     multipartParser.init(servletConfig.getServletContext)
@@ -94,7 +98,7 @@ class DispatcherServlet extends HttpServlet {
     // resolve and execute
     val path = removeContextFromPath(request.getRequestURI)
     val method = getHttpMethod(request)
-    
+
     val (handlers, pathVariables) = resolver.resolve(path)
     
     if (handlers.isEmpty) {
@@ -103,6 +107,20 @@ class DispatcherServlet extends HttpServlet {
     }
     
     if (! handlers.isMethodAllowed(method)) {
+      if (method == 'OPTIONS && allowHttpOptions) {
+        println("setting default response for OPTIONS")
+        HttpOptionsResponseGenerator.generate(response, handlers, allowHttpHead)
+        return
+      }
+
+      if (method == 'HEAD && allowHttpHead) {
+        if (handlers.isMethodAllowed('GET)) {
+          println("setting default response for HEAD")
+          execute(request, response, handlers('GET), pathVariables)
+          return
+        }
+      }
+
       if (hideResources) {
         response.sendError(HttpServletResponse.SC_NOT_FOUND)
       } else {

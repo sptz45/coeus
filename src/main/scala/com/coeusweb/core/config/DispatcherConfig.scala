@@ -108,7 +108,21 @@ trait DispatcherConfig {
    * 
    */
   var overrideHttpMethod: Boolean = false
-  
+
+  /**
+   * Respond to HTTP HEAD for URLs that support HTTP GET.
+   * 
+   * <p>The default value is {@code false}.</p>
+   */
+  var allowHttpHead: Boolean = false
+
+  /**
+   * Respond to HTTP OPTIONS for all URLs.
+   * 
+   * <p>The default value is {@code false}.</p>
+   */
+  var allowHttpOptions: Boolean = false
+
   /**
    * Tells the {@code DispatcherServlet} to send <em>404</em> (Not Found) instead
    * of <em>405</em> (Method Not Allowed) when a resource exist but does not support

@@ -18,7 +18,7 @@ private class MutableHandlerMap extends HandlerMap {
   
   def isMethodAllowed(method: Symbol) = handlers.contains(method)
   
-  def supportedMethods = handlers.keySet
+  def supportedMethods = handlers.keySet.map(_.name)
 
   def apply(method: Symbol) = handlers(method)
 

@@ -16,7 +16,7 @@ trait HandlerMap {
   
   def isMethodAllowed(method: Symbol): Boolean
     
-  def supportedMethods: Set[Symbol]
+  def supportedMethods: Set[String]
 }
 
 object HandlerMap {
