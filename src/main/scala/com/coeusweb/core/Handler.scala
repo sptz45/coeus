@@ -81,4 +81,6 @@ class Handler(val controller: Controller, val controllerMethod: Method) {
     if (throwable != null) throw throwable
     result
   }
+
+  override def toString = controller.getClass.getName+"#"+controllerMethod.getName
 }

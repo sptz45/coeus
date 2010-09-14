@@ -8,7 +8,6 @@ package com.coeusweb.core
 
 import org.junit.Test
 import org.junit.Assert._
-import com.coeusweb.mvc.controller.Controller
 
 class TreeBasedRequestResolverTest {
   
@@ -209,16 +208,18 @@ class TreeBasedRequestResolverTest {
   @Test
   def capturing_wildcard_matches_even_if_other_wildcard_present() {
     val catchAll = new Handler(null, null)
-    resolver.register('GET, "/books/*", catchAll)
     resolver.register('GET, "/books/{bookId}/edit", handler)
-    
-    val h = handlerOf('GET, "/books/12/edit")
+    resolver.register('GET, "/books/*", catchAll)
+    val (h, vars) = resolve('GET, "/books/12/edit")
     assertSame(handler, h)
     assertNotSame(catchAll, h)
+    assertEquals("12", vars("bookId"))
   }
-  
+
+  // -- Helper methods --------------------------------------------------------
+
   def assertNumberOfNodes(expected: Int) {
-    assertEquals(expected, resolver.nodes)
+    assertEquals(expected, resolver.numberOfNodes)
   }
   
   def assertHandlerFound(path: String, method: Symbol = 'GET) {

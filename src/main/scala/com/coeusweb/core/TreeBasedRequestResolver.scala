@@ -47,7 +47,7 @@ class TreeBasedRequestResolver extends RequestResolver {
     (if (path.length == 1) path else Strings.stripEndChars(path, '/')).toCharArray
   }
   
-  private[core] def nodes = root.nodes - 1 // we don't count the root node
+  private[core] def numberOfNodes = root.numberOfNodes - 1 // we don't count the root node
   
   private def isAbsolutePath(path: String) = path(0) == '/'
   
@@ -55,8 +55,7 @@ class TreeBasedRequestResolver extends RequestResolver {
 }
 
 /**
- * A module with all the classes that support the operation of
- * <code>TreeBasedRequestResolver</code>.
+ * A module with all the classes that support the operation of {@code TreeBasedRequestResolver}.
  */
 private object TreeBasedRequestResolver {
 
@@ -88,10 +87,13 @@ private object TreeBasedRequestResolver {
     }
     
     def findHandlers(input: Array[Char], variables: HashMap[String, String]): HandlerMap = {
-      if (! label.equalsWithPrefixOf(input)) return null
-      if (input.length == label.length) return handlers
+      if (! label.equalsWithPrefixOf(input))
+        return null
+
+      if (input.length == label.length)
+        return handlers
+
       val remainingInput = input.slice(label.length, input.length)
-      
       for (child <- children) {
         val childHandlers = child.findHandlers(remainingInput, variables)
         if (childHandlers ne null)
@@ -118,7 +120,12 @@ private object TreeBasedRequestResolver {
         newNode.children ++= this.children
         newNode.handlers.addMissingHandlers(this.handlers)
       }
-      
+
+      def copyData(newNode: Node) {
+        children ++= newNode.children
+        handlers.addMissingHandlers(newNode.handlers)
+      }
+
       def split(n: Node, to: Int): Node = {
         val upper = new Node(n.label.sublabel(0, to), null, null)
         val lower = new Node(n.label.sublabel(to, n.label.length), n.handlers)
@@ -138,8 +145,11 @@ private object TreeBasedRequestResolver {
       val commonPrefix = this.label.longestMatch(node.label)
       if (commonPrefix == this.label.length)
         if (commonPrefix == node.label.length) {
-          if (node.handlers.hasHandlers) replaceThisWith(node)
-          else addAsChild(node.children.head)
+          if (node.handlers.hasHandlers) {
+            if (canBeReplaced) replaceThisWith(node) else copyData(node)
+          } else {
+            addAsChild(node.children.head)
+          }
         } else {
           addAsChild(node.slice(commonPrefix, node.label.length))
         }
@@ -150,6 +160,10 @@ private object TreeBasedRequestResolver {
         commonParent.add(parent, node)
       } 
     }
+
+    def canBeReplaced = !capturesVariables
+
+    def capturesVariables = false
 
     private def slice(from: Int, to: Int): Node = {
       val newThis = new Node(label.sublabel(from, to), handlers)
@@ -169,7 +183,7 @@ private object TreeBasedRequestResolver {
       }
     }
   
-    def nodes: Int = (1 /: children) { (sum: Int, child: Node) => sum + child.nodes }
+    def numberOfNodes: Int = (1 /: children) { (sum: Int, child: Node) => sum + child.numberOfNodes }
   }
 
 
@@ -216,6 +230,8 @@ private object TreeBasedRequestResolver {
   class CapturingWildcardNode(var variable: String, method: Symbol, handler: Handler)
     extends WildcardNode(method, handler) {
     
+    override def capturesVariables = true
+
     override def processSkippedPrefix(input: Array[Char], to: Int, variables: HashMap[String, String]) {
       variables(variable) = input.slice(0, to).mkString
     }
@@ -272,6 +288,7 @@ private object TreeBasedRequestResolver {
     }
   
     class UriTemplateIterator(pattern: String, method: Symbol, handler: Handler) {
+      
       private var pos = 0
 
       def hasMoreNodes = pos < pattern.length
@@ -334,11 +351,13 @@ private object TreeBasedRequestResolver {
 
     def startsWith(c: Char) = chars(0) == c
 
-    def equalsWithPrefixOf(input: Array[Char]): Boolean = {
+    def equalsWithPrefixOf(input: Array[Char]): Boolean = equalsWithPrefixOf(input, 0)
+
+    private def equalsWithPrefixOf(input: Array[Char], start: Int): Boolean = {
       if (input.length < chars.length) return false
       var i  = 0
       while (i < chars.length) {
-        if (chars(i) != input(i)) return false
+        if (chars(i) != input(start + i)) return false
         i += 1
       }
       return true
@@ -357,7 +376,7 @@ private object TreeBasedRequestResolver {
     def matchIgnoringPrefix(input: Array[Char]): Range = {
       var i = 0
       while (i < input.length) {
-        if (chars(0) == input(i) && equalsWithPrefixOf(input.slice(i, input.length)))
+        if (chars(0) == input(i) && equalsWithPrefixOf(input, i))
           return (i + 1) to input.length
           i += 1
       }

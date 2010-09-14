@@ -23,27 +23,27 @@ class TreeBasedRequestResolverParserTest {
   @Test
   def template_without_wildcards() {
     val node = parsePath("/this/is/a/uri/without/wildcards")
-    assertEquals(1, node.nodes)
+    assertEquals(1, node.numberOfNodes)
     assertEquals(handler, node.handlers('GET))
   }
   
   @Test
   def template_with_one_wildcard() {
     val node = parsePath("/search-*.html")
-    assertEquals(3, node.nodes)
+    assertEquals(3, node.numberOfNodes)
     assertEquals(handler, node.children.head.children.head.handlers('GET))
   }
 
   @Test
   def template_with_many_wildcards() {
     val node = parsePath("/books/*/authors/*/profile/*")
-    assertEquals(6, node.nodes)
+    assertEquals(6, node.numberOfNodes)
   }
   
   @Test
   def template_with_capturing_wildcard() {
     val node = parsePath("/books/{bookId}/edit")
-    assertEquals(3, node.nodes)
+    assertEquals(3, node.numberOfNodes)
     assertEquals("bookId", node.children.head.asInstanceOf[CapturingWildcardNode].variable)
     assertEquals(handler, node.children.head.children.head.handlers('GET))
   }
@@ -51,7 +51,7 @@ class TreeBasedRequestResolverParserTest {
   @Test
   def template_with_many_capturing_wildcards() {
     val node = parsePath("/books/{bookId}/author/{authorId}")
-    assertEquals(4, node.nodes)
+    assertEquals(4, node.numberOfNodes)
     assertEquals("bookId",   node.children.head.asInstanceOf[CapturingWildcardNode].variable)
     assertEquals("authorId", node.children.head.children.head.children.head.asInstanceOf[CapturingWildcardNode].variable)
   }

@@ -4,8 +4,9 @@
  *
  * Author: Spiros Tzavellas
  */
-package com.coeusweb
-package core
+package com.coeusweb.core
+
+import com.coeusweb.FrameworkException
 
 /**
  * Thrown when a <code>Controller<code> class has invalid structure.
