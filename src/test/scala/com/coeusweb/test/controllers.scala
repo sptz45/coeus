@@ -30,6 +30,18 @@ class BlogController extends Controller {
   
   @Delete("/post")
   def deletePost() = NullView
+  
+  @HttpMethod(method="HEAD", path="/entry")
+  def entryHead = {
+    response.status = 402
+    NullView
+  }
+  
+  @HttpMethod(method="OPTIONS", path="/entry")
+  def entryOptions = {
+    response.status = 402
+    NullView
+  }
 }
 
 class UploadController extends Controller {

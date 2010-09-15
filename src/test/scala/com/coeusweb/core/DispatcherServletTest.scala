@@ -161,6 +161,15 @@ class DispatcherServletTest {
   }
   
   @Test
+  def handler_method_annotated_with_head_gets_executed_instead_of_default_head_behavior() {
+    setWebModuleTo[WebModuleWithMethodsEnabled]
+
+    val request = req("HEAD", "/blog/entry")
+    servlet.service(request, response)
+    assertEquals(402, response.getStatus)
+  }
+  
+  @Test
   def respond_to_options_for_an_existing_url_if_enabled() {
     setWebModuleTo[WebModuleWithMethodsEnabled]
 
@@ -179,6 +188,15 @@ class DispatcherServletTest {
     val request = req("OPTIONS", "/blog/does-not-exist")
     servlet.service(request, response)
     assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus)
+  }
+  
+  @Test
+  def handler_method_annotated_with_options_gets_executed_instead_of_default_options_behavior() {
+    setWebModuleTo[WebModuleWithMethodsEnabled]
+
+    val request = req("OPTIONS", "/blog/entry")
+    servlet.service(request, response)
+    assertEquals(402, response.getStatus)
   }
 
   def setWebModuleTo[T: Manifest] = {
