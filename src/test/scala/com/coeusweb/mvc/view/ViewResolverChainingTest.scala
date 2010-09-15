@@ -11,12 +11,12 @@ import org.junit.Assert._
 import org.mockito.Mockito._
 import com.coeusweb.test.TestHelpers
 
-class CompositeViewResolverTest extends TestHelpers {
+class ViewResolverChainingTest extends TestHelpers {
   
   val first = mock[ViewResolver]
   val second = mock[ViewResolver]
   
-  val resolver = new CompositeViewResolver(first, second)
+  val resolver = ViewResolver.chainResolvers(first, second)
 
   @Test
   def null_if_no_resolver_can_resolve_the_view_name() {
