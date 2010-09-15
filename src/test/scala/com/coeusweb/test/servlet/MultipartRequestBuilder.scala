@@ -24,12 +24,10 @@ class MultipartRequestBuilder {
     this
   }
   
-  def addFormFile(name: String, filename: String, data: String, contentType: String = null): this.type = {
+  def addFormFile(name: String, filename: String, data: String, contentType: String): this.type = {
     body.append("--" + boundary + newLine)
     body.append("Content-Disposition: form-data; name=\""+name+"\"; filename=\""+filename+"\"" + newLine)
-    if (contentType != null) {
-      body.append("Content-Type: " + contentType + newLine)
-    }
+    body.append("Content-Type: " + contentType + newLine)
     body.append(newLine)
     body.append(data)
     body.append(newLine)
