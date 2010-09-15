@@ -108,7 +108,7 @@ class DispatcherServlet extends HttpServlet {
     
     if (! handlers.isMethodAllowed(method)) {
       if (method == 'OPTIONS && allowHttpOptions) {
-        HttpOptionsResponseGenerator.generate(response, handlers, allowHttpHead)
+        HttpResponseGenerator.writeOptions(response, getAllowedMethods(handlers))
         return
       }
 
@@ -120,7 +120,7 @@ class DispatcherServlet extends HttpServlet {
       if (hideResources) {
         response.sendError(HttpServletResponse.SC_NOT_FOUND)
       } else {
-        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED)
+        HttpResponseGenerator.writeMethodNotAllowed(response, getAllowedMethods(handlers))
       }
       return
     }
@@ -150,6 +150,15 @@ class DispatcherServlet extends HttpServlet {
       new WebRequest(applicationScope, req, vars, localeResolver, converters, messageBundle),
       new WebResponse(res),
       handler))
+  }
+  
+  private def getAllowedMethods(handlers: HandlerMap) = {
+    var methods = handlers.supportedMethods
+    if (allowHttpHead)
+      methods = methods + "HEAD"
+    if (allowHttpOptions)
+      methods = methods + "OPTIONS"
+    methods
   }
   
   private def removeContextFromPath(requestUri: String) = {

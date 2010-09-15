@@ -61,6 +61,8 @@ class DispatcherServletTest {
   def status_is_405_if_handlers_exists_for_the_url_but_do_not_support_the_requested_http_mehtod() {
     servlet.service(req("DELETE", "/blog/index"), response)
     assertEquals(HttpServletResponse.SC_METHOD_NOT_ALLOWED, response.getStatus)
+    val allow = response.getHeader("Allow").asInstanceOf[String] 
+    assertTrue(allow.contains("GET"))
   }
   
   @Test
