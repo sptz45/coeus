@@ -108,17 +108,13 @@ class DispatcherServlet extends HttpServlet {
     
     if (! handlers.isMethodAllowed(method)) {
       if (method == 'OPTIONS && allowHttpOptions) {
-        println("setting default response for OPTIONS")
         HttpOptionsResponseGenerator.generate(response, handlers, allowHttpHead)
         return
       }
 
-      if (method == 'HEAD && allowHttpHead) {
-        if (handlers.isMethodAllowed('GET)) {
-          println("setting default response for HEAD")
-          execute(request, response, handlers('GET), pathVariables)
-          return
-        }
+      if (method == 'HEAD && allowHttpHead && handlers.isMethodAllowed('GET)) {
+        execute(request, response, handlers('GET), pathVariables)
+        return
       }
 
       if (hideResources) {

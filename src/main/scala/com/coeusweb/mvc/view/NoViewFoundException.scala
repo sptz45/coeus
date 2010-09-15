@@ -9,8 +9,9 @@ package com.coeusweb.mvc.view
 import com.coeusweb.FrameworkException
 
 /**
- * To be thrown from the framework when a {@code View} cannot get resolved using
- * a particular name.
+ * Thrown when a {@code View} cannot get resolved using a particular name.
+ * 
+ * @param viewName the name of the view that didn't get resolved.
  * 
  * @see ViewResolver
  */ 

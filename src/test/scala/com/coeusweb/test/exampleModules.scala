@@ -30,3 +30,8 @@ class WebModuleWithOverrideMethod(sc: ServletConfig) extends ExampleWebModule(sc
   overrideHttpMethod = true
 }
 
+class WebModuleWithMethodsEnabled(sc: ServletConfig) extends ExampleWebModule(sc) {
+  allowHttpHead = true
+  allowHttpOptions = true
+}
+
