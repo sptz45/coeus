@@ -17,8 +17,7 @@ import com.coeusweb.i18n.locale.{ LocaleResolver, AcceptHeaderLocaleResolver }
 import com.coeusweb.i18n.msg.{ MessageBundle, ServletMessageBundle }
 import com.coeusweb.validation.vspec.VSpecErrorFormatter
 import com.coeusweb.mvc.view.ViewResolver
-import com.coeusweb.mvc.view.helper.DefaultViewHelpers
-import com.coeusweb.mvc.view.scalate.{ ScalateViewResolver, ScalateConfig }
+import com.coeusweb.mvc.view.scalate.ScalateViewResolver
 
 import error.ExceptionHandler
 
@@ -195,11 +194,5 @@ trait DispatcherConfig {
    * @see ScalateViewResolver
    * @see ScalateConfig
    */
-  var viewResolver: ViewResolver = {
-    val config = new ScalateConfig
-    config.bind[DefaultViewHelpers]
-          .to(new DefaultViewHelpers(servletContext))
-          .using(name="c", importMembers=false, isImplicit=false)
-    new ScalateViewResolver(servletConfig.getServletContext, config)
-  }
+  var viewResolver: ViewResolver = new ScalateViewResolver(servletContext)
 }

@@ -19,13 +19,11 @@ class CustomRenderContext(engine: TemplateEngine, request: WebRequest, writer: P
   override def locale = request.locale
   
   override val attributes = new AttributeMap[String, Any] {
+    update("context", CustomRenderContext.this)
     
 	  def get(key: String): Option[Any] = Option(apply(key))
 
-    def apply(key: String): Any = {
-      if ("context" == key) CustomRenderContext.this
-      else request.getAttribute(key)
-    }
+    def apply(key: String): Any = request.getAttribute(key)
     
     def keySet = request.attributeNames.toSet
 

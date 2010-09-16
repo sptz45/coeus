@@ -10,31 +10,24 @@ package scalate
 import javax.servlet.ServletContext
 import org.fusesource.scalate._
 
-class ScalateViewResolver(
-  servletContext: ServletContext,
-  config: ScalateConfig = new ScalateConfig)
-    extends ViewResolver {
+class ScalateViewResolver(config: ScalateConfigurator) extends ViewResolver {
+  
+  def this(servlets: ServletContext) = this(new ScalateConfigurator(servlets))
   
   private val prefix = config.templatePrefix
   private val suffix = config.templateSuffix
-  private val engine = new CustomTemplateEngine(servletContext)
-  engine.configure(config)
+  
+  private val engine       = TemplateEngineFactory.newEngine(config)
+  private val attributes   = config.attributes.toMap
 
   final def resolve(name: String): View = {
     try {
+      
       val template = engine.load(prefix + name + suffix)
-      new ScalateView(engine, template)
+      new ScalateView(engine, template, attributes)
+    
     } catch {
       case e: ResourceNotFoundException => null
     }
   }
-
-  /**
-   * Factory method for ScalateView objects.
-   * 
-   * <p>Subclasses can override this method to create a customized
-   * <code>ScalateView</code>.</p>
-   */
-  protected def createView(engine: CustomTemplateEngine, template: Template): ScalateView =
-    new ScalateView(engine, template)
 }

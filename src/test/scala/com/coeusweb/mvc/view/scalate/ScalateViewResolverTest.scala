@@ -16,8 +16,7 @@ import com.coeusweb.test.TestHelpers
 
 class ScalateViewResolverTest extends TestHelpers {
 
-  val defaultConfig = new ScalateConfig
-  val servlet = mock[ServletContext]
+  val servlets = mock[ServletContext]
   
   @Before
   def realPaths() {
@@ -28,27 +27,29 @@ class ScalateViewResolverTest extends TestHelpers {
   
   @Test
   def resolver_returns_null_for_nonexisting_template() {
-    val resolver = new ScalateViewResolver(servlet)
+    val resolver = new ScalateViewResolver(servlets)
     assertNull(resolver.resolve("does-not-exist"))
   }
   
   @Test
   def resolve_a_template() {
-    val resolver = new ScalateViewResolver(servlet)
+    val resolver = new ScalateViewResolver(servlets)
     stubPath("/WEB-INF/templates/text-only.ssp")
     assertNotNull(resolver.resolve("text-only"))
   }
   
   @Test
   def change_prefix_and_suffix_and_resolve_a_template() {
-    val config = new ScalateConfig(templatePrefix="/WEB-INF/other-templates/", templateSuffix=".scaml")
-    val resolver = new ScalateViewResolver(servlet, config)
+    val config = new ScalateConfigurator(servlets)
+    config.templatePrefix="/WEB-INF/other-templates/"
+    config.templateSuffix=".scaml"
+    val resolver = new ScalateViewResolver(config)
     stubPath("/WEB-INF/other-templates/text-only.scaml")
     assertNotNull(resolver.resolve("text-only"))
   }
   
   def stubPath(path: String) {
-    when(servlet.getRealPath(path)).thenReturn(realPath(path))
+    when(servlets.getRealPath(path)).thenReturn(realPath(path))
   }
   
   def realPath(path: String) = {

@@ -29,7 +29,7 @@ object Stage {
    * 
    * <p>This method will return a {@code Stage} object based on the configured
    * value of the <em>coeus-stage</em> ServletContext init parameter. If the
-   * parameter is not set then this method returns {@code Development}.
+   * parameter is not set then this method returns {@code Production}.
    * 
    * <p>Example <em>web.xml</em> fragment for the <em>production</em> stage:</p>
    * <pre>
@@ -50,13 +50,13 @@ object Stage {
    * 
    * @param stage can be "production" or "stage"
    * 
-   * @return {@code Production} if the input string starts with "pro" (ignoring
-   *         case) else {@code Development}.
+   * @return {@code Development} if the input string starts with "dev" (
+   *         ignoring case) else {@code Production}.
    */
   def of(stage: String): Stage = {
     if (stage eq null)
       return Development
     val trimmed = stage.trim.toLowerCase
-    if (trimmed.startsWith("pro")) Production else Development
+    if (trimmed.startsWith("dev")) Development else Production 
   }
 }
