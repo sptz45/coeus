@@ -27,6 +27,11 @@
 			</roles>
 		</developer>
 	</developers>
+	
+	<organization>
+		<name>spiros.blog()</name>
+		<url>http://www.tzavellas.com</url>
+	</organization>
 
 	<scm>
 		<connection>scm:git:git://github.com/coeusframework/coeus.git</connection>
@@ -91,11 +96,11 @@
 			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		<dependency> <!-- for sbt -->
 			<groupId>com.novocode</groupId>
 			<artifactId>junit-interface</artifactId>
 			<version>0.4</version>
-			<scope>test</scope> <!-- for sbt -->
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -121,18 +126,14 @@
 			<version>0.9.24</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId> <!-- for spring-test -->
-			<artifactId>jcl-over-slf4j </artifactId>
+		<dependency> <!-- for spring-test -->
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
 			<version>1.6.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
-	<organization>
-		<name>spiros.blog()</name>
-		<url>http://www.tzavellas.com</url>
-	</organization>
 
 	<build>
 		<plugins>
