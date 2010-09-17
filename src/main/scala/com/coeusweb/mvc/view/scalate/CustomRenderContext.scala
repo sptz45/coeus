@@ -11,8 +11,11 @@ import org.fusesource.scalate._
 import com.coeusweb.mvc.WebRequest
 
 
-class CustomRenderContext(engine: TemplateEngine, request: WebRequest, writer: PrintWriter)
-  extends DefaultRenderContext(engine, writer) {
+class CustomRenderContext(
+  engine: TemplateEngine,
+  request: WebRequest,
+  writer: PrintWriter)
+    extends DefaultRenderContext(engine, writer) {
   
   viewPrefixes = List("WEB-INF/views")
   
