@@ -11,9 +11,10 @@ import org.fusesource.scalate._
 import com.coeusweb.mvc.{ WebRequest, WebResponse }
 import com.coeusweb.mvc.scope.ScopeAccessor
 
-class ScalateView(engine: TemplateEngine,
-                  template: Template,
-                  attributes: Map[String, Any]) extends View {
+private class ScalateView(
+  engine: TemplateEngine,
+  template: Template,
+  attributes: Map[String, Any]) extends View {
   
   def contentType: String = "text/html"
   

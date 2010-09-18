@@ -17,7 +17,7 @@ private object TemplateEngineFactory {
     applyDefaults(engine, config.servletContext)
     
     engine.bindings = engine.bindings ++ config.bindings.values
-    
+
     config.configure(engine)
     
     engine

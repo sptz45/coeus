@@ -7,15 +7,14 @@
 package com.coeusweb.core
 package config
 
-import java.lang.reflect.Method
 import java.util.Locale
+import java.lang.reflect.Method
 import javax.servlet.ServletConfig
 import com.coeusweb.Stage
 import com.coeusweb.bind.ConverterRegistry
 import com.coeusweb.http.multipart.{ MultipartRequestParser, NullMultipartRequestParser }
 import com.coeusweb.i18n.locale.{ LocaleResolver, AcceptHeaderLocaleResolver }
 import com.coeusweb.i18n.msg.{ MessageBundle, ServletMessageBundle }
-import com.coeusweb.validation.vspec.VSpecErrorFormatter
 import com.coeusweb.mvc.view.ViewResolver
 import com.coeusweb.mvc.view.scalate.ScalateViewResolver
 
