@@ -56,7 +56,7 @@ class Handler(val controller: Controller, val controllerMethod: Method) {
    */
   def handle(request: WebRequest, response: WebResponse): Any = {
     
-    var throwable: Throwable = null
+    var exception: Exception = null
     
     var result: AnyRef = controller match {
       case filter: BeforeFilter => filter.before().getOrElse(null)
@@ -67,18 +67,21 @@ class Handler(val controller: Controller, val controllerMethod: Method) {
       try {
         result = controllerMethod.invoke(controller)
       } catch {
-        case e: InvocationTargetException => throwable = e.getCause
+        case e: InvocationTargetException => e.getCause match {
+          case exc: Exception => exception = exc
+          case throwable      => throw throwable
+        }
       }
     }
     
     val afterResult = controller match {
-      case filter: AfterFilter => filter.after(Option(throwable))
+      case filter: AfterFilter => filter.after(Option(exception))
       case _ => None
     }
     
     if (afterResult.isDefined) return afterResult.get
     
-    if (throwable != null) throw throwable
+    if (exception != null) throw exception
     result
   }
 

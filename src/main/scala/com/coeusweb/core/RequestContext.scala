@@ -20,7 +20,7 @@ final class RequestContext(val request: WebRequest, val response: WebResponse, v
   /**
    * The exception that occurred during the handling of the request.  
    */
-  var error: Throwable = _
+  var error: Exception = _
 
   /**
    * The result of handling the request.

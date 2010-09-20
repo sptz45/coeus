@@ -47,8 +47,8 @@ private class RequestExecutor(
       context.result = result
     
     } catch {
-      case t =>
-        context.error = t
+      case e: Exception =>
+        context.error = e
         context.result = exceptionHandler.handle(context)
     }
   }
@@ -79,8 +79,8 @@ private class RequestExecutor(
     try {
       findView().render(request, response)
     } catch {
-      case t =>
-        error = t
+      case e: Exception =>
+        error = e
         val errorView = exceptionHandler.handle(context)
         result = errorView
         if (! response.isCommited)

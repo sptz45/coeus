@@ -26,7 +26,7 @@ trait AfterFilter {
    *
    * <p>This method can be used to create controller-specific error handlers.</p>
    *
-   * @param error may contain a {@code Throwable} if an uncaught exception
+   * @param error may contain a {@code Exception} if an uncaught exception
    *        occurred during the execution of the {@code Controller}'s handler
    *        method.
    *
@@ -34,5 +34,5 @@ trait AfterFilter {
    *         the controller's handler method or {@code None} to continue with
    *         normal request processing.  
    */
-  def after(error: Option[Throwable]): Option[View]
+  def after(error: Option[Exception]): Option[View]
 }

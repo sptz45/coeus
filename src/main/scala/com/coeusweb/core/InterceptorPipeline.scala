@@ -6,7 +6,6 @@
  */
 package com.coeusweb.core
 
-import scala.util.control.ControlThrowable
 import scala.collection.mutable.ArrayBuffer
 import com.coeusweb.mvc.view.NullView
 import interception.Interceptor
@@ -36,9 +35,8 @@ private class InterceptorPipeline(
        }
          
       } catch {
-        case ce: ControlThrowable => throw ce
-        case t =>
-          context.error = t
+        case e: Exception =>
+          context.error = e
           context.result = exceptionHandler.handle(context)
           return false
       }
@@ -51,9 +49,10 @@ private class InterceptorPipeline(
       try {
         interceptor.postHandle(context)   
       } catch {
-        case t => if (! context.hasError) {
-          context.error = t
-          context.result = exceptionHandler.handle(context)
+        case e: Exception =>
+          if (! context.hasError) {
+            context.error = e
+            context.result = exceptionHandler.handle(context)
         }
       }
     }
@@ -64,7 +63,9 @@ private class InterceptorPipeline(
       try {
         interceptor.afterRender(context)
       } catch {
-        case t => if (! context.hasError) context.error = t
+        case e: Exception =>
+        if (! context.hasError)
+          context.error = e
       }
     }
   }

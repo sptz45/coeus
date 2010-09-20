@@ -66,7 +66,7 @@ object BeforeAfterFilterTest {
 
     def throwException() = throw new IllegalStateException
 
-    def after(error: Option[Throwable]): Option[View] = {
+    def after(error: Option[Exception]): Option[View] = {
       assertTrue(error.isDefined)
       assertTrue(error.get.isInstanceOf[IllegalStateException])
       throw new IllegalArgumentException 
@@ -84,7 +84,7 @@ object BeforeAfterFilterTest {
       None
     }
     
-    def after(e: Option[Throwable]): Option[View] = None
+    def after(e: Option[Exception]): Option[View] = None
   }
 
   class NoHandlerExecutionController extends InterceptedController {
@@ -93,7 +93,7 @@ object BeforeAfterFilterTest {
   }
 
   class EnsureAfterCalledController extends NoHandlerExecutionController {
-    override def after(e: Option[Throwable]): Option[View] = {
+    override def after(e: Option[Exception]): Option[View] = {
       throw new IllegalArgumentException
     }
   }
@@ -102,7 +102,7 @@ object BeforeAfterFilterTest {
 
     def raiseError() = throw new RuntimeException
 
-    def after(error: Option[Throwable]) = {
+    def after(error: Option[Exception]) = {
       assertTrue("excpected runtime exception!", error.get.isInstanceOf[RuntimeException])
       Some(NullView)
     }
