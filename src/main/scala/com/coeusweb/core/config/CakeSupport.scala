@@ -61,7 +61,7 @@ package com.coeusweb.core.config
  */
 trait CakeSupport {
 
-  this: WebModule =>
+  this: ControllerRegistry =>
 
   /**
    * The collection of cake component registries that contain the controllers
@@ -69,5 +69,5 @@ trait CakeSupport {
    */
   def components: Traversable[AnyRef]
   
-  components foreach { c => CakeRegistrar.registerControllers(this, c.getClass) }
+  components foreach { CakeRegistrar.registerControllers(this, _) }
 }

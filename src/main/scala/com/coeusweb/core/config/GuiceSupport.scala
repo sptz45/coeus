@@ -20,7 +20,7 @@ import com.google.inject.Injector
  */
 trait GuiceSupport {
 
-  this: WebModule =>
+  this: ControllerRegistry =>
 
   /** The injector to use for creating the Controllers. */
   def injector: Injector
