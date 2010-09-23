@@ -2,12 +2,10 @@
 	
 <configuration>
 
-	<!-- jmxConfigurator/ -->
-
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
-		<layout class="ch.qos.logback.classic.PatternLayout">
+		<encoder>
 			<pattern>%d %p [%c{30}] - %m%n</pattern>
-		</layout>
+		</encoder>
 	</appender>
 
 	<logger name="org.fusesource.scalate">
