@@ -51,6 +51,11 @@ class DispatcherServlet extends HttpServlet {
   override final def init(servletConfig: ServletConfig) {
     super.init(servletConfig)
     
+    // setup ApplicationScope
+    applicationScope = new ApplicationScope(servletConfig.getServletContext)
+    ApplicationScope.setupMutex(servletConfig.getServletContext)
+    
+    // load the configuration for the WebModule
     val module = WebModuleLoader.load(servletConfig)
 
     resolver           = module.requestResolver    
@@ -65,10 +70,6 @@ class DispatcherServlet extends HttpServlet {
     
     multipartParser = module.multipartParser
     multipartParser.init(servletConfig.getServletContext)
-    
-    // setup ApplicationScope
-    applicationScope = new ApplicationScope(servletConfig.getServletContext)
-    ApplicationScope.setupMutex(servletConfig.getServletContext)
 
     // register the configured controller classes
     val registrar = new ControllerRegistrar(module, applicationScope)
