@@ -8,7 +8,7 @@ package com.coeusweb.validation.bean
 
 import org.junit.Test
 import org.junit.Assert._
-import javax.validation.Validation
+import javax.validation.{ Validation => JValidation }
 import javax.validation.constraints.NotNull
 import com.coeusweb.bind.{ BindingResult, Error }
 import com.coeusweb.test.Assertions._
@@ -43,7 +43,7 @@ class BeanValidatorTest {
 
 object BeanValidatorTest {
   
-  val validator = new BeanValidator(Validation.buildDefaultValidatorFactory.getValidator)
+  val validator = new BeanValidator(JValidation.buildDefaultValidatorFactory.getValidator)
 
   class Post {
     @NotNull

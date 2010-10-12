@@ -27,15 +27,19 @@ import com.coeusweb.mvc.WebRequest
  * 
  * @see BeanValidator
  */
-class LocaleAwareInterpolator(interpolator: MessageInterpolator) extends MessageInterpolator {
+class LocaleAwareInterpolator(interpolator: MessageInterpolator, offlineLocale: Locale)
+  extends MessageInterpolator {
 
   def interpolate(messageTemplate: String, context: Context): String = {
-    val locale = WebRequest.currentRequest.locale
-    interpolator.interpolate(messageTemplate, context, locale)
+    interpolator.interpolate(messageTemplate, context, actualLocale)
   }
 
   def interpolate(messageTemplate: String, context: Context, locale: Locale): String = {
-    val locale = WebRequest.currentRequest.locale
-    interpolator.interpolate(messageTemplate, context, locale)
+    interpolator.interpolate(messageTemplate, context, actualLocale)
+  }
+  
+  private def actualLocale = {
+    val req = WebRequest.currentRequest
+    if (req eq null) offlineLocale else req.locale
   }
 }
