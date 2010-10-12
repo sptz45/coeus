@@ -6,7 +6,7 @@
  */
 package com.coeusweb.http.security
 
-import java.security.SignatureException
+import java.security.{ MessageDigest, SignatureException }
 import javax.crypto.{ Cipher, Mac }
 import javax.crypto.spec.SecretKeySpec
 import scala.compat.Platform
@@ -46,7 +46,7 @@ object DefaultCryptoProvider extends CryptoProvider {
   }
   
   def verify(signature: Array[Byte], data: Seq[String], key: Array[Byte]) = {
-    signature.sameElements(sign(data, key))
+    MessageDigest.isEqual(signature, sign(data, key))
   }
   
   /* Make sure the key has 128 bits (16 bytes) length. */
