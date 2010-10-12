@@ -13,7 +13,7 @@ class ControllerClassNameTransaltorsTest {
 
   import test.controllers._
   
-  val basePackages = List(classOf[PostController].getPackage.getName)
+  val basePackages = Seq(classOf[PostController].getPackage.getName)
   var translator: Class[_] => String = _
   
   @Test
@@ -52,7 +52,7 @@ class ControllerClassNameTransaltorsTest {
     assertEquals("basic-authentication", translate[users.auth.BasicAuthenticationController])
   }
   
-  def translate[T](implicit m: Manifest[T]) = translator(m.erasure)
+  private def translate[T](implicit m: Manifest[T]) = translator(m.erasure)
 }
 
 package test.controllers {

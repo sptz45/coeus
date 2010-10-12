@@ -53,8 +53,8 @@ object ControllerConventions {
    * <p>For example a controller class with the name <code>UserRegistrationController</code>
    * if there is no root package specified gets translated to "/userRegistration".</p>
    */
-  def useClassName(rootPackages: Traversable[String] = Nil) = { c: Class[_] =>
-    translatePackage(rootPackages, c.getPackage.getName) +
+  def useClassName(packages: Traversable[String] = Nil) = { c: Class[_] =>
+    translatePackage(packages, c.getPackage.getName) +
     Strings.firstCharToLower(Strings.removeSuffix(c.getSimpleName, "Controller"))
   }
   
@@ -76,8 +76,8 @@ object ControllerConventions {
    * <p>For example a controller class with the name <code>UserRegistrationController</code>
    * if there is no root package specified gets translated to "/user-registration".</p>
    */
-  def useClassNameWithDashes(rootPackages: Traversable[String] = Nil) = { c: Class[_] =>
-    translatePackage(rootPackages, c.getPackage.getName) +
+  def useClassNameWithDashes(packages: Traversable[String] = Nil) = { c: Class[_] =>
+    translatePackage(packages, c.getPackage.getName) +
     Strings.camelCaseToDashed(Strings.removeSuffix(c.getSimpleName, "Controller"))
   }
   

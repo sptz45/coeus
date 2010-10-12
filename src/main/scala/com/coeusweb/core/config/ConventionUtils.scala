@@ -16,7 +16,7 @@ private object ConventionUtils {
   def packageNameToPath(roots: Traversable[String], pkg: String): String = {
     for (root <- roots if pkg.startsWith(root)) {
       if (pkg.length == root.length) return ""
-      else  return packageNameToPath(pkg.substring(root.length + 1))
+      else return packageNameToPath(pkg.substring(root.length + 1))
     }
     return packageNameToPath(pkg)
   }
@@ -25,5 +25,5 @@ private object ConventionUtils {
    * Translate the package name into a path name by replacing the dots (".")
    * with slashes ("/").
    */
-  def packageNameToPath(pkg: String): String = pkg.replace(".", "/") + "/"
+  def packageNameToPath(pkg: String) = pkg.replace(".", "/") + "/"
 }
