@@ -61,16 +61,14 @@ class SecureCookies(secretKey: String, crypto: CryptoProvider) {
     }
     
     val key = generateKey(data)
-    
-    data += cookie.getValue
-    
-    val signature = crypto.sign(data, key)
-    
+
     if (encrypt) {
-      data.remove(data.length - 1)
       data += Base64.encode(crypto.encrypt(cookie.getValue, key))
+    } else {
+      data += cookie.getValue
     }
     
+    val signature = crypto.sign(data, key)
     data += Base64.encode(signature)
     
     cookie.setValue(data.mkString("|"))
@@ -91,7 +89,7 @@ class SecureCookies(secretKey: String, crypto: CryptoProvider) {
     
     val input = cookie.getValue.split("\\|")
     var index = 0 
-    val data = new ArrayBuffer[String](4)
+    val data = new ArrayBuffer[String](3)
     
     try {
       if (userId ne null) {
@@ -112,21 +110,21 @@ class SecureCookies(secretKey: String, crypto: CryptoProvider) {
 
       val key = generateKey(data)
 
+      data += input(index)
+      index += 1
+
+      if (!crypto.verify(Base64.decode(input(index)), data, key))
+        throw new MaliciousRequestException("Signature verification failed on cookie")
+
       val value =
-        if (isEncrypted) crypto.decrypt(Base64.decode(input(index)), key)
-        else input(index)
-        index += 1
-
-        data += value
-
-        if (!crypto.verify(Base64.decode(input(index)), data, key))
-          throw new MaliciousRequestException("Signature verification failed on cookie")
+        if (isEncrypted) crypto.decrypt(Base64.decode(data.last), key)
+        else data.last
 
       Some(value)
       
     } catch {
-      case e: NumberFormatException => throw new MaliciousRequestException("Expected timeout value")
-      case e: ArrayIndexOutOfBoundsException => throw new MaliciousRequestException("Malformed cookie")
+      case e: MaliciousRequestException => throw e
+      case e: Exception => throw new MaliciousRequestException("Malformed cookie")
     }
   }
 
