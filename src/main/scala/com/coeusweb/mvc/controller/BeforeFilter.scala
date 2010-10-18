@@ -7,6 +7,7 @@
 package com.coeusweb.mvc
 package controller
 
+import scala.util.control.NoStackTrace
 import view.View
 
 /**
@@ -20,8 +21,8 @@ import view.View
  * class ArticleEditorController extends Controller with BeforeFilter {
  * 
  *   def before() =
- *     if (AuthManager.isUserLoggedIn(request)) None
- *     else redirect("/login")
+ *     if (!AuthManager.isUserLoggedIn(request))
+ *       stopAndRender(redirect("/login"))
  *   
  *  {@literal @Get}
  *   def show() = "editor"
@@ -34,8 +35,8 @@ import view.View
  * <pre>
  * trait Secured extends BeforeFilter {
  *   def before() =
- *     if (AuthManager.isUserLoggedIn(request)) None
- *     else render("/login")
+ *     if (!AuthManager.isUserLoggedIn(request))
+ *       stopAndRender(redirect("/login"))
  * }
  * 
  * class ArticleEditorController extends Controller with Secured {
@@ -55,15 +56,34 @@ trait BeforeFilter {
    * Gets executed <em>before</em> the {@code Controller}'s handler method that
    * corresponds to the current request.
    * 
-   * <p>If this method returns some {@code View} then the handler method
-   * of the {@code Controller} does not get executed and the returned {@code View}
-   * gets rendered in the response. This can be used to implement security checks or
-   * caching where we may not want the handler method to execute for a particular
-   * request.</p> 
+   * <p>If this method throws {@code BeforeFilter.RequestInterruption} then the
+   * handler method of the {@code Controller} does not get executed and the
+   * view of the request interruption gets rendered in the response. This can
+   * be used to implement security checks or caching where we may not want the
+   * handler method to execute for a particular request.</p> 
    * 
-   * @return may return some {@code View} to prevent the controller's handler
-   *         method from executing or {@code None} to continue with normal request
-   *         execution. 
+   * @throws BeforeFilter.RequestInterruption
    */
-  def before(): Option[View]
+  def before()
+  
+  /**
+   * Throws a {@code RequestInterruption} to prevent the controller's handler
+   * method from executing.
+   * 
+   * @param view the {@code View} to render.
+   */
+  protected def stopAndRender(view: View) {
+    throw new BeforeFilter.RequestInterruption(view)
+  }
+}
+
+object BeforeFilter {
+  
+  /**
+   * When thrown from a {@code BeforeFilter} the controller's hander method
+   * does not get executed and the specified view is rendered instead.
+   * 
+   * @param view the {@code View} to render.
+   */
+  class RequestInterruption(val view: View) extends Throwable with NoStackTrace
 }

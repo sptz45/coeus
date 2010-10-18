@@ -72,7 +72,7 @@ private class RequestExecutor(
       case unit: Unit     => findByName(viewNameForRequest(request))
       case _              =>
         throw new InvalidControllerClassException(
-          "Controller method ["+handler.controllerMethod+"] does not have a valid return type. " +
+          "Controller method ["+handler.method+"] does not have a valid return type. " +
           "Valid return types are: String, NodeSeq, View and Unit.")
     }
     

@@ -13,15 +13,15 @@ import com.coeusweb.mvc.controller.{ BeforeFilter, AfterFilter, Controller }
 /**
  * Handles web requests.
  * 
- * @param controller       the Controller instance that will handle the request.
- * @param controllerMethod the Controller's method that will get invoked for
- *                         handling the request.
+ * @param controller the Controller instance that will handle the request.
+ * @param method     the Controller's method that will get invoked for
+ *                   handling the request.
  * 
  * @see Controller
  * @see BeforeFilter
  * @see AfterFilter
  */
-class Handler(val controller: Controller, val controllerMethod: Method) {
+class Handler(val controller: Controller, val method: Method) {
   
   /**
    * Handle the given web request.
@@ -30,8 +30,8 @@ class Handler(val controller: Controller, val controllerMethod: Method) {
    * <ol>
    * <li>If the {@code Controller} implements the {@code BeforeFilter} trait
    *     then call the {@code before()} method.</li>
-   * <li>If the above method call returns {@code None} then invoke the
-   *     {@code Controller}'s handler method ({@code controllerMethod}).</li>
+   * <li>If the above method call does not throw a request interruption then
+   *     invoke the {@code Controller}'s handler method.</li>
    * <li>If the {@code Controller} implements the {@code AfterFilter} trait
    *     then call the {@code after()} method.</li>
    * </ol>
@@ -47,43 +47,50 @@ class Handler(val controller: Controller, val controllerMethod: Method) {
    * @param response the current response
    *
    * @return if the {@code Controller} implements the {@code BeforeFilter}
-   *         trait and the method {@link BeforeFilter#before()} returns a
-   *         {@code View} then that view gets returned, else if the
-   *         {@code Controller} implements the {@code AfterFilter} trait and
-   *         the method {@link AfterFilter#after()} returns a {@code View} then
-   *         that view gets returned, else returns the result of invoking the
+   *         trait and the method {@link BeforeFilter#before()} throws a
+   *         request interruption then the view of the interruption gets
+   *         returned, else if the {@code Controller} implements the
+   *         {@code AfterFilter} trait and the method
+   *         {@link AfterFilter#after()} returns a {@code View} then that view
+   *         gets returned, else returns the result of invoking the
    *         {@code Controller}'s handler method.
    */
   def handle(request: WebRequest, response: WebResponse): Any = {
     
+    var result: Any = null
     var exception: Exception = null
     
-    var result: AnyRef = controller match {
-      case filter: BeforeFilter => filter.before().getOrElse(null)
-      case _ => null
-    }
-    
-    if (result eq null) {
+    try {
+
+      controller match {
+        case filter: BeforeFilter => filter.before()
+        case _                    => ()
+      }
+
       try {
-        result = controllerMethod.invoke(controller)
+        result = method.invoke(controller)
       } catch {
         case e: InvocationTargetException => e.getCause match {
           case exc: Exception => exception = exc
           case throwable      => throw throwable
         }
       }
+      
+    } catch {
+      case interrupt: BeforeFilter.RequestInterruption =>
+        result = interrupt.view
     }
     
     val afterResult = controller match {
       case filter: AfterFilter => filter.after(Option(exception))
-      case _ => None
+      case _                   => None
     }
-    
+
     if (afterResult.isDefined) return afterResult.get
-    
+
     if (exception != null) throw exception
     result
   }
 
-  //override def toString = controller.getClass.getName+"#"+controllerMethod.getName
+  //override def toString = controller.getClass.getName+"#"+method.getName
 }

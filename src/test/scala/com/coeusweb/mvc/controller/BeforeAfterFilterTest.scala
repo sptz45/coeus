@@ -79,16 +79,15 @@ object BeforeAfterFilterTest {
 
     def index(): View = result
 
-    def before(): Option[View] = {
+    def before() {
       result = ViewName("set-from-interceptor")
-      None
     }
     
     def after(e: Option[Exception]): Option[View] = None
   }
 
   class NoHandlerExecutionController extends InterceptedController {
-    override def before() = Some(ViewName("intercepted"))
+    override def before() { stopAndRender(ViewName("intercepted")) }
     override def index(): View = throw new AssertionError("interceptor should have prevented the execution of this method")
   }
 
