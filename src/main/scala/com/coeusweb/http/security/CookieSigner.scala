@@ -127,7 +127,7 @@ class CookieSigner(secretKey: String, crypto: CryptoProvider) {
       
     } catch {
       case e: MaliciousRequestException => throw e
-      case e: Exception => throw new MaliciousRequestException("Malformed cookie" + e)
+      case e: Exception => throw new MaliciousRequestException("Malformed cookie")
     }
   }
 

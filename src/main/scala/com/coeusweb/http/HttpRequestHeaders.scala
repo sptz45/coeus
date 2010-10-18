@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest
 import scala.collection.JavaConversions.asIterator
 
 /**
- * Methods to access HTTP headers from a WebRequest. 
+ * Methods to access HTTP headers from a WebRequest.  
  */
 trait HttpRequestHeaders {
 
