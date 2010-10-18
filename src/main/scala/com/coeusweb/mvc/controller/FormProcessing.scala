@@ -54,7 +54,7 @@ trait FormProcessing {
    * 
    * @see BindingResult
    */
-  def validate[T <: AnyRef](modelName: String, target: T)(implicit validator: Validator[T]): BindingResult[T] = {
+  def bindAndValidate[T <: AnyRef](modelName: String, target: T)(implicit validator: Validator[T]): BindingResult[T] = {
     val result = binder.bind(request.params, target, request.locale)
     validator.validate(result)
     model.addBindingResult(modelName, result)
@@ -72,8 +72,8 @@ trait FormProcessing {
    * 
    * @return the result of the validation
    */
-  def validate[T <: AnyRef](target: T)(implicit validator: Validator[T]): BindingResult[T] = {
-    validate(null, target)(validator)
+  def bindAndValidate[T <: AnyRef](target: T)(implicit validator: Validator[T]): BindingResult[T] = {
+    bindAndValidate(null, target)(validator)
   }
   
   /**
@@ -90,7 +90,7 @@ trait FormProcessing {
    * @return the <code>View</code> object to use for rendering the response
    */
   def ifValid[T <: AnyRef](target: T, modelName: String = null)(onSuccess: T => View)(implicit validator: Validator[T]): View = {
-    val result = validate(modelName, target)(validator)
+    val result = bindAndValidate(modelName, target)(validator)
     if (result.hasErrors) formView else onSuccess(target)
   }
  
@@ -110,7 +110,7 @@ trait FormProcessing {
   def ifValid[T <: AnyRef](modelName: String)(onSuccess: T => View)(implicit validator: Validator[T]): View = {
     try {
       val target: T = session[T](modelName)
-      val result = validate(modelName, target)(validator)
+      val result = bindAndValidate(modelName, target)(validator)
       if (result.hasErrors) formView else { session -= modelName; onSuccess(target) }
     } catch {
       case e: RequiredAttributeException if !storeModelInSession =>

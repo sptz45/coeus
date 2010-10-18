@@ -140,7 +140,7 @@ object AbstractControllerTest {
     }
     
     def handleUsingValidate() = {
-      val result = validate(new Post)
+      val result = bindAndValidate(new Post)
       if (result.hasErrors) formView else render(SUCCESS_VIEW)
     }
     
