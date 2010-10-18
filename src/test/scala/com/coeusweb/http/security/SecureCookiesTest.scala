@@ -12,7 +12,7 @@ import org.junit.Assert._
 
 class SecureCookiesTest {
 
-  val security = new SecureCookies("the secret", DefaultCryptoProvider)
+  val security = new SecureCookies("the secret", new DefaultCryptoProvider)
   val cookie = new Cookie("price", "100")
   cookie.setMaxAge(1000)
   

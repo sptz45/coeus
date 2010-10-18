@@ -11,7 +11,7 @@ import org.junit.Assert._
 
 class DefaultCryptoProviderTest {
   
-  def crypto = DefaultCryptoProvider
+  def crypto = new DefaultCryptoProvider
   
   @Test
   def generate_a_signature_and_verify_it() {
