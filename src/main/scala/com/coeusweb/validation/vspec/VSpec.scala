@@ -142,9 +142,11 @@ class VSpec[-T <: AnyRef](implicit m: Manifest[T]) extends Validator[T] {
     extraValidation(result)
   }
   
-  def validateField[S](field: String, value: Any)(implicit m: Manifest[S]) = constraintsMap.get(field) match {
-    case None => None
-    case Some(constraints) => doValidateField(null, field, value, constraints)
+  def validateField[F](field: String, value: Any)(implicit m: Manifest[F]) = {
+    constraintsMap.get(field) match {
+      case None => None
+      case Some(constraints) => doValidateField(null, field, value, constraints)
+    }
   }
   
   /**

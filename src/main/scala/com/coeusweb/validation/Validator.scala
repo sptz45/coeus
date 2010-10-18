@@ -45,7 +45,7 @@ trait Validator[-T <: AnyRef] {
    * @return an <code>Option</code> containing an error if the value is invalid,
    *        else <code>None</code>.
    */
-  def validateField[S](field: String, value: Any)(implicit m: Manifest[S]): Option[Error]
+  def validateField[F](field: String, value: Any)(implicit m: Manifest[F]): Option[Error]
   
   val errorFormatter: ErrorFormatter
 }
