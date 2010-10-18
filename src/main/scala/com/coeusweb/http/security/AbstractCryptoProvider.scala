@@ -52,7 +52,6 @@ abstract class AbstractCryptoProvider extends CryptoProvider {
     MessageDigest.isEqual(signature, sign(data, key))
   }
   
-  /* Make sure the key has 128 bits (16 bytes) length. */
   private def processKey(key: Array[Byte]) = {
     
     val KeyLength = encryptionKeyLength / 8 
