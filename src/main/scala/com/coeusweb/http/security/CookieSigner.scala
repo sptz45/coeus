@@ -25,7 +25,7 @@ import com.coeusweb.util.internal.Base64
  * @param crypto the framework's configured strategy for encrypting and signing
  *        data.
  */
-class SecureCookies(secretKey: String, crypto: CryptoProvider) {
+class CookieSigner(secretKey: String, crypto: CryptoProvider) {
   
   private[this] val secret = secretKey.getBytes
   
@@ -48,7 +48,7 @@ class SecureCookies(secretKey: String, crypto: CryptoProvider) {
    * @param userId an identification of the user the specified cookie belongs to. It can be
    *        used in the generated signing key to enhance the security of the protocol.
    */
-  def makeSecure(cookie: Cookie, encrypt: Boolean = false, userId: String = null) {
+  def signCookie(cookie: Cookie, encrypt: Boolean = false, userId: String = null) {
     
     val data = new ArrayBuffer[String](4)
     
@@ -78,25 +78,28 @@ class SecureCookies(secretKey: String, crypto: CryptoProvider) {
    * Read a singed value from the specified cookie.
    * 
    * @param cookie the cookie to read the value from
-   * @param isEncrypted whether to decrypt the value of the cookie before returning it
-   * @param userId an identification of the user the given cookie belongs to (optional).  
+   * @param isEncrypted whether to decrypt the value of the cookie before returning it  
    * 
-   * @return the value of the cookie of None if the cookie has expired.
+   * @return the value of the cookie or None if the cookie has expired.
    * @throws MaliciousRequestException if the cookie does not have the expected format or the
    *         signature of the cookie is invalid.  
    */
-  def getSecuredValue(cookie: Cookie, isEncrypted: Boolean = false, userId: String = null): Option[String] = {
+  def getSignedValue(cookie: Cookie, isEncrypted: Boolean = false): Option[String] = {
     
     val input = cookie.getValue.split("\\|")
     var index = 0 
     val data = new ArrayBuffer[String](3)
     
     try {
-      if (userId ne null) {
-        if (userId != input(index))
-          throw new MaliciousRequestException("Cookie contains unexpected user: " + input(index))
-        data += userId
-        index += 1
+      input.length match {
+        case 2 => ()
+        case 3 if cookie.getMaxAge < 0 =>
+          data += input(index)
+          index += 1
+        case 3 => ()
+        case 4 =>
+          data += input(index)
+          index += 1
       }
 
       if (cookie.getMaxAge >= 0) {
@@ -124,7 +127,7 @@ class SecureCookies(secretKey: String, crypto: CryptoProvider) {
       
     } catch {
       case e: MaliciousRequestException => throw e
-      case e: Exception => throw new MaliciousRequestException("Malformed cookie")
+      case e: Exception => throw new MaliciousRequestException("Malformed cookie" + e)
     }
   }
 
