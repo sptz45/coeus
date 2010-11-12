@@ -8,7 +8,7 @@ package com.coeusweb.http
 
 import java.util.{ Enumeration, Date }
 import javax.servlet.http.HttpServletRequest
-import scala.collection.JavaConversions.asIterator
+import scala.collection.JavaConversions._
 
 /**
  * Methods to access HTTP headers from a WebRequest.  
@@ -32,13 +32,13 @@ trait HttpRequestHeaders {
   def headerValues(name: String): Iterator[String] = {
     val headers = servletRequest.getHeaders(name)
     assertWasAllowed(headers)
-    asIterator(headers.asInstanceOf[Enumeration[String]])
+    headers.asInstanceOf[Enumeration[String]]
   }
   
   def headerNames: Iterator[String] = {
     val names = servletRequest.getHeaderNames
     assertWasAllowed(names)
-    asIterator(names.asInstanceOf[Enumeration[String]])
+    names.asInstanceOf[Enumeration[String]]
   }
   
   private def assertWasAllowed(ref: AnyRef) {

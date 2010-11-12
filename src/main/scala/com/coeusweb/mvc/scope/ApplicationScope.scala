@@ -8,7 +8,7 @@ package com.coeusweb.mvc.scope
 
 import java.util.Enumeration
 import javax.servlet.ServletContext
-import scala.collection.JavaConversions.asIterator
+import scala.collection.JavaConversions._
 
 /**
  * A <code>ScopedContainer</code> implementation for <code>ServletContext</code>.
@@ -35,7 +35,7 @@ class ApplicationScope(val servletContext: ServletContext) extends ScopedContain
   }
   
   def attributeNames =
-    asIterator(servletContext.getAttributeNames.asInstanceOf[Enumeration[String]])
+    servletContext.getAttributeNames.asInstanceOf[Enumeration[String]]
 }
 
 /**

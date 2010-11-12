@@ -11,7 +11,7 @@ import java.util.{ Date, Enumeration, Locale }
 import javax.servlet.ServletContext
 import javax.servlet.http.{ HttpServletRequest, Cookie }
 import scala.collection.Map
-import scala.collection.JavaConversions.asIterator
+import scala.collection.JavaConversions._
 import bind.ConverterRegistry
 import i18n.locale.LocaleResolver
 import i18n.msg.MessageBundle
@@ -56,7 +56,7 @@ class WebRequest(
     servletRequest.getAttribute(attribute).asInstanceOf[T]
   
   def attributeNames =
-    asIterator(servletRequest.getAttributeNames.asInstanceOf[Enumeration[String]])
+    servletRequest.getAttributeNames.asInstanceOf[Enumeration[String]]
   
   def update(attribute: String, value: Any) {
     servletRequest.setAttribute(attribute, value)

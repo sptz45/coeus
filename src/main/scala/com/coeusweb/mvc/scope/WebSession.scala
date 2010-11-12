@@ -8,7 +8,7 @@ package com.coeusweb.mvc.scope
 
 import java.util.Enumeration
 import javax.servlet.http.HttpSession
-import scala.collection.JavaConversions.asIterator
+import scala.collection.JavaConversions._
 
 /**
  * A wrapper for <code>HttpSession</code> that provides convenient methods
@@ -33,7 +33,7 @@ class WebSession(val servletSession: HttpSession) extends ScopedContainer with C
     servletSession.getAttribute(attribute).asInstanceOf[T]
   
   def attributeNames =
-    asIterator(servletSession.getAttributeNames.asInstanceOf[Enumeration[String]])
+    servletSession.getAttributeNames.asInstanceOf[Enumeration[String]]
   
   def update(attribute: String, value: Any) {
     servletSession.setAttribute(attribute, value)

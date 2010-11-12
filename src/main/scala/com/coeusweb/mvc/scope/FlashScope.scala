@@ -8,8 +8,7 @@ package com.coeusweb.mvc.scope
 
 import java.util.concurrent.ConcurrentHashMap
 import scala.collection.mutable.HashSet
-import scala.collection.JavaConversions.asIterator
-import scala.collection.JavaConversions.{ JConcurrentMapWrapper => MapWrapper }
+import scala.collection.JavaConversions.{ JConcurrentMapWrapper => MapWrapper, _ }
 import com.coeusweb.mvc.WebRequest
 
 /**
@@ -42,7 +41,7 @@ class FlashScope(val session: WebSession) extends ScopedContainer {
     getFlashMap.remove(attribute)
   }
   
-  def attributeNames = asIterator(getFlashMap.keys)
+  def attributeNames = getFlashMap.keys
   
   def notice = apply("flash-notice")
   def notice_=(message: String) = update("flash-notice", message)
