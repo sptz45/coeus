@@ -20,7 +20,7 @@ object BeanErrorFormatter extends ErrorFormatter {
    * 
    * <p>Binding error messages are loaded from the given {@code MessageBundle}.
    * Validation error messages are pre-loaded by the {BeanValidator} from the
-   * JSR-303 validation provider specific files.
+   * JSR-303 validation provider specific files.</p>
    */
   def format(error: Error, locale: Locale, messages: MessageBundle, formatters: ConverterRegistry) = {
     if (Error.isTypeMismatch(error)) {

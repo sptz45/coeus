@@ -65,12 +65,28 @@ class BeanValidator[-T <: AnyRef](val validator: JValidator) extends Validator[T
 }
 
 
-private object BeanValidator {
+object BeanValidator {
+  
+  import java.util.Locale
+  
+  /**
+   * Create a validator using the default JSR-303 provider with the default
+   * configuration and {@code LocaleAwareInterpolator}. 
+   * 
+   * @param offlineLocale the offline locale of {@code LocaleAwareInterpolator}.
+   * 
+   * @return a {@code BeanValidator} with the default configuration.
+   */
+  def defaultValidator(offlineLocale: Locale): Validator[AnyRef] = {
+    new BeanValidator(Validation.defaultConfig(offlineLocale)
+                                .buildValidatorFactory()
+                                .getValidator())
+  }
   
   import java.util.{ Iterator => JIterator }
   import javax.validation.ConstraintViolation
   
-  class ErrorIterator[T](violations: JIterator[ConstraintViolation[T]])
+  private class ErrorIterator[T](violations: JIterator[ConstraintViolation[T]])
     extends Iterator[Error] {
     
     def hasNext = violations.hasNext
