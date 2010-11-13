@@ -40,13 +40,8 @@ class WebResponseTest {
   
   @Test
   def error_accepts_only_error_codes() {
-    assertThrows[IllegalArgumentException] { response.sendError(HttpStatus.OK) }
     assertThrows[IllegalArgumentException] { response.sendError(HttpStatus.OK, "message") }
-    
-    assertThrows[IllegalArgumentException] { response.sendError(HttpStatus.CONTINUE) }
     assertThrows[IllegalArgumentException] { response.sendError(HttpStatus.CONTINUE, "message") }
-    
-    assertThrows[IllegalArgumentException] { response.sendError(HttpStatus.SEE_OTHER) }
     assertThrows[IllegalArgumentException] { response.sendError(HttpStatus.SEE_OTHER, "message") }
   }
   

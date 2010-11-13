@@ -62,24 +62,14 @@ class WebResponse(val servletResponse: HttpServletResponse) extends HttpResponse
   
   /**
    * Set the status code of this response.
-   * 
-   * @see {@link HttpServletResponse#setStatus}
    */
   def status_=(status: Int) {
     _status = status
-    servletResponse.setStatus(status)
-  }
-  
-  /**
-   * Sends an error response back to the client with the specified status.
-   * 
-   * @throws IllegalStateException if the response has been committed before this method call
-   * @see {@link HttpServletResponse#sendError(Int)}
-   */
-  def sendError(status: Int) {
-    require(HttpStatus.isError(status))
-    _status = status
-    servletResponse.sendError(status)
+    if (HttpStatus.isError(status)) {
+      servletResponse.sendError(status)
+    } else {
+      servletResponse.setStatus(status)
+    }
   }
   
   /**
