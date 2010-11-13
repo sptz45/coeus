@@ -94,7 +94,7 @@ class BinderTest {
   
   @Test
   def construct_using_deny_vars() {
-    val binder = new Binder(ConverterRegistry.defaultConverters , denyVars="id")
+    val binder = new Binder(ConverterRegistry.defaultConverters , denyVars=Seq("id"))
     val user = new User
     val idBeforeBinding = user.id
     val result = binder.bind(Map("id" -> "42", "name" -> "spiros"), user, locale)

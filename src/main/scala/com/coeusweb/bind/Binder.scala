@@ -12,7 +12,7 @@ class Binder(
   converters: ConverterRegistry,
   restriction: Binder.Restriction = Binder.allowAll) {
   
-  def this(converters: ConverterRegistry, denyVars: String*) =
+  def this(converters: ConverterRegistry, denyVars: Seq[String]) =
     this(converters, Binder.denyVars(denyVars:_*))
   
   def bind[T <: AnyRef](parameters: Iterable[(String, String)], target: T, locale: Locale): BindingResult[T] = {
