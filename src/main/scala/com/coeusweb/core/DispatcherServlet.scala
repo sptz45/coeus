@@ -82,7 +82,9 @@ class DispatcherServlet extends HttpServlet {
   }
   
   override final def destroy() {
-    multipartParser.destroy(getServletContext)
+    if (multipartParser ne null) {
+      multipartParser.destroy(getServletContext)
+    }
   }
   
   /*
