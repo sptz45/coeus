@@ -21,7 +21,7 @@ import com.coeusweb.bind.Parser
  * @see RequestParameters
  * @see PathParameters
  */
-trait Parameters extends Iterable[(String, String)] {
+trait Parameters extends Iterable[(String, String)] with PartialFunction[String, String] {
   
   /**
    * The converters to use when converting the parameter values from 
@@ -56,6 +56,14 @@ trait Parameters extends Iterable[(String, String)] {
    * @return {@code true} if the parameter with the specified name exists, else {@code false}
    */
   def contains(name: String) = getParameter(name) ne null
+  
+  /**
+   * Test whether the parameter with the specified name exists.
+   * 
+   * @param name the name or the parameter.
+   * @return {@code true} if the parameter with the specified name exists, else {@code false}
+   */
+  def isDefinedAt(name: String) = contains(name)
   
   /**
    * Retrieve the parameter with the specified name.
