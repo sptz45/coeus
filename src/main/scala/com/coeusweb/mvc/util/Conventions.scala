@@ -47,7 +47,7 @@ object Conventions {
       else s
     }
     
-    val uri = request.requestUri
+    val uri = request.uri
     if (uri == "/") return "index"
     dropSlashes(dropFileExtension(uri))
   }

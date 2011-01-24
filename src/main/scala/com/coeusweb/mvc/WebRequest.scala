@@ -116,7 +116,7 @@ class WebRequest(
    * 
    * @see HttpServletRequest#getRequestURI
    */
-  def requestUri = servletRequest.getRequestURI
+  def uri = servletRequest.getRequestURI
   
   /**
    * The context path of the web application.

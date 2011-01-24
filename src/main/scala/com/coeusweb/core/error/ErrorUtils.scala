@@ -22,7 +22,7 @@ object ErrorUtils {
     request("javax.servlet.error.exception") = error
     request("javax.servlet.error.exception_type") = error.getClass
     request("javax.servlet.error.message") = error.getMessage
-    request("javax.servlet.error.request_uri") =  request.requestUri
+    request("javax.servlet.error.request_uri") =  request.uri
     request("javax.servlet.error.servlet_name") = servletName
     
     request("javax.servlet.error.status_code") = error match {

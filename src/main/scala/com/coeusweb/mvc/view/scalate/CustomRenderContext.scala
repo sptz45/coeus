@@ -15,7 +15,7 @@ class CustomRenderContext(
   engine: TemplateEngine,
   request: WebRequest,
   writer: PrintWriter)
-    extends DefaultRenderContext(engine, writer) {
+    extends DefaultRenderContext(request.uri, engine, writer) {
   
   viewPrefixes = List("WEB-INF/views")
   
