@@ -38,8 +38,8 @@ trait FormHelper {
   
   private def labelMessage(field: String, code: String, request: WebRequest) = {
     val msgCode = if (code ne null) code else field
-    if (ModelAttributes.containsModelAttribute(request)) {
-      val modelName= ModelAttributes.getModelAttributeName(request)
+    if (ModelAttributes.containsBindingResult(request)) {
+      val modelName= ModelAttributes.getCurrentModelName(request)
       request.messages(request.locale, modelName + "." + msgCode)
     } else {
       request.messages(request.locale, msgCode)
@@ -94,7 +94,7 @@ trait FormHelper {
    * <p>This method is useful in pages that have more than one form.</p>
    */
   def change_model_name_to(newName: String)(implicit scopes: ScopeAccessor) {
-    ModelAttributes.setModelAttributeName(newName, scopes.request)
+    ModelAttributes.setCurrentModelName(newName, scopes.request)
   }
   
   def checkbox(field: String, value: Any, checkedValue: String = "true", uncheckedValue: String = "false") = {

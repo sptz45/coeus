@@ -31,7 +31,7 @@ class ModelAttributesTest {
     model("model") = spiros
     assertEquals(spiros, model("model"))
     assertEquals(spiros, request("model"))
-    assertEquals("model", ModelAttributes.getModelAttributeName(request))
+    assertEquals("model", ModelAttributes.getCurrentModelName(request))
     assertEquals(spiros, ModelAttributes.getBindingResult(request).target)
   }
 
@@ -40,7 +40,7 @@ class ModelAttributesTest {
     model += spiros
     assertEquals(spiros, model("user"))
     assertEquals(spiros, request("user"))
-    assertEquals("user", ModelAttributes.getModelAttributeName(request))
+    assertEquals("user", ModelAttributes.getCurrentModelName(request))
     assertEquals(spiros, ModelAttributes.getBindingResult(request).target)
   }
   
@@ -50,7 +50,7 @@ class ModelAttributesTest {
     assertEquals(spiros, model("user"))
     assertEquals(spiros, request("user"))
     assertEquals(spiros, request.session("user"))
-    assertEquals("user", ModelAttributes.getModelAttributeName(request))
+    assertEquals("user", ModelAttributes.getCurrentModelName(request))
     assertEquals(spiros, ModelAttributes.getBindingResult(request).target)
   }
   
@@ -76,6 +76,27 @@ class ModelAttributesTest {
   	val notInSession = new ModelAttributes(new Binder(null), storeInSession=false)
   	notInSession += spiros
   	assertThrows[RequiredAttributeException] { request.session[User]("user") }
+  }
+  
+  @Test
+  def current_binding_result() {
+    assertEquals(None, model.currentBindingResult)
+    model += spiros
+    val result = model.currentBindingResult[User].get
+    assertSame(spiros, result.target)
+  }
+  
+  @Test
+  def no_errors_if_binding_result_not_present() {
+    assertFalse(model.hasErrors)
+  }
+  
+  @Test
+  def the_model_has_errors_when_the_binding_result_has() {
+    model += spiros
+    assertFalse(model.hasErrors)
+    model.currentBindingResult.get.addError("name", "name.error")
+    assertTrue(model.hasErrors)
   }
 
   

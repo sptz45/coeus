@@ -107,10 +107,20 @@ class ModelAttributes(binder: Binder, storeInSession: Boolean) {
     val name = if (modelName != null) modelName else getModelNameFromTarget(result.target) 
     request(name) = result.target
     request(getResultName(name)) = result
-    setModelAttributeName(name, request)
+    setCurrentModelName(name, request)
     if (storeInSession) {
     	request.session(name) = result.target
     }
+  }
+  
+  def currentBindingResult[T <: AnyRef]: Option[BindingResult[T]] = {
+    if (containsBindingResult(request)) Some(getBindingResult(request).asInstanceOf[BindingResult[T]])
+    else None
+  }
+  
+  def hasErrors = {
+    if (containsBindingResult(request)) getBindingResult(request).hasErrors
+    else false
   }
   
   private def request = WebRequest.currentRequest
@@ -120,16 +130,16 @@ object ModelAttributes {
   
   private val MODEL_ATTRIBUTE_NAME = "modelAttribute" 
   
-  def setModelAttributeName(name: String, request: WebRequest) {
+  def setCurrentModelName(name: String, request: WebRequest) {
     request(MODEL_ATTRIBUTE_NAME) = name
   }
   
-  def containsModelAttribute(request: WebRequest) = request.contains(MODEL_ATTRIBUTE_NAME)
+  def getCurrentModelName(request: WebRequest) = request[String](MODEL_ATTRIBUTE_NAME)
   
-  def getModelAttributeName(request: WebRequest): String = request[String](MODEL_ATTRIBUTE_NAME)
+  def containsBindingResult(request: WebRequest) = request.contains(MODEL_ATTRIBUTE_NAME)
   
   def getBindingResult(request: WebRequest): BindingResult[AnyRef] = {
-    request[BindingResult[AnyRef]](getResultName(getModelAttributeName(request)))
+    request(getResultName(getCurrentModelName(request)))
   }
   
   private def getResultName(targetName: String) = targetName + "BindingResult" 
