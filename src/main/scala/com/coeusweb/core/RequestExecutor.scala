@@ -40,12 +40,8 @@ private class RequestExecutor(
   
   
   private def executeHandler(context: RequestContext) {
-    import context._
-    
     try {
-      val result = handler.handle(request, response)
-      context.result = result
-    
+      context.result = context.handler.handle()
     } catch {
       case e: Exception =>
         context.error = e

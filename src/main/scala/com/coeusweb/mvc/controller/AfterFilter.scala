@@ -26,7 +26,7 @@ trait AfterFilter {
    *
    * <p>This method can be used to create controller-specific error handlers.</p>
    *
-   * @param error may contain a {@code Exception} if an uncaught exception
+   * @param error may contain an {@code Exception} if an uncaught exception
    *        occurred during the execution of the {@code Controller}'s handler
    *        method.
    *

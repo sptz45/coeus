@@ -7,7 +7,7 @@
 package com.coeusweb.mvc
 package controller
 
-import scala.util.control.NoStackTrace
+import scala.util.control.ControlThrowable
 import view.View
 
 /**
@@ -20,9 +20,10 @@ import view.View
  * <pre>
  * class ArticleEditorController extends Controller with BeforeFilter {
  * 
- *   def before() =
+ *   def before() {
  *     if (!AuthManager.isUserLoggedIn(request))
  *       stopAndRender(redirect("/login"))
+ *   }
  *   
  *  {@literal @Get}
  *   def show() = "editor"
@@ -34,9 +35,10 @@ import view.View
  * 
  * <pre>
  * trait Secured extends BeforeFilter {
- *   def before() =
+ *   def before() {
  *     if (!AuthManager.isUserLoggedIn(request))
  *       stopAndRender(redirect("/login"))
+ *   }
  * }
  * 
  * class ArticleEditorController extends Controller with Secured {
@@ -56,24 +58,24 @@ trait BeforeFilter {
    * Gets executed <em>before</em> the {@code Controller}'s handler method that
    * corresponds to the current request.
    * 
-   * <p>If this method throws {@code BeforeFilter.RequestInterruption} then the
+   * <p>If this method throws {@code BeforeFilter.Throwable} then the
    * handler method of the {@code Controller} does not get executed and the
    * view of the request interruption gets rendered in the response. This can
    * be used to implement security checks or caching where we may not want the
    * handler method to execute for a particular request.</p> 
    * 
-   * @throws BeforeFilter.RequestInterruption
+   * @throws BeforeFilter.Throwable
    */
   def before()
   
   /**
-   * Throws a {@code RequestInterruption} to prevent the controller's handler
+   * Throws a {@code BeforeFilter.Throwable} to prevent the controller's handler
    * method from executing.
    * 
    * @param view the {@code View} to render.
    */
   protected def stopAndRender(view: View) {
-    throw new BeforeFilter.RequestInterruption(view)
+    throw new BeforeFilter.Throwable(view)
   }
 }
 
@@ -85,5 +87,5 @@ object BeforeFilter {
    * 
    * @param view the {@code View} to render.
    */
-  class RequestInterruption(val view: View) extends Throwable with NoStackTrace
+  class Throwable(val view: View) extends ControlThrowable
 }

@@ -30,7 +30,7 @@ class RequestExecutorTest extends TestHelpers {
   
   @Test
   def call_handler_with_no_interceptors() {
-    when(handler.handle(any(), any())).thenReturn(NullView, Array[Object](): _*)
+    when(handler.handle()).thenReturn(NullView, Array[Object](): _*)
 
     execute()
     
@@ -39,7 +39,7 @@ class RequestExecutorTest extends TestHelpers {
   
   @Test
   def exception_in_handler_calls_exception_handler() {
-    when(handler.handle(any(), any())).thenThrow(error)
+    when(handler.handle()).thenThrow(error)
     when(exceptionHandler.handle(any())).thenReturn(NullView)
     
     execute()
@@ -49,7 +49,7 @@ class RequestExecutorTest extends TestHelpers {
   
   @Test
   def propagate_exception_to_servlet_container() {
-    when(handler.handle(any(), any())).thenThrow(error)
+    when(handler.handle()).thenThrow(error)
     when(exceptionHandler.handle(any())).thenReturn(ErrorPageView)
     
     assertThrows[RuntimeException] {
@@ -61,7 +61,7 @@ class RequestExecutorTest extends TestHelpers {
   
   @Test
   def no_view_found_throws_exception() {
-    when(handler.handle(any(), any())).thenReturn("does not exist", Array[Object](): _*)
+    when(handler.handle()).thenReturn("does not exist", Array[Object](): _*)
     when(exceptionHandler.handle(any())).thenReturn(ErrorPageView)
     
     assertThrows[NoViewFoundException] {
@@ -73,7 +73,7 @@ class RequestExecutorTest extends TestHelpers {
   
   @Test
   def interceptor_gets_called_around_handler() {
-    when(handler.handle(any(), any())).thenReturn(NullView, Array[Object](): _*)
+    when(handler.handle()).thenReturn(NullView, Array[Object](): _*)
     when(interceptor.preHandle(any())).thenReturn(true)
     
     execute(interceptor)
@@ -95,7 +95,7 @@ class RequestExecutorTest extends TestHelpers {
   @Test
   def interceptor_gets_called_despite_handler_exception() {
     when(exceptionHandler.handle(any())).thenReturn(NullView)
-    when(handler.handle(any(), any())).thenThrow(error)
+    when(handler.handle()).thenThrow(error)
     when(interceptor.preHandle(any())).thenReturn(true)
     
     execute(interceptor)
@@ -132,7 +132,7 @@ class RequestExecutorTest extends TestHelpers {
     execute(interceptor, interceptor_2)
 
     verifyInterceptors(interceptor, interceptor_2)
-    verify(handler).handle(any(), any())
+    verify(handler).handle()
     verify(exceptionHandler).handle(argThat(hasError(error)))
   }
   
@@ -162,7 +162,7 @@ class RequestExecutorTest extends TestHelpers {
     when(view.render(any(), any())).thenThrow(error)
     when(views.resolve(any())).thenReturn(view)
     when(exceptionHandler.handle(any())).thenReturn(NullView)
-    when(handler.handle(any(), any())).thenReturn("view-name", Array[Object](): _*)
+    when(handler.handle()).thenReturn("view-name", Array[Object](): _*)
     
     execute()
     
@@ -213,7 +213,7 @@ class RequestExecutorTest extends TestHelpers {
   private def verifyInterceptorAndHandler() {
     val order = inOrder(interceptor, handler)
     order.verify(interceptor).preHandle(any())
-    order.verify(handler).handle(any(), any())
+    order.verify(handler).handle()
     order.verify(interceptor).postHandle(any())
     order.verify(interceptor).afterRender(any())
   }

@@ -13,13 +13,10 @@ import com.coeusweb.core.Handler
 
 class BeforeAfterFilterTest {
   import BeforeAfterFilterTest._
-
-  private var handler: Handler = _
   
   @Test
   def controller_interception() {
-    setupHandler(new InterceptedController, "index")
-    handler.handle(null, null) match {
+    execute(new InterceptedController, "index") match {
       case ViewName(name) => assertEquals("set-from-interceptor", name)
       case r => fail("result must be a view name but was: '"+r+"'")
     }
@@ -27,8 +24,7 @@ class BeforeAfterFilterTest {
   
   @Test
   def interceptor_prevented_execution_of_hander_method() {
-    setupHandler(new NoHandlerExecutionController, "index")
-    handler.handle(null, null) match {
+    execute(new NoHandlerExecutionController, "index") match {
       case ViewName(name) => assertEquals("intercepted", name)
       case r => fail("result must be a view name but was: '"+r+"'")
     }
@@ -36,26 +32,24 @@ class BeforeAfterFilterTest {
   
   @Test(expected=classOf[IllegalArgumentException])
   def after_gets_called_even_when_before_returns_a_view() {
-    setupHandler(new EnsureAfterCalledController, "index")
-    handler.handle(null, null)
+    execute(new EnsureAfterCalledController, "index")
   }
   
   @Test(expected=classOf[IllegalArgumentException])
   def after_gets_called_with_an_occurred_exception() {
-    setupHandler(new ErroneousController, "throwException")
-    handler.handle(null, null)
+    execute(new ErroneousController, "throwException")
   }
   
   @Test
   def handle_returns_the_view_of_after_filter() {
-    setupHandler(new ControllerWithExceptionHandler, "raiseError")
-    assertEquals(NullView, handler.handle(null, null))
+    val result = execute(new ControllerWithExceptionHandler, "raiseError")
+    assertEquals(NullView, result)
   }
   
-  def setupHandler(c: Controller, method: String) = {
+  private def execute(c: Controller, handlerMethod: String) = {
     val controllerClass = c.getClass
-    val handlerMethod = controllerClass.getMethod(method)
-    handler = new Handler(c, handlerMethod)
+    val method = controllerClass.getMethod(handlerMethod)
+    (new Handler(c, method)).handle()
   }
 }
 
@@ -102,7 +96,7 @@ object BeforeAfterFilterTest {
     def raiseError() = throw new RuntimeException
 
     def after(error: Option[Exception]) = {
-      assertTrue("excpected runtime exception!", error.get.isInstanceOf[RuntimeException])
+      assertTrue("expected runtime exception!", error.get.isInstanceOf[RuntimeException])
       Some(NullView)
     }
   }

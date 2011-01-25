@@ -24,14 +24,14 @@ import com.coeusweb.mvc.controller.{ BeforeFilter, AfterFilter, Controller }
 class Handler(val controller: Controller, val method: Method) {
   
   /**
-   * Handle the given web request.
+   * Handle the current web request.
    *
    * <p>The process this method follows for handling the request is:</p>
    * <ol>
    * <li>If the {@code Controller} implements the {@code BeforeFilter} trait
    *     then call the {@code before()} method.</li>
-   * <li>If the above method call does not throw a request interruption then
-   *     invoke the {@code Controller}'s handler method.</li>
+   * <li>If the above method call does not throw a {@code BeforeFilter.Throwable}
+   *     then invoke the {@code Controller}'s handler method.</li>
    * <li>If the {@code Controller} implements the {@code AfterFilter} trait
    *     then call the {@code after()} method.</li>
    * </ol>
@@ -48,14 +48,14 @@ class Handler(val controller: Controller, val method: Method) {
    *
    * @return if the {@code Controller} implements the {@code BeforeFilter}
    *         trait and the method {@link BeforeFilter#before()} throws a
-   *         request interruption then the view of the interruption gets
-   *         returned, else if the {@code Controller} implements the
+   *         {@code BeforeFilter.Throwable} then the view of the interruption
+   *         gets returned, else if the {@code Controller} implements the
    *         {@code AfterFilter} trait and the method
    *         {@link AfterFilter#after()} returns a {@code View} then that view
    *         gets returned, else returns the result of invoking the
    *         {@code Controller}'s handler method.
    */
-  def handle(request: WebRequest, response: WebResponse): Any = {
+  def handle(): Any = {
     
     var result: Any = null
     var exception: Exception = null
@@ -67,18 +67,15 @@ class Handler(val controller: Controller, val method: Method) {
         case _                    => ()
       }
 
-      try {
-        result = method.invoke(controller)
-      } catch {
-        case e: InvocationTargetException => e.getCause match {
-          case exc: Exception => exception = exc
-          case throwable      => throw throwable
-        }
-      }
+      result = method.invoke(controller)
       
     } catch {
-      case interrupt: BeforeFilter.RequestInterruption =>
-        result = interrupt.view
+      case t: BeforeFilter.Throwable =>
+        result = t.view
+      case e: InvocationTargetException => e.getCause match {
+        case exc: Exception => exception = exc
+        case throwable      => throw throwable
+      }
     }
     
     val afterResult = controller match {
