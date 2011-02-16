@@ -6,8 +6,6 @@
  */
 package com.coeusweb.mvc.view.helper
 
-import com.coeusweb.bind.ErrorFormatter
-import com.coeusweb.i18n.msg.MessageBundle
 import javax.servlet.ServletContext
 
 /**
@@ -16,5 +14,6 @@ import javax.servlet.ServletContext
 class DefaultViewHelpers(val servletContext: ServletContext)
   extends MessagesHelper
      with AssetsHelper
+     with DateHelper
      with FormHelper
      with UrlHelper
