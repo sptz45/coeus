@@ -36,6 +36,8 @@ class ApplicationScope(val servletContext: ServletContext) extends ScopedContain
   
   def attributeNames =
     servletContext.getAttributeNames.asInstanceOf[Enumeration[String]]
+  
+  def contextPath = servletContext.getContextPath
 }
 
 /**

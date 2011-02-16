@@ -145,7 +145,11 @@ class WebRequest(
    * all major Javascript libraries send this header when performing AJAX requests.</p>
    */
   def isAjax = header("X-Requested-With").getOrElse(null) == "XMLHttpRequest"
-  
+
+  /**
+   * Whether this request was made using a secure channel.
+   */
+  def isSecure = servletRequest.isSecure
   
   /**
    * Tests whether the request contains a "If-Modified-Since" HTTP header with a

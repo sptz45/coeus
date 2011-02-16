@@ -65,14 +65,14 @@ trait AssetsHelper {
    * 
    * @param name the name of the Javascript file without the ".js" extension.
    */
-  def script(name: String) = <script type="text/javascript" src={url(scriptsPrefix, name, ".js")}></script>
+  def script(name: String)= <script type="text/javascript" src={url(scriptsPrefix, name, ".js")}></script>
   
   /**
    * Generates {@literal <script>} tags for the specified names using the {@link #script} method.
    * 
    * @param names a list of Javascript filenames without the ".js" extension.
    */
-  def scripts(names: String*) = names.map(script(_)).mkString("\n")
+  def scripts(names: String*) = names.map(script(_))
   
   /**
    * Generates a {@literal <link>} tag for linking to CSS files.
@@ -94,7 +94,7 @@ trait AssetsHelper {
    * 
    * @param names a list of CSS filenames without the ".css" extension.
    */
-  def stylesheets(names: String*) = names.map(stylesheet(_, "screen")).mkString("\n")
+  def stylesheets(names: String*) = names.map(stylesheet(_, "screen"))
 
   /**
    * Generates an {@literal <img>} tag for linking to image files.

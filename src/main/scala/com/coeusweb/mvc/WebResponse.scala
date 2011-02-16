@@ -54,7 +54,6 @@ class WebResponse(val servletResponse: HttpServletResponse) extends HttpResponse
    */
   def contentType_=(ct: String) { servletResponse.setContentType(ct) }
 
-
   /**
    * Get the status code of this response.
    */

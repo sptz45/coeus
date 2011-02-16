@@ -6,7 +6,7 @@
  */
 package com.coeusweb.mvc.view.helper
 
-import scala.xml.{ Elem, Text }
+import scala.xml.{ Elem, Text, Null, UnprefixedAttribute }
 import com.coeusweb.mvc.WebRequest
 import com.coeusweb.mvc.scope.ScopeAccessor
 import com.coeusweb.mvc.controller.ModelAttributes
@@ -161,9 +161,8 @@ trait FormHelper {
     <input type="hidden" name="_method" value={method}/>
   }
   
-  def action_link(href: String, text: String, attrs: (String, String)* ) = {
-    val a = new java.lang.StringBuilder("<a href=\"")
-    a.append(href).append("\" rel=\"nofollow\"")
+  def action_link(href: String, text: String, attrs: (String, Any)* ) = {
+    var a = <a href={href} rel="nofollow">{text}</a>
     for ((attr, value) <- attrs) {
       val name = attr match {
         case "method"       => "data-method"
@@ -172,12 +171,9 @@ trait FormHelper {
         case "disable-with" => "data-disable-with"
         case name           => name
       }
-      a.append(" ").append(name).append("=\"").append(value).append("\"")
+      a = a % new UnprefixedAttribute(name, Text(value.toString), Null)
     }
-    a.append(">")
-    a.append(text)
-    a.append("</a>")
-    a.toString
+    a
   }
   
   private def bindingResult(implicit s: ScopeAccessor) = ModelAttributes.getBindingResult(s.request)
