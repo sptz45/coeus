@@ -26,8 +26,8 @@ class VSpecTest {
  @Test
   def null_is_valid_unless_explicit_isNotNull() {
     val validator = new VSpec[User] {
-      ensure("username", isNotNull)
-      ensure("email",    isEmail)
+      ensure('username, isNotNull)
+      ensure('email,    isEmail)
     }
     val user = new User(null, null, 0)
     assertErrors(1, validator.validate(user))
@@ -36,9 +36,9 @@ class VSpecTest {
   @Test
   def validate_an_object() {
     val validator = new VSpec[User] {
-      ensure("username", isNotNull)
-      ensure("email",    hasText, isEmail)
-      ensure("age",      isGreaterThan(18))
+      ensure('username, isNotNull)
+      ensure('email,    hasText, isEmail)
+      ensure('age,      isGreaterThan(18))
     }
     val user = new User(null, "", 12)
     assertErrors(3, validator.validate(user))
@@ -49,8 +49,8 @@ class VSpecTest {
     var firstCalled = false
     var secondCalled = false
     val validator = new VSpec[User] {
-      ensure("username", satisfies { s: String => firstCalled = true; true })
-      ensure("username", satisfies { s: String => secondCalled = true; true })
+      ensure('username, satisfies { s: String => firstCalled = true; true })
+      ensure('username, satisfies { s: String => secondCalled = true; true })
     }
     validator.validate(new User("", "", 12))
     assertTrue("first constraint not called", firstCalled)
@@ -60,7 +60,7 @@ class VSpecTest {
   @Test
   def none_is_always_valid() {
     val validator = new VSpec[OptionalInt] {
-      ensure("value", isGreaterThan(0))
+      ensure('value, isGreaterThan(0))
     }
     assertValid(validator.validate(new OptionalInt(None)))
   }
@@ -68,7 +68,7 @@ class VSpecTest {
   @Test
   def some_gets_extracted_before_passing_to_the_constraints() {
     val validator = new VSpec[OptionalInt] {
-      ensure("value", isGreaterThan(0))
+      ensure('value, isGreaterThan(0))
     }
     assertValid(validator.validate(new OptionalInt(Some(2))))
     assertErrors(1, validator.validate(new OptionalInt(Some(-2))))
@@ -77,7 +77,7 @@ class VSpecTest {
   @Test
   def validate_using_custom_validations() {
     val validator = new VSpec[User] {
-      ensure("username", isNotNull)
+      ensure('username, isNotNull)
       override def extraValidation(result: BindingResult[User]) {
         val user = result.target
         if (user.email == null) {
@@ -92,8 +92,8 @@ class VSpecTest {
   @Test
   def validate_using_custom_constraints() {
     val validator = new VSpec[User] { 
-      ensure("username", isNotNull, satisfies { s: String => s == s.reverse })
-      ensure("email",    satisfies { s: String => s == s.reverse })
+      ensure('username, isNotNull, satisfies { s: String => s == s.reverse })
+      ensure('email,    satisfies { s: String => s == s.reverse })
     }
     val user = new User("spiros", null, 0)
     assertErrors(1, validator.validate(user))
@@ -102,9 +102,9 @@ class VSpecTest {
   @Test
   def validate_an_object_from_an_association_using_validator() {
     val userValidator = new VSpec[User] {
-      ensure("username", isNotNull)
-      ensure("email",    hasText, isEmail)
-      ensure("age",      isGreaterThan(18))
+      ensure('username, isNotNull)
+      ensure('email,    hasText, isEmail)
+      ensure('age,      isGreaterThan(18))
     }
     val validator = new VSpec[Post] {
       ensure("author", validatesWith(userValidator))

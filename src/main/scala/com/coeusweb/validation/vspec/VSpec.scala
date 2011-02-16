@@ -212,6 +212,16 @@ class VSpec[-T <: AnyRef](implicit m: Manifest[T]) extends Validator[T] {
   }
   
   /**
+   * Ensure that the specified field satisfies all the specified constraints.
+   *
+   * @param field the field to validate
+   * @param constraints the constraints
+   */
+  final def ensure[B](field: Symbol, constraints: Constraint[B]*) {
+    ensure(field.name, constraints:_*)
+  }
+
+  /**
    * Ensures that the specified field of the target object will validate
    * against the specified validator.
    * 
@@ -226,7 +236,18 @@ class VSpec[-T <: AnyRef](implicit m: Manifest[T]) extends Validator[T] {
         associationValidators + (field -> List(validator))
       }
   }
-  
+
+  /**
+   * Ensures that the specified field of the target object will validate
+   * against the specified validator.
+   *
+   * @param field the field to validate
+   * @param validator the validator of the field
+   */
+  final def ensure[C <: AnyRef](field: Symbol, validator: VSpec[C]) {
+    ensure(field.name, validator)
+  }
+
   /**
    * Returns the specified VSpec object.
    * 
