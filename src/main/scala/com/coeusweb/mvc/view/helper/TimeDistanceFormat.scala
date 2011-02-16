@@ -28,9 +28,9 @@ private object TimeDistanceFormat {
     
     if (distanceInMinutes <= 1) {
       return distanceInSeconds match {
-        case Less_Than_5_Secs(_)   => less_than_x_seconds(5, isInThePast)
-        case Less_Than_10_Secs(_)  => less_than_x_seconds(10, isInThePast)
-        case Less_Than_20_Secs(_)  => less_than_x_seconds(20, isInThePast)
+        case Less_Than_5_Secs(_)   => lessThanXSecondsMsg(5, isInThePast)
+        case Less_Than_10_Secs(_)  => lessThanXSecondsMsg(10, isInThePast)
+        case Less_Than_20_Secs(_)  => lessThanXSecondsMsg(20, isInThePast)
         case Half_A_Minute(_)      => msg("half a minute", null, null, 0, isInThePast)
         case Less_Than_1_Minute(_) => msg("less than ", " minute", " minutes", 1, isInThePast)
         case _                     => msg("", " minute", " minutes", 1, isInThePast)
@@ -83,11 +83,16 @@ private object TimeDistanceFormat {
   }
   
   //TODO support for i18n
-  private def less_than_x_seconds(distance: Long, isInThePast: Boolean) = msg("less than ", " second", " seconds", distance, isInThePast)
+  private def msg(prefix: String, singular: String, plural: String, distance: Long, isInThePast: Boolean) = {
+    val sb = new java.lang.StringBuilder(prefix)
+    if (distance != 0) sb.append(distance)
+    if (distance > 1) sb.append(plural)
+    else if (distance == 1) sb.append(singular)
+    sb.append(if (isInThePast) " ago" else " ahead")
+    sb.toString
+  }
   
-  private def msg(prefix: String, singular: String, plural: String, distance: Long, isInThePast: Boolean) =
-    prefix + 
-    (if (distance == 0) "" else distance) +
-    (distance match { case 0 => ""; case 1 => singular; case _ => plural }) + 
-    (if (isInThePast) " ago" else " ahead")
+  private def lessThanXSecondsMsg(x: Long, isInThePast: Boolean) = {
+    msg("less than ", " second", " seconds", x, isInThePast)
+  }
 }
