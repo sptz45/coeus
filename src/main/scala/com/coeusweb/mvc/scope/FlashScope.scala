@@ -6,9 +6,7 @@
  */
 package com.coeusweb.mvc.scope
 
-import java.util.concurrent.ConcurrentHashMap
-import scala.collection.mutable.HashSet
-import scala.collection.JavaConversions.{ JConcurrentMapWrapper => MapWrapper, _ }
+import scala.collection.mutable.{HashSet, HashMap, SynchronizedMap}
 import com.coeusweb.mvc.WebRequest
 
 /**
@@ -29,19 +27,19 @@ class FlashScope(val session: WebSession) extends ScopedContainer {
   private lazy val marked = new HashSet[String]
   
   def getAttribute[T](attribute: String): T = {
-    val entry = getFlashMap.get(attribute)
+    val entry = flashMap.get(attribute).getOrElse(null)
     (if (entry eq null) null else { marked += attribute; entry.value }).asInstanceOf[T]
   }
   
   def update(attribute: String, value: Any) {
-    getFlashMap.put(attribute, new FlashScopeEntry(value))
+    flashMap.put(attribute, new FlashScopeEntry(value))
   }
   
   def -=(attribute: String) {
-    getFlashMap.remove(attribute)
+    flashMap.remove(attribute)
   }
   
-  def attributeNames = getFlashMap.keys
+  def attributeNames = flashMap.keysIterator
   
   def notice = apply("flash-notice")
   def notice_=(message: String) = update("flash-notice", message)
@@ -57,7 +55,6 @@ class FlashScope(val session: WebSession) extends ScopedContainer {
    * put into the scope more than one minute ago.
    */
   def sweep() {
-    val flashMap = new MapWrapper(getFlashMap)
     for ((attr, entry) <- flashMap) if (marked.contains(attr) || hasExpired(entry)) {
       flashMap -= attr
     }
@@ -70,7 +67,7 @@ class FlashScope(val session: WebSession) extends ScopedContainer {
   private[scope] def hasExpired(entry: FlashScopeEntry) = entry.hasExpired
 
   /* Get the map that stores the attributes. */
-  private def getFlashMap = getOrCreateFlashMap(session)
+  private def flashMap = getOrCreateFlashMap(session)
 }
 
 /**
@@ -93,7 +90,8 @@ object FlashScope {
 
   /* Gets the underlying map for storing the scope's attributes */
   private[scope] def getOrCreateFlashMap(session: WebSession) = {
-    session.putIfAbsent(FLASH_SCOPE_NAME, new ConcurrentHashMap[String, FlashScopeEntry])
+    session.putIfAbsent(FLASH_SCOPE_NAME,
+        new HashMap[String, FlashScopeEntry] with SynchronizedMap[String, FlashScopeEntry])
   }
 }
 
