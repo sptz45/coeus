@@ -6,6 +6,8 @@
  */
 package com.coeusweb.validation.bean
 
+import language.existentials
+
 import javax.validation.{ Validator => JValidator }
 import com.coeusweb.bind.{ BindingResult, Error }
 import com.coeusweb.validation.Validator
@@ -58,7 +60,7 @@ class BeanValidator[-T <: AnyRef](val validator: JValidator) extends Validator[T
   }
   
   def validateField[F](field: String, value: Any)(implicit m: Manifest[F]) = {
-    val violations = validator.validateValue(m.erasure, field, value)
+    val violations = validator.validateValue(m.runtimeClass, field, value)
     if (violations.isEmpty) None
     else Some(Error(violations.iterator.next.getMessage))
   }

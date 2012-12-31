@@ -6,6 +6,8 @@
  */
 package com.coeusweb.bind.converter
 
+import language.higherKinds
+
 import java.util.Locale
 import scala.collection.mutable.Builder
 import com.coeusweb.bind.Converter

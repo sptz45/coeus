@@ -6,6 +6,8 @@
  */
 package com.coeusweb.mvc.controller
 
+import language.implicitConversions
+
 trait ParameterConversions {
 
   this: Controller =>

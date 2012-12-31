@@ -124,7 +124,7 @@ import constraint.Constraint
  */
 class VSpec[-T <: AnyRef](implicit m: Manifest[T]) extends Validator[T] {
   
-  private val targetClass: Class[_] = m.erasure
+  private val targetClass: Class[_] = m.runtimeClass
   private var constraintsMap = Map[String, List[Constraint[_]]]()
   private var associationValidators = Map[String, List[VSpec[_]]]()
   

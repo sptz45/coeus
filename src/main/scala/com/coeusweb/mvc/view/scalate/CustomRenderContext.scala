@@ -21,10 +21,10 @@ class CustomRenderContext(
   
   override def locale = request.locale
   
-  override val attributes = new AttributeMap[String, Any] {
+  override val attributes = new AttributeMap {
     update("context", CustomRenderContext.this)
     
-	  def get(key: String): Option[Any] = Option(apply(key))
+	def get(key: String): Option[Any] = Option(apply(key))
 
     def apply(key: String): Any = request.getAttribute(key)
     

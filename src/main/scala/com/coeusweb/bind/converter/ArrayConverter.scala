@@ -23,7 +23,7 @@ import com.coeusweb.bind.Converter
 class ArrayConverter[A](
   converter: Converter[A],
   separator: String = ",",
-  appendSpace: Boolean = true)(implicit m: ClassManifest[A])
+  appendSpace: Boolean = true)(implicit m: Manifest[A])
     extends Converter[Array[A]] {
 
   def parse(text: String, locale: Locale): Array[A] = {

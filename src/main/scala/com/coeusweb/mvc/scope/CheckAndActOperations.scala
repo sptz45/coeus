@@ -89,6 +89,5 @@ object CheckAndActOperations {
   def newMutex: AnyRef = new Mutex
   
   @SerialVersionUID(1234567890)
-  @serializable
-  private class Mutex
+  private class Mutex extends java.io.Serializable
 }

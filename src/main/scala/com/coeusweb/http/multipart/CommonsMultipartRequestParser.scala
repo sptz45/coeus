@@ -68,7 +68,7 @@ class CommonsMultipartRequestParser(sizeThreshold: Int = 10240, repository: File
     }
   }
   
-  private def paramsMap[T](mmap: MultiMap[String, T])(implicit m: ClassManifest[T]) = {
+  private def paramsMap[T](mmap: MultiMap[String, T])(implicit m: Manifest[T]) = {
     val jmap = new java.util.HashMap[String, Array[T]](mmap.size)
     for ((key, values) <- mmap) {
       jmap.put(key, values.toArray(m))

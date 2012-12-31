@@ -138,7 +138,7 @@ trait Parameters extends Iterable[(String, String)] with PartialFunction[String,
   
   
   private def parseValue[T](m: Manifest[T], parameter: String, parserOrNull: Parser[T]): T = {
-    val resultClass = m.erasure
+    val resultClass = m.runtimeClass
     /* If no type argument is specified (manifest is for java.lang.Object),
      * return the parameter without conversion. */
     if (classOf[Object] == resultClass)

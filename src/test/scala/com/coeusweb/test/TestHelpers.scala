@@ -10,7 +10,7 @@ import org.mockito.Mockito
 
 trait TestHelpers {
 
-  def mock[T](implicit m: Manifest[T]): T = Mockito.mock(m.erasure).asInstanceOf[T]
+  def mock[T](implicit m: Manifest[T]): T = Mockito.mock(m.runtimeClass).asInstanceOf[T]
   
   def assertThrows[T <: Throwable](testCode: => Unit)(implicit m: Manifest[T]) {
     Assertions.assertThrows[T](testCode)(m)

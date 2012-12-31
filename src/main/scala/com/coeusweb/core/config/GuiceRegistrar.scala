@@ -6,6 +6,8 @@
  */
 package com.coeusweb.core.config
 
+import language.existentials
+
 import java.lang.annotation.Annotation
 import scala.collection.JavaConversions._
 import com.google.inject.{Injector, Scope, Scopes, Binding}

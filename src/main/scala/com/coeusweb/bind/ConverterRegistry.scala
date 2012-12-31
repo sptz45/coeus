@@ -12,7 +12,7 @@ class ConverterRegistry private (converterMap: Map[Class[_], Converter[_]]) {
   def this() = this(Map())
   
   def add[T](conv: Converter[T])(implicit m: Manifest[T]): ConverterRegistry = {
-    add(m.erasure, conv)
+    add(m.runtimeClass, conv)
   }
   
   def add(c: Class[_], conv: Converter[_]) = {

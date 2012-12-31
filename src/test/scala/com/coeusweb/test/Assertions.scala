@@ -11,12 +11,12 @@ import org.junit.Assert._
 object Assertions {
   
   def assertThrows[T <: Throwable](testCode: => Unit)(implicit m: Manifest[T]) {
-    val expectedClass = m.erasure
+    val expectedClass = m.runtimeClass
     try {
       testCode
       throw new AssertionError("Expected exception: " + expectedClass.getName)
     } catch {
-      case actual =>
+      case actual: Throwable =>
         if (! expectedClass.isAssignableFrom(actual.getClass))
           throw new AssertionError("\nExpected exception: " + expectedClass.getName +
           		                     "\n... but got: " + actual.getClass.getName +

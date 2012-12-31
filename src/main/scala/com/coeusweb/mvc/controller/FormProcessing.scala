@@ -131,7 +131,7 @@ trait FormProcessing {
    * @return the <code>View</code> object to use for rendering the response
    */
   def ifValid[T <: AnyRef](onSuccess: T => View)(implicit validator: Validator[T], m: Manifest[T]): View = {
-    val modelName = Conventions.classToAttributeName(m.erasure)
+    val modelName = Conventions.classToAttributeName(m.runtimeClass)
     ifValid(modelName)(onSuccess)(validator)
   }
   

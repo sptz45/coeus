@@ -31,7 +31,7 @@ class ScalateConfigurator(val servletContext: ServletContext) {
     attributes += binding
 
     val name = binding._1
-    val className = implicitly[Manifest[T]].erasure.getName
+    val className = implicitly[Manifest[T]].runtimeClass.getName
 
     bindings += (name -> new Binding(
       name, className, importMembers=importMembers, isImplicit=isImplicit))

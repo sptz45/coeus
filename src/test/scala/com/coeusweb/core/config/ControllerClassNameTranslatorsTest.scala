@@ -52,7 +52,7 @@ class ControllerClassNameTransaltorsTest {
     assertEquals("basic-authentication", translate[users.auth.BasicAuthenticationController])
   }
   
-  private def translate[T](implicit m: Manifest[T]) = translator(m.erasure)
+  private def translate[T](implicit m: Manifest[T]) = translator(m.runtimeClass)
 }
 
 package test.controllers {

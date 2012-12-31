@@ -203,7 +203,7 @@ class DispatcherServletTest {
 
   def setWebModuleTo[T: Manifest] = {
     val config = new MockServletConfig("test-servlet")
-    config.addInitParameter("web-module", implicitly[Manifest[T]].erasure.getName.toString)
+    config.addInitParameter("web-module", implicitly[Manifest[T]].runtimeClass.getName.toString)
     servlet.init(config)
   }
   
