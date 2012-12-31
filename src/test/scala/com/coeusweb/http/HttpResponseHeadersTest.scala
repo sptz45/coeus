@@ -22,11 +22,11 @@ class HttpResponseHeadersTest {
     assertEquals("http://google.com", mock.getHeader("Location"))
     
     response.header("max-age", 99)
-    assertEquals(99, mock.getHeader("max-age"))
+    assertEquals("99", mock.getHeader("max-age"))
     
     val now = new java.util.Date
     response.header("Expires", now)
-    assertEquals(now, new java.util.Date(mock.getHeader("Expires").asInstanceOf[Long]))
+    assertEquals(now, new java.util.Date((mock.getHeader("Expires").toLong)))
   }
   
   @Test

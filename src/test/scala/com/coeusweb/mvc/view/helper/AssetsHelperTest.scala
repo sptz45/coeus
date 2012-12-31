@@ -18,17 +18,17 @@ class AssetsHelperTest {
   @Test
   def without_asset_hosts() {
     assertEquals("""<script type="text/javascript" src="/test/assets/jquery.js?0"></script>""", helper1.script("jquery").toString)
-    assertEquals("""<link href="/test/assets/yui.css?0" type="text/css" rel="stylesheet" media="print"></link>""", helper1.stylesheet("yui", "print").toString)
-    assertEquals("""<img src="/test/assets/logo.png?0" alt="The logo"></img>""", helper1.image("logo.png", "The logo").toString)
-    assertEquals("""<img width="10" height="20" src="/test/assets/logo.png?0" alt="The logo"></img>""", helper1.image("logo.png", "The logo", 10, 20).toString)
+    assertEquals("""<link rel="stylesheet" type="text/css" media="print" href="/test/assets/yui.css?0"/>""", helper1.stylesheet("yui", "print").toString)
+    assertEquals("""<img src="/test/assets/logo.png?0" alt="The logo"/>""", helper1.image("logo.png", "The logo").toString)
+    assertEquals("""<img src="/test/assets/logo.png?0" alt="The logo" width="10" height="20"/>""", helper1.image("logo.png", "The logo", 10, 20).toString)
   }
   
   @Test
   def with_asset_host() {
     assertEquals("""<script type="text/javascript" src="http://assets.example.com/assets/jquery.js?0"></script>""", helper2.script("jquery").toString)
-    assertEquals("""<link href="http://assets.example.com/assets/yui.css?0" type="text/css" rel="stylesheet" media="print"></link>""", helper2.stylesheet("yui", "print").toString)
-    assertEquals("""<img src="http://assets.example.com/assets/logo.png?0" alt="The logo"></img>""", helper2.image("logo.png", "The logo").toString)
-    assertEquals("""<img width="10" height="20" src="http://assets.example.com/assets/logo.png?0" alt="The logo"></img>""", helper2.image("logo.png", "The logo", 10, 20).toString)
+    assertEquals("""<link rel="stylesheet" type="text/css" media="print" href="http://assets.example.com/assets/yui.css?0"/>""", helper2.stylesheet("yui", "print").toString)
+    assertEquals("""<img src="http://assets.example.com/assets/logo.png?0" alt="The logo"/>""", helper2.image("logo.png", "The logo").toString)
+    assertEquals("""<img src="http://assets.example.com/assets/logo.png?0" alt="The logo" width="10" height="20"/>""", helper2.image("logo.png", "The logo", 10, 20).toString)
   }
   
   @Test
