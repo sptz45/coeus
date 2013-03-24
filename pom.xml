@@ -6,7 +6,7 @@
 	<name>Coeus Web Framework</name>
 	<version>0.5-SNAPSHOT</version>
 	<description>A simple and effective Scala MVC web framework</description>
-	<url>http://www.coeusweb.com</url>
+	<url>https://github.com/sptz45/coeus</url>
 	<inceptionYear>2009</inceptionYear>
 
 	<licenses>
@@ -34,9 +34,9 @@
 	</organization>
 
 	<scm>
-		<connection>scm:git:git://github.com/coeusframework/coeus.git</connection>
-		<developerConnection>scm:git:git@github.com:coeusframework/coeus.git</developerConnection>
-		<url>http://github.com/coeusframework/coeus/tree/master</url>
+		<connection>scm:git:git://github.com/stptz45/coeus.git</connection>
+		<developerConnection>scm:git:git@github.com:sptz45/coeus.git</developerConnection>
+		<url>http://github.com/sptz45/coeus/tree/master</url>
 	</scm>
 
 	<properties>
