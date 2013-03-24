@@ -62,7 +62,7 @@ private object TimeDistanceFormat {
     def convert(minutes: Long) = (minutes / 1440d).round 
   }
   object About_X_Months extends TimeTest(43199, 525599) {
-    def convert(minutes: Long) = (minutes / 1440d).round 
+    def convert(minutes: Long) = (minutes / 43829d).round
   }
   object One_Year extends TimeTest(525599, 1051199) {
     def convert(minutes: Long) = 1 
